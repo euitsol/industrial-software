@@ -135,7 +135,6 @@
                                  aria-labelledby="nav-home-tab">
                                 <section id="content">
                                     <div id="accordion" class="accordion-container">
-                                        @php($i=1)
                                         @if (count($in_batches) > 0)
                                             @foreach ($in_batches as $key1 => $in_batch)
                                                 <article class="content-entry">
@@ -144,37 +143,62 @@
                                                         <table class="table table-borderless">
                                                             <tr>
                                                                 <th>Batch</th>
-                                                                <th>Students</th>
+                                                                <th>Lab/Classroom Name</th>
+                                                                <th>Available Students</th>
                                                                 <th>Status</th>
                                                                 <th>Action</th>
                                                             </tr>
-                                                            @forelse ($in_batch as $ib)
+                                                            @foreach($in_batch as $ib)
                                                                 <tr>
-                                                                    <td>{{batch_name(optional($ib->course)->title_short_form, $ib->year, $ib->month, $ib->batch_number)}}</td>
+                                                                    <td>{{ batch_name(optional($ib->course)->title_short_form, $ib->year, $ib->month, $ib->batch_number) }}</td>
+                                                                    <td>{{ $ib->lab->lab_name ?? 'N/A'}}</td>
                                                                     <td>{{$ib->students->count()}}</td>
-                                                                    <td>@if($ib->status == 1) Running @else Closed @endif</td>
+                                                                    <td>
+                                                                        @php    
+                                                                            $start_date = Carbon\Carbon::parse($ib->start_date);
+                                                                            $end_date = Carbon\Carbon::parse($ib->end_date);
+                                                                        @endphp
+                                                                        @if($now < $start_date && $ib->status ==1)
+                                                                            {{$now->diffInDays($start_date)}} day's to start
+                                                                        @elseif($now > $start_date && $now < $end_date && $ib->status ==1)
+                                                                            {{$now->diffInDays($end_date)}} day's to end
+                                                                        @else
+                                                                            @if($now <= $end_date)
+                                                                                Hold
+                                                                            @else
+                                                                                Ended
+                                                                            @endif
+                                                                        @endif
+                                                                    </td>
+                                                                    <td>
+                                                                        
+                                                                    </td>
                                                                     <td>
                                                                         <a href="{{route('batch.details', $ib->id)}}"
                                                                            class="btn btn-sm btn-outline-primary"
-                                                                           style="padding: 0 .8rem;">Details</a>
+                                                                           >Details</a>
                                                                         <a href="{{route('batch.edit', $ib->id)}}"
                                                                            class="btn btn-sm btn-outline-info"
-                                                                           style="padding: 0 .8rem;">Edit</a>
+                                                                           >Edit</a>
                                                                         <a href="{{route('batch.delete', $ib->id)}}"
                                                                            onclick="return confirm('Are you sure to delete this?')"
                                                                            class="btn btn-sm btn-outline-danger"
-                                                                           style="padding: 0 .8rem;">Delete</a>
-                                                                        <a href="{{route('batch.status', $ib->id)}}"
+                                                                           >Delete</a>
+                                                                        @if($now <= $end_date)
+                                                                           <a href="{{route('batch.status', $ib->id)}}"
                                                                            onclick="return confirm('Are you sure you want to change status?')"
-                                                                           class="btn btn-sm @if($ib->status == 1) btn-danger @else btn-info @endif custom-button"
-                                                                           style="padding: 0 .8rem;"> <i class="fa"> @if($ib->status == 1) &#xf00d; @else &#xf00c; @endif </i> </a>
+                                                                           class="btn btn-sm @if($ib->status == 1) btn-outline-danger @else btn-outline-info @endif"
+                                                                           > @if($ib->status == 1) Hold Batch @else Start Batch @endif 
+                                                                           </a>
+                                                                        @else
+                                                                            <a href="javascript:void(0)"
+                                                                            class="btn btn-sm btn-outline-secondary disabled"
+                                                                            >Batch Ended
+                                                                            </a>
+                                                                        @endif
                                                                     </td>
                                                                 </tr>
-                                                            @empty
-                                                                <tr>
-                                                                    <td rowspan="3">No batch found!</td>
-                                                                </tr>
-                                                            @endforelse
+                                                            @endforeach
                                                         </table>
                                                     </div>
                                                 </article>
@@ -189,45 +213,75 @@
                                  aria-labelledby="nav-profile-tab">
                                 <section id="content">
                                     <div id="accordion" class="accordion-container">
-                                        @php($j=1)
                                         @if (count($pro_batches) > 0)
-                                            @foreach ($pro_batches as $key2 => $pro_batch)
-                                                <article class="content-entry">
-                                                    <h4 class="article-title"><i></i> {{$key2}}</h4>
-                                                    <div class="accordion-content">
-                                                        <table class="table table-borderless">
-                                                            <tr>
-                                                                <th>Batch</th>
-                                                                <th>Available Students</th>
-                                                                <th>Action</th>
-                                                            </tr>
-                                                            @foreach($pro_batch as $pb)
-                                                                <tr>
-                                                                    <td>{{ batch_name(optional($pb->course)->title_short_form, $pb->year, $pb->month, $pb->batch_number) }}</td>
-                                                                    <td>{{$pb->students->count()}}</td>
-                                                                    <td>
-                                                                        <a href="{{route('batch.details', $pb->id)}}"
-                                                                           class="btn btn-sm btn-outline-primary"
-                                                                           style="padding: 0 .8rem;">Details</a>
-                                                                        <a href="{{route('batch.edit', $pb->id)}}"
-                                                                           class="btn btn-sm btn-outline-info"
-                                                                           style="padding: 0 .8rem;">Edit</a>
-                                                                        <a href="{{route('batch.delete', $pb->id)}}"
-                                                                           onclick="return confirm('Are you sure to delete this?')"
-                                                                           class="btn btn-sm btn-outline-danger"
-                                                                           style="padding: 0 .8rem;">Delete</a>
-                                                                        <a href="{{route('batch.status', $pb->id)}}"
-                                                                           onclick="return confirm('Are you sure you want to change status?')"
-                                                                           class="btn btn-sm @if($ib->status == 1) btn-outline-danger @else btn-outline-info @endif"
-                                                                           style="padding: 0 .8rem;"> @if($pb->status == 1) Close Batch @else Start Batch @endif </a>
-                                                                    </td>
-                                                                </tr>
-                                                            @endforeach
-                                                        </table>
-                                                    </div>
-                                                </article>
-                                            @endforeach
-                                        @endif
+                                        @foreach ($pro_batches as $key2 => $pro_batch)
+                                        <article class="content-entry">
+                                            <h4 class="article-title"><i></i> {{$key2}}</h4>
+                                            <div class="accordion-content">
+                                                <table class="table table-borderless">
+                                                    <tr>
+                                                        <th>Batch</th>
+                                                        <th>Lab/Classroom Name</th>
+                                                        <th>Available Students</th>
+                                                        <th>Status</th>
+                                                        <th>Action</th>
+                                                    </tr>
+                                                    @foreach($pro_batch as $pb)
+                                                        <tr>
+                                                            <td>{{ batch_name(optional($pb->course)->title_short_form, $pb->year, $pb->month, $pb->batch_number) }}</td>
+                                                            <td>{{ $pb->lab->lab_name ?? 'N/A'}}</td>
+                                                            <td>{{$pb->students->count()}}</td>
+                                                            <td>
+                                                                @php    
+                                                                    $start_date = Carbon\Carbon::parse($pb->start_date);
+                                                                    $end_date = Carbon\Carbon::parse($pb->end_date);
+                                                                @endphp
+                                                                @if($now < $start_date && $pb->status ==1)
+                                                                    {{$now->diffInDays($start_date)}} day's to start
+                                                                @elseif($now > $start_date && $now < $end_date && $pb->status ==1)
+                                                                    {{$now->diffInDays($end_date)}} day's to end
+                                                                @else
+                                                                    @if($now <= $end_date)
+                                                                        Hold
+                                                                    @else
+                                                                        Ended
+                                                                    @endif
+                                                                @endif
+                                                            </td>
+                                                            <td>
+                                                                
+                                                            </td>
+                                                            <td>
+                                                                <a href="{{route('batch.details', $pb->id)}}"
+                                                                   class="btn btn-sm btn-outline-primary"
+                                                                   >Details</a>
+                                                                <a href="{{route('batch.edit', $pb->id)}}"
+                                                                   class="btn btn-sm btn-outline-info"
+                                                                   >Edit</a>
+                                                                <a href="{{route('batch.delete', $pb->id)}}"
+                                                                   onclick="return confirm('Are you sure to delete this?')"
+                                                                   class="btn btn-sm btn-outline-danger"
+                                                                   >Delete</a>
+                                                                @if($now <= $end_date)
+                                                                   <a href="{{route('batch.status', $pb->id)}}"
+                                                                   onclick="return confirm('Are you sure you want to change status?')"
+                                                                   class="btn btn-sm @if($pb->status == 1) btn-outline-danger @else btn-outline-info @endif"
+                                                                   > @if($pb->status == 1) Hold Batch @else Start Batch @endif 
+                                                                   </a>
+                                                                @else
+                                                                    <a href="javascript:void(0)"
+                                                                    class="btn btn-sm btn-outline-secondary disabled"
+                                                                    >Batch Ended
+                                                                    </a>
+                                                                @endif
+                                                            </td>
+                                                        </tr>
+                                                    @endforeach
+                                                </table>
+                                            </div>
+                                        </article>
+                                    @endforeach
+                                    @endif
                                     </div>
                                 </section>
                             </div>

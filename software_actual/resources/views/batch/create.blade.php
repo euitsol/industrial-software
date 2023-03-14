@@ -104,6 +104,20 @@
                                         </div>
                                     </div>
                                     <div class="form-group row">
+                                        <label class="col-md-3 form-control-label">Select Lab</label>
+                                        <div class="col-md-9">
+                                            <select name="lab" id="lab" class="form-control form-control-success">
+                                                <option value="0" hidden selected >Select Lab Name</option>
+                                                @foreach($labs as $lab )
+                                                    <option value="{{$lab->id}}">{{$lab->lab_name}}</option>
+                                                @endforeach
+                                            </select>
+                                            @if ($errors->has('lab'))
+                                                <span class="text-danger">{{ $errors->first('lab') }}</span>
+                                            @endif
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
                                         <div class="col-md-9 ml-auto">
                                             <input type="submit" value="Submit"
                                                    onclick="return confirm('Are you sure to create new batch?')"

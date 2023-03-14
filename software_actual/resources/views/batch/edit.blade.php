@@ -38,6 +38,11 @@
                                             <td>{{batch_name($batch->course->title_short_form, $batch->year, $batch->month, $batch->batch_number)}}</td>
                                         </tr>
                                         <tr>
+                                            <td>Lab Name</td>
+                                            <td>:</td>
+                                            <td>{{$batch->lab->lab_name ?? 'N/A'}}</td>
+                                        </tr>
+                                        <tr>
                                             <td>Total Students</td>
                                             <td>:</td>
                                             <td>{{$batch->students->count()}}</td>
@@ -103,6 +108,26 @@
                                                    id="end_date" autocomplete="off" class="form-control">
                                             @if ($errors->has('end_date'))
                                                 <span class="text-danger">{{ $errors->first('end_date') }}</span>
+                                            @endif
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-md-3 form-control-label">Select Lab</label>
+                                        <div class="col-md-9">
+                                            <select name="lab" id="lab" class="form-control form-control-success">
+                                                @if(empty($batch->lab_id))
+                                                    <option value='null' hidden selected>Select Lab</option>
+                                                @foreach($labs as $lab )
+                                                    <option value="{{$lab->id}}">{{$lab->lab_name}}</option>
+                                                @endforeach
+                                                @else
+                                                @foreach($labs as $lab )
+                                                    <option value="{{$lab->id}}"@if($batch->lab_id == $lab->id) selected @endif>{{$lab->lab_name}}</option>
+                                                @endforeach
+                                                @endif
+                                            </select>
+                                            @if ($errors->has('lab'))
+                                                <span class="text-danger">{{ $errors->first('lab') }}</span>
                                             @endif
                                         </div>
                                     </div>

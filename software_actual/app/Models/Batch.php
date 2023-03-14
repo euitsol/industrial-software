@@ -33,6 +33,10 @@ class Batch extends Model
     {
         return $this->belongsToMany(Account::class);
     }
+    public function lab()
+    {
+        return $this->belongsTo(Lab::class, 'lab_id');
+    }
 
 
 }
