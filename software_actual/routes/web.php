@@ -73,8 +73,30 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/classroom/exam/{exam_id}/question_paper' ,'ClassroomController@exam_question_paper')->name('classroom.question_paper');
         Route::post('/classroom/exam/store' ,'ClassroomController@exam_question_paper_store')->name('classroom.question_paper.store');
         
+//Lab-management
+
+        Route::get('/lab-management' ,'LabController@index')->name('lab-management');
+        Route::get('/lab-management/create', 'LabController@create')->name('lab-management.create');
+        Route::post('/lab-management/store' ,'LabController@store')->name('lab-management.store');
+        Route::get('/lab-management/{labid}/edit', 'LabController@edit')->name('lab-management.edit');
+        Route::post('/lab-management/update', 'LabController@update')->name('lab-management.update');
+        Route::get('/lab-management/delete/{labid}', 'LabController@destroy')->name('lab-management.delete');
+        Route::get('/lab-management/show/{labid}', 'LabController@show')->name('lab-management.show');
+// Running Closed
+        Route::get('/lab-running/{labid}' ,'LabController@lab_runnig')->name('lab.running');
+        Route::get('/lab-closed/{labid}' ,'LabController@lab_closed')->name('lab.closed');
 
 
+// Session
+
+        Route::get('/session' ,'SessionController@index')->name('session');
+        Route::get('/session/create','SessionController@create')->name('session.create');
+        Route::post('/session/store', 'SessionController@store')->name('session.store');
+        Route::get('/session/edit/{id}', 'SessionController@edit')->name('session.edit');
+        Route::post('/session/update', 'SessionController@update')->name('session.update');
+        Route::get('/session/delete/{id}', 'SessionController@destroy')->name('session.delete');
+        Route::get('/session/show/{id}', 'SessionController@show')->name('session.show');
+        Route::get('/session/status/{id}', 'SessionController@statusChange')->name('session.status');
 
 
 //industrial marketing
