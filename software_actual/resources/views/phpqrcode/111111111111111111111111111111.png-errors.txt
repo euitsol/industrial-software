@@ -1,0 +1,1 @@
+2021-04-07 16:37:11: imagepng(images/QRcode/111111111111111111111111111111.png): failed to open stream: No such file or directory

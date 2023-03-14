@@ -1,0 +1,159 @@
+.select2-container--default .select2-selection--single {
+    border: 1px solid #ced4da !important;
+}
+
+.select2-container .select2-selection--single {
+    height: 32px !important;
+}
+
+.input-sm {
+    width: 60px !important;
+}
+
+.form-control-sm {
+    border-radius: 0 !important;
+}
+
+#today_payable {
+    border: 1px solid #8080806e;
+    border-radius: 3px !important;
+}
+
+#installment_dates .table td {
+    vertical-align: middle;
+}
+
+.gray {
+    color: #6c757d;
+}
+
+.batch-table, .batch-table tr, .batch-table td {
+    border: 0 !important;
+    padding: 5px !important;
+}
+
+.nav-tabs .nav-item {
+    margin-bottom: -1px;
+    font-size: 16px;
+    color: #000;
+}
+
+.nav-tabs .nav-link.active, .nav-tabs .nav-item.show .nav-link {
+    color: #05111e;
+    background-color: rgba(179, 186, 202, 0.18);
+    font-weight: bold;
+    letter-spacing: 1px;
+    font-family: sans-serif;
+    font-size: 18px;
+}
+
+#loader {
+    position: fixed;
+    left: 0px;
+    top: 0px;
+    width: 100%;
+    height: 100%;
+    z-index: 9999;
+    background: #ffffff url('../../images/Loading_icon3.gif') no-repeat 50% 50%;
+}
+
+.batches {
+    border: 1px solid #d3d3d3;
+    display: none;
+}
+
+.btn-sm {
+    padding: 2px 9px !important;
+}
+
+.table td, .table th {
+    padding: 8px !important;
+}
+
+.my-table {
+    width: 90% !important;
+    margin: 0 auto !important;
+    margin-left: 50px !important;
+}
+
+.block {
+    position: relative;
+}
+
+.btn-close {
+    position: absolute;
+    right: -15px;
+    top: -15px;
+    background: #dcd8d8;
+    text-align: center;
+    border-radius: 50%;
+    padding: 4px 9px;
+    cursor: pointer;
+    transition: .4s;
+}
+
+.btn-close:hover {
+    background: #000;
+    color: #ffff;
+}
+
+
+/*-----------------------*/
+@font-face {
+    font-family: 'Open Sans';
+    src: url('../google_fonts/OpenSans-Regular.ttf');
+    font-weight: 400;
+    font-style: normal;
+}
+
+body {
+    font-family: 'Open Sans', sans-serif;
+}
+
+#sidebar {
+    background: #262a33;
+}
+
+.text-muted {
+    color: #fff !important;
+}
+
+.sidebar-link i {
+    font-size: 13px !important;
+    width: 30px;
+}
+
+.sidebar-link:hover {
+    background: #454953;
+}
+
+.sidebar-link span {
+    font-family: 'Open Sans', sans-serif;
+}
+
+.sidebar-link.active:hover {
+    background: #4680ff;
+}
+
+.header {
+    position: fixed;
+    width: 100%;
+    z-index: 99;
+    top: 0;
+}
+
+.main-sidebar {
+    margin-top: 53px;
+}
+
+.badge {
+    display: inline-block;
+    padding: .25em .4em;
+    font-size: unset !important;
+    font-weight: unset !important;
+    line-height: 1;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    border-radius: .25rem;
+}

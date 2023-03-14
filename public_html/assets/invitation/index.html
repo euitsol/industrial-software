@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Invitation</title>
+
+    <style>
+        
+        body{
+            margin: 0;
+            padding: 0;
+        }
+
+    @font-face {
+        font-family: 'hightower';
+        src: url('font/HTOWERT.TTF');
+    }
+    
+    .full{
+        background: #fff;
+        position: relative;
+        height: 475px;
+        overflow: hidden;
+    }
+    .full::after{
+        content: ' ';
+        background-image: url(frame-sm.png);
+        position: absolute;
+        right: 0;
+        top: 0;
+        background-repeat: no-repeat;
+        height: 150px;
+        width: 150px;
+    }
+
+    .full::before{
+        content: ' ';
+        background-image: url(frame-sm.png);
+        position: absolute;
+        left: 0;
+        top: 0;
+        background-repeat: no-repeat;
+        height: 150px;
+        width: 150px;
+        transform: rotate(270deg);
+    }
+    .full_second{
+        position: relative;
+        padding: 70px;
+    }
+
+    .full_second::after{
+        content: ' ';
+        background-image: url(frame-sm.png);
+        position: absolute;
+        right: 0;
+        bottom: 40px;
+        background-repeat: no-repeat;
+        height: 150px;
+        width: 150px;
+        transform: rotate(90deg);
+    }
+
+    .full_second::before{
+        content: ' ';
+        background-image: url(frame-sm.png);
+        position: absolute;
+        left: 0;
+        bottom: 40px;
+        background-repeat: no-repeat;
+        height: 150px;
+        width: 150px;
+        transform: rotate(180deg);
+    }
+    
+    .full .heading h3{
+        text-align: center;
+    font-size: 17px;
+    color: #000;
+    line-height: 20px;
+    font-family: 'hightower';
+    margin: 0;
+    letter-spacing: 1px;
+    }
+    .letter{
+        padding: 7px;
+    }
+    .letter p{
+        font-size: 18px;
+        letter-spacing: 1px;
+        font-family: 'hightower';
+        text-align: justify;
+    }
+    .logo{
+        width: 160px;
+        margin: 0 auto;
+    }
+    .logo img{
+        
+        width: 160px;
+        position: absolute;
+    }
+    
+
+    
+    </style>
+</head>
+<body>
+
+    <div class="full">
+        <div class="full_second">
+
+            <div class="heading">
+                <h3>Invitation <br> To <br> Orientation Program for Industrial Attachment – 2020</h3>
+
+            </div>
+            <div class="letter">
+                <p>Dear Rabbi,</p>
+                <p> You are cordially invited to the Orientation Program (Industrial Attachment) on Saturday 6th January 2020 at the Zainab Qasim Auditorium. The timings are 10 am to 2 pm. You are requested to be seated in the auditorium by 9 am. <br> <br>
+                    Kindly adhere to the specified timings as we look forward to meeting you.
+                    </p>
+
+                    <p>Sincerely, <br> Administration <br>European IT Institute</p>
+
+
+            </div>
+            
+                <div class="logo">
+                    <img src="logo.png" alt="logo">
+                </div>
+        </div>
+    </div>
+    
+    
+</body>
+</html>
