@@ -52,6 +52,7 @@
                                             <th>SL</th>
                                             <th>Title</th>
                                             <th>Course Sector</th>
+                                            <th>Total Class</th>
                                             <th>Fee
                                                 <small>(BDT)</small>
                                             </th>
@@ -67,6 +68,7 @@
                                                 <td> {{ $key + 1 }} </td>
                                                 <td> {{ $course->title }} </td>
                                                 <td> {{ optional($course->course_type)->type_name }} </td>
+                                                <td> {{ $course->total_class }} </td>
                                                 <td> {{ $course->fee }} </td>
                                                 <td> @if($course->running == 1) Running @else End @endif</td>
                                                 <td> {{ optional($course->user)->name }} </td>
@@ -101,6 +103,7 @@
                                             <th>SL</th>
                                             <th>Title</th>
                                             <th>Course Sector</th>
+                                            <th>Total Class</th>
                                             <th>Fee</th>
                                             <th>Status</th>
                                             <th>Added By</th>
@@ -120,6 +123,7 @@
                                             <th>SL</th>
                                             <th>Title</th>
                                             <th>Course Sector</th>
+                                            <th>Total Class</th>
                                             <th>Fee
                                                 <small>(BDT)</small>
                                             </th>
@@ -135,6 +139,7 @@
                                                 <td> {{ $key + 1 }} </td>
                                                 <td> {{ $course->title }} </td>
                                                 <td> {{ optional($course->course_type)->type_name }} </td>
+                                                <td> {{ $course->total_class }} </td>
                                                 <td> {{ $course->fee }} </td>
                                                 <td> @if($course->running == 1) Running @else End @endif</td>
                                                 <td> {{ optional($course->user)->name }} </td>
@@ -169,6 +174,7 @@
                                             <th>SL</th>
                                             <th>Title</th>
                                             <th>Course Sector</th>
+                                            <th>Total Class</th>
                                             <th>Fee</th>
                                             <th>Status</th>
                                             <th>Added By</th>

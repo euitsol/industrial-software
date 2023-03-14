@@ -33,6 +33,7 @@ class CourseController extends Controller
             'course_type' => 'required|max:170',
             'duration' => 'required|max:170',
             'weekly_days' => 'required|max:170',
+            'total_class' => 'required|numeric|max:100',
             'class_time' => 'required|max:170',
             'type' => 'required',
             'fee' => 'required|numeric|min:1'
@@ -52,6 +53,7 @@ class CourseController extends Controller
         $c->weekly_days = $request->weekly_days;
         $c->class_total_time = $request->class_time;
         $c->type = $request->type;
+        $c->total_class = $request->total_class;
         $c->fee = $request->fee;
         $c->course_type_id = $request->course_type;
         $c->user_id = Auth::id();
@@ -82,6 +84,7 @@ class CourseController extends Controller
             'course_type' => 'required',
             'duration' => 'required',
             'weekly_days' => 'required',
+            'total_class' => 'required',
             'class_time' => 'required',
             'type' => 'required',
             'fee' => 'required|numeric|min:1'
@@ -94,6 +97,7 @@ class CourseController extends Controller
         $c->weekly_days = $request->weekly_days;
         $c->class_total_time = $request->class_time;
         $c->type = $request->type;
+        $c->total_class = $request->total_class;
         $c->fee = $request->fee;
         $c->course_type_id = $request->course_type;
         $c->save();

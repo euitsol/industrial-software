@@ -51,6 +51,10 @@
                                             <td>:</td>
                                             <td>{{ $course->weekly_days }} Day(s)</td>
                                         </tr>
+                                        <td>Total Class </td>
+                                            <td>:</td>
+                                            <td>{{ $course->total_class}}</td>
+                                        <tr>
                                         <tr>
                                             <td>Time <small>(Hours)</small> </td>
                                             <td>:</td>

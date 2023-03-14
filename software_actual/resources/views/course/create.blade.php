@@ -85,6 +85,15 @@
                                     </div>
                                 </div>
                                 <div class="form-group row">
+                                    <label class="col-md-3 form-control-label">Total Class <span class="text-danger">*</span> </label>
+                                    <div class="col-md-9">
+                                        <input type="number" name="total_class" value="{{ old('total_class') }}" class="form-control form-control-success">
+                                        @if ($errors->has('total_class'))
+                                            <span class="text-danger">{{ $errors->first('total_class') }}</span>
+                                        @endif
+                                    </div>
+                                </div>
+                                <div class="form-group row">
                                     <label class="col-md-3 form-control-label">Class Time <span class="text-danger">*</span> </label>
                                     <div class="col-md-9">
                                         <select name="class_time" id="class_time" class="form-control form-control-success">
