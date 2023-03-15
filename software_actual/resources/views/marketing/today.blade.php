@@ -65,6 +65,37 @@
                                             <td colspan="2">{{$mc->comment}}</td>
                                         </tr>
                                     @endforeach
+                                    <tr class="child-row {{$m->id}}" style="background-color: #f5f0ed;">
+                                        <th>Conversation Date</th>
+                                        <th>Next Conversation Date</th>
+                                        <th>Converse With</th>
+                                        <th>Comment</th>
+                                        <th></th>
+                                    </tr>
+                                    <tr class="child-row {{$m->id}}" style="background-color: #f5f0ed;">
+                                        <form action="{{route('marketing.comment.store', ['mid' => $m->id])}}"
+                                              method="post">
+                                            @csrf
+                                            <td>
+                                                <input type="date" class="form-control" name="date" required>
+                                            </td>
+                                            <td>
+                                                <input type="date" class="form-control" name="nextDate" required>
+                                            </td>
+                                            <td>
+                                                <input type="text" class="form-control" name="converseWith" required
+                                                       list="converseWith">
+                                            </td>
+                                            <td>
+                                                <textarea cols="30" rows="3" style="width: 100%;" class="form-control"
+                                                          name="comment" required></textarea>
+                                            </td>
+                                            <td>
+                                                <button class="btn btn-sm btn-outline-info" type="submit">Submit
+                                                </button>
+                                            </td>
+                                        </form>
+                                    </tr>
                                 @empty
                                 @endforelse
                                 </tbody>
@@ -76,6 +107,12 @@
             </div>
         </div>
     </div>
+    <datalist id="converseWith">
+        @forelse($datalist['converse_with'] as $cw)
+            <option value="{{$cw->converse_with}}">
+        @empty
+        @endforelse
+    </datalist>
 @endsection
 @push('js')
     <script>

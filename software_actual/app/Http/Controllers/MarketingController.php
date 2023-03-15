@@ -138,7 +138,8 @@ class MarketingController extends Controller
         }
         if ($success) {
             Session::flash('success', "The marketing comment has been added successfully.");
-            return redirect()->route('marketing.list');
+            // return redirect()->route('marketing.list');
+            return redirect()->back();
         } else {
             Session::flash('error', "Something went wrong :(");
             return redirect()->back();
@@ -298,6 +299,7 @@ class MarketingController extends Controller
 
  public function today()
     {
+        $datalist['converse_with'] = DB::select(DB::raw('SELECT converse_with FROM marketingcomments GROUP BY converse_with'));
         $marketings = Marketing::whereRaw('DAYOFYEAR(curdate()) =  dayofyear(next_date)')->get();
         if (count($marketings) > 0){
             foreach ($marketings as $m) {
@@ -305,7 +307,7 @@ class MarketingController extends Controller
                 $m['comments'] = Marketingcomment::where('marketing_id', $m->id)->get();
             }
         }
-        return view('marketing.today', compact('marketings'));
+        return view('marketing.today', compact('marketings', 'datalist'));
     }
 
 

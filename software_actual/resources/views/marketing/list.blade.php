@@ -55,7 +55,7 @@
                                 {{ session('unsuccess') }}
                             </p>
                         @endif
-                        <div class="table-responsive">
+                        <div class="table-responsive" style="overflow-wrap:anywhere">
                             <table class="table" id="table">
                                 <thead>
                                 <tr>
@@ -100,14 +100,14 @@
                                         <th></th>
                                         <th>Conversation Date</th>
                                         <th>Converse With</th>
-                                        <th colspan="4">Comment</th>
+                                        <th colspan="3">Comment</th>
                                     </tr>
                                     @foreach($m->comments as $mc)
                                         <tr class="child-row {{$m->id}}" style="background-color: #f5f0ed;">
                                             <td></td>
                                             <td>{{date('jS, F, Y', strtotime($mc->date))}}</td>
                                             <td>{{$mc->converse_with}}</td>
-                                            <td colspan="4">{{$mc->comment}}</td>
+                                            <td colspan="3">{{$mc->comment}}</td>
                                             {{--                                            <td></td>--}}
                                         </tr>
                                     @endforeach
@@ -115,7 +115,7 @@
                                         <th>Conversation Date</th>
                                         <th>Next Conversation Date</th>
                                         <th>Converse With</th>
-                                        <th colspan="3">Comment</th>
+                                        <th colspan="2">Comment</th>
                                         <th></th>
                                     </tr>
                                     <tr class="child-row {{$m->id}}" style="background-color: #f5f0ed;">
@@ -132,7 +132,7 @@
                                                 <input type="text" class="form-control" name="converseWith" required
                                                        list="converseWith">
                                             </td>
-                                            <td colspan="3">
+                                            <td colspan="2">
                                                 <textarea cols="30" rows="3" style="width: 100%;" class="form-control"
                                                           name="comment" required></textarea>
                                             </td>
