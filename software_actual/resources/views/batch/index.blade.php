@@ -212,11 +212,11 @@
                                                                             @endif
                                                                         @else
                                                                             @if(empty($ib->start_date) && !empty($ib->end_date))
-                                                                                <a href="{{route('batch.edit', $ib->id)}}"class="btn btn-sm btn-outline-info mb-2">Set Start Date</a>
+                                                                                <a href="{{route('batch.edit', $ib->id)}}"class="btn btn-sm btn-outline-success mb-2">Set Start Date</a>
                                                                             @elseif(!empty($ib->start_date) && empty($ib->end_date))
-                                                                                <a href="{{route('batch.edit', $ib->id)}}"class="btn btn-sm btn-outline-info mb-2">Set End Date</a>
+                                                                                <a href="{{route('batch.edit', $ib->id)}}"class="btn btn-sm btn-outline-success mb-2">Set End Date</a>
                                                                             @else
-                                                                                <a href="{{route('batch.edit', $ib->id)}}"class="btn btn-sm btn-outline-info mb-2">Set Batch Date</a>
+                                                                                <a href="{{route('batch.edit', $ib->id)}}"class="btn btn-sm btn-outline-success mb-2">Set Batch Date</a>
                                                                             @endif
                                                                         @endif
                                                                     </td>
@@ -312,11 +312,11 @@
                                                                     @endif
                                                                 @else
                                                                     @if(empty($pb->start_date) && !empty($pb->end_date))
-                                                                        <a href="{{route('batch.edit', $pb->id)}}"class="btn btn-sm btn-outline-info mb-2">Set Start Date</a>
+                                                                        <a href="{{route('batch.edit', $pb->id)}}"class="btn btn-sm btn-outline-success mb-2">Set Start Date</a>
                                                                     @elseif(!empty($pb->start_date) && empty($pb->end_date))
-                                                                        <a href="{{route('batch.edit', $pb->id)}}"class="btn btn-sm btn-outline-info mb-2">Set End Date</a>
+                                                                        <a href="{{route('batch.edit', $pb->id)}}"class="btn btn-sm btn-outline-success mb-2">Set End Date</a>
                                                                     @else
-                                                                        <a href="{{route('batch.edit', $pb->id)}}"class="btn btn-sm btn-outline-info mb-2">Set Batch Date</a>
+                                                                        <a href="{{route('batch.edit', $pb->id)}}"class="btn btn-sm btn-outline-success mb-2">Set Batch Date</a>
                                                                     @endif
                                                                @endif
                                                             </td>

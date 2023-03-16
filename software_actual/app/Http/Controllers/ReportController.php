@@ -10,6 +10,7 @@ use App\Models\CourseType;
 use App\Models\InstallmentDate;
 use App\Models\Institute;
 use App\Models\Payment;
+use App\Models\Session as Sessions;
 use App\Models\Student;
 use App\Models\Sms_history;
 use App\Models\User;
@@ -436,6 +437,44 @@ class ReportController extends Controller
             }
         }
         return view('transaction.transaction_user', compact('user', 'payments' ,'from_date', 'to_date'));
+    }
+    
+    // Transaction Report Session Wise
+    public function transaction_session_wise(){
+        $users = User::all();
+        $sessions = Sessions::all();
+        $accounts = [];
+        return view('transaction_session_wise.index', compact('users', 'sessions', 'accounts'));
+    }
+    public function transaction_session_wise_find(Request $request)
+    {
+        $request->validate([
+            'session' => 'required|exists:sessions,id',
+        ]);
+        return redirect()->route('transaction_session_wise.user.show', [
+            'uid' => $request->user,
+            'session_id' => $request->session,
+        ]);
+    }
+    public function session_wise_user_transaction_show($uid, $session_id)
+    {
+        $session = Sessions::findOrFail($session_id);
+        if (empty($uid) || empty($session_id)) {
+            return redirect()->route('transaction_session_user');
+        }
+        if ($uid == 'all') {
+            $user = 'all';
+            $results = Payment::whereHas('account.student')->get();
+        }
+        else {
+            $user = User::findOrFail($uid);
+            $results = Payment::whereHas('account.student', function($query) use ($uid, $session_id) {
+                $query->where('payments.user_id', $uid);
+                $query->where('students.session_id', $session_id);
+            })->get();
+            
+        }
+        return view('transaction_session_wise.transaction_session_wise_user', compact('user', 'session', 'results'));
     }
 
 

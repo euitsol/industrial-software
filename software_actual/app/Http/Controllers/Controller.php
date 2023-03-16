@@ -314,6 +314,10 @@ class Controller extends BaseController
         $en = array("1", "2", "3", "4", "5", "6", "7", "8", "9", "0");
         return str_replace($bn, $en, $number);
     }
+    public function active_session(){
+        $session = Sessions::where('status', 1 )->first();
+        return $session;
+    }
 
          
 

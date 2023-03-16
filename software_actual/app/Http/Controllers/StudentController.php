@@ -231,7 +231,7 @@ class StudentController extends Controller
         $s->emergency_contact_address = $request->emergency_contact_address;
         $s->emergency_contact_relation = $request->emergency_contact_relation;
         $s->emergency_contact_phone = $request->emergency_contact_phone;
-
+        $s->session_id = $this->active_session()->id;
         $s->user_id = Auth::id();
         $s->save();
         
@@ -338,6 +338,7 @@ class StudentController extends Controller
         $s->emergency_contact_address = $request->emergency_contact_address;
         $s->emergency_contact_relation = $request->emergency_contact_relation;
         $s->emergency_contact_phone = $request->emergency_contact_phone;
+        $s->session_id = $this->active_session()->id;
 
         $s->user_id = Auth::id();
         $s->save();
@@ -738,6 +739,7 @@ class StudentController extends Controller
         $s->emergency_contact_address = $request->emergency_contact_address;
         $s->emergency_contact_relation = $request->emergency_contact_relation;
         $s->emergency_contact_phone = $request->emergency_contact_phone;
+        $s->session_id = $this->active_session()->id;
         $s->user_id = Auth::id();
         $s->save();
 

@@ -389,6 +389,12 @@ Route::group(['middleware' => 'auth'], function () {
                 Route::post('/transaction/find', 'ReportController@transaction_find')->name('transaction.find');
         //        Route::get('/transaction/{from_date}/{to_date}/found', 'ReportController@transaction_show')->name('transaction.show');
                 Route::get('/transaction/{uid}/{from_date}/{to_date}/{type}/show', 'ReportController@user_transaction_show')->name('transaction.user.show');
+                
+        // Transaction Report Session Wise
+                Route::get('/transaction_session_wise', 'ReportController@transaction_session_wise')->name('transaction_session_wise');
+                Route::post('/transaction_session_wise/find', 'ReportController@transaction_session_wise_find')->name('transaction_session_wise.find');
+                Route::get('/transaction_session_wise/{uid}/{session_id}/show', 'ReportController@session_wise_user_transaction_show')->name('transaction_session_wise.user.show');
+                
 
                 Route::get('/student/{sid}/course/{bid}/migration', 'StudentController@student_course_migration')->name('student.course.migration');
                 Route::post('/student/course/migrate', 'StudentController@student_course_migrate')->name('student.course.migrate');
