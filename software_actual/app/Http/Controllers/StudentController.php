@@ -11,6 +11,8 @@ use App\Models\Institute;
 use App\Models\CourseType;
 use App\Models\Payment;
 use App\Models\Sms_history;
+use App\Models\Referral;
+use App\Models\Source;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -115,7 +117,9 @@ class StudentController extends Controller
     {
         $institutes = Institute::latest()->get();
         $courses = Course::latest()->get();
-        return view('student.create', compact('institutes', 'courses'));
+        $referrals = Referral::where('status', 1)->latest()->get();
+        $sources = Source::where('status', 1)->latest()->get();
+        return view('student.create', compact('institutes', 'courses', 'referrals', 'sources'));
     }
 
     public function store(Request $request)
@@ -172,6 +176,21 @@ class StudentController extends Controller
                 $request->validate([
                     'board_roll' => 'unique:students',
                     'board_reg' => 'unique:students'
+                ]);
+            }
+            if(!empty($request->source) && empty($request->referral)){
+                $request->validate([
+                    'referral' => 'nullable'
+                ]);
+            }
+            elseif(empty($request->source) && !empty($request->referral)){
+                $request->validate([
+                    'source' => 'nullable'
+                ]);
+            }else{
+                $request->validate([
+                    'source' => 'required',
+                    'referral' => 'required'
                 ]);
             }
         }
@@ -232,6 +251,8 @@ class StudentController extends Controller
         $s->emergency_contact_relation = $request->emergency_contact_relation;
         $s->emergency_contact_phone = $request->emergency_contact_phone;
         $s->session_id = $this->active_session()->id;
+        $s->source_id = $request->source;
+        $s->referral_id = $request->referral;
         $s->user_id = Auth::id();
         $s->save();
         
@@ -338,7 +359,6 @@ class StudentController extends Controller
         $s->emergency_contact_address = $request->emergency_contact_address;
         $s->emergency_contact_relation = $request->emergency_contact_relation;
         $s->emergency_contact_phone = $request->emergency_contact_phone;
-        $s->session_id = $this->active_session()->id;
 
         $s->user_id = Auth::id();
         $s->save();
@@ -692,6 +712,21 @@ class StudentController extends Controller
                     'board_reg' => 'unique:students'
                 ]);
             }
+            if(!empty($request->source) && empty($request->referral)){
+                $request->validate([
+                    'referral' => 'nullable'
+                ]);
+            }
+            elseif(empty($request->source) && !empty($request->referral)){
+                $request->validate([
+                    'source' => 'nullable'
+                ]);
+            }else{
+                $request->validate([
+                    'source' => 'required',
+                    'referral' => 'required'
+                ]);
+            }
         }
         $regNo = $this->new_reg_number($request->student_as, $request->year);
         $s = new Student;
@@ -740,6 +775,8 @@ class StudentController extends Controller
         $s->emergency_contact_relation = $request->emergency_contact_relation;
         $s->emergency_contact_phone = $request->emergency_contact_phone;
         $s->session_id = $this->active_session()->id;
+        $s->source_id = $request->source;
+        $s->referral_id = $request->referral;
         $s->user_id = Auth::id();
         $s->save();
 

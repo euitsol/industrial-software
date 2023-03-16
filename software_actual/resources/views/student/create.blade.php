@@ -417,6 +417,46 @@
                                         </div>
                                     </div>
 
+                                    {{-- ------------------------------------------ --}}
+
+                                    <p class="text-center bg-gray-100 border py-2">Student Analytics</p>
+
+                                    {{-- ------------------------------------------ --}}
+
+                                    
+
+                                    <div class="form-group row">
+                                        <label class="col-md-3 form-control-label"> How did you get us?</label>
+                                        <div class="col-md-9">
+                                            @foreach($sources as $key => $source)
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="radio" name="source" id="source-{{ $key }}" value="{{ $source->id }}">
+                                                <label class="form-check-label" for="source-{{ $key }}">
+                                                    {{ $source->name }}
+                                                </label>
+                                            </div>
+                                            @endforeach
+                                            @if ($errors->has('source'))
+                                                <span class="text-danger">{{ $errors->first('source') }}</span>
+                                            @endif
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="form-group row">
+                                        <label for="referral" class="col-md-3 form-control-label">Reference</label>
+                                        <div class="col-md-9">
+                                            <select name="referral" id="referral" class="form-control form-control-success">
+                                                <option value="" hidden selected>Select Referral</option>
+                                                @foreach($referrals as $referral)
+                                                    <option value="{{ $referral->id }}" {{ old('referral') == $referral->id }}>{{ $referral->name }}</option>
+                                                @endforeach
+                                            </select>
+                                            @if ($errors->has('referral'))
+                                                <span class="text-danger">{{ $errors->first('referral') }}</span>
+                                            @endif
+                                        </div>
+                                    </div>
+
                                     <div class="form-group row">
                                         <div class="col-md-9 ml-auto">
                                             <input type="submit" value="Submit" class="btn btn-primary">

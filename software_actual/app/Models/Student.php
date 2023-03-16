@@ -45,5 +45,16 @@ class Student extends Model
     public function sessions(){
         return $this->belongsTo(Session::class,'session_id','id');
     }
+    public function source(){
+
+        return $this->belongsTo(Source::class,'source_id');
+
+    }
+
+    public function referral(){
+
+        return $this->belongsTo(Referral::class,'referral_id');
+
+    }
 
 }

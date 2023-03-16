@@ -98,6 +98,28 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/session/show/{id}', 'SessionController@show')->name('session.show');
         Route::get('/session/status/{id}', 'SessionController@statusChange')->name('session.status');
 
+//Student Analytics
+
+        Route::get('/student-analytics/show/{session_id?}' ,'AnalyticsController@index')->name('analytics');
+
+        //source
+
+        Route::get('/student-analytics/add-source' ,'AnalyticsController@addSource')->name('analytics.source.add');
+        Route::post('/student-analytics/add-source/store' ,'AnalyticsController@addSourceStore')->name('analytics.source.store');
+        Route::get('/student-analytics/edit-source/{id}' ,'AnalyticsController@editSource')->name('analytics.source.edit');
+        Route::post('/student-analytics/update-source' ,'AnalyticsController@updateSource')->name('analytics.source.update');
+        Route::get('/student-analytics/delete-source/{id}' ,'AnalyticsController@deleteSource')->name('analytics.source.delete');
+        Route::get('/student-analytics/source-status/{id}' ,'AnalyticsController@sourceStatus')->name('analytics.source.status');
+
+        //referral
+
+        Route::get('/student-analytics/add-referral' ,'AnalyticsController@addReferral')->name('analytics.referral.add');
+        Route::post('/student-analytics/add-referral/store' ,'AnalyticsController@addReferralStore')->name('analytics.referral.store');
+        Route::get('/student-analytics/edit-referral/{id}' ,'AnalyticsController@editReferral')->name('analytics.referral.edit');
+        Route::post('/student-analytics/update-referral' ,'AnalyticsController@updateReferral')->name('analytics.referral.update');
+        Route::get('/student-analytics/delete-referral/{id}' ,'AnalyticsController@deleteReferral')->name('analytics.referral.delete');
+        Route::get('/student-analytics/referral-status/{id}' ,'AnalyticsController@referralStatus')->name('analytics.referral.status');
+
 
 //industrial marketing
 
@@ -394,7 +416,7 @@ Route::group(['middleware' => 'auth'], function () {
                 Route::get('/transaction_session_wise', 'ReportController@transaction_session_wise')->name('transaction_session_wise');
                 Route::post('/transaction_session_wise/find', 'ReportController@transaction_session_wise_find')->name('transaction_session_wise.find');
                 Route::get('/transaction_session_wise/{uid}/{session_id}/show', 'ReportController@session_wise_user_transaction_show')->name('transaction_session_wise.user.show');
-                
+
 
                 Route::get('/student/{sid}/course/{bid}/migration', 'StudentController@student_course_migration')->name('student.course.migration');
                 Route::post('/student/course/migrate', 'StudentController@student_course_migrate')->name('student.course.migrate');
