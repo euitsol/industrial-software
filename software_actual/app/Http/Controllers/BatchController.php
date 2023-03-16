@@ -81,6 +81,9 @@ class BatchController extends Controller
 
         $b = Batch::findOrFail($request->id);
         $b->start_date = $request->start_date;
+        if($b->previous_end_date == null){
+            $b->previous_end_date = $b->end_date;
+        }
         $b->end_date = $request->end_date;
         if($request->lab != 'null'){
             $b->lab_id = $request->lab;

@@ -146,6 +146,7 @@
                                                                 <th>Lab/Classroom Name</th>
                                                                 <th>Available Students</th>
                                                                 <th>Status</th>
+                                                                <th>Duration Changing</th>
                                                                 <th>Action</th>
                                                             </tr>
                                                             @foreach($in_batch as $ib)
@@ -157,44 +158,66 @@
                                                                         @php    
                                                                             $start_date = Carbon\Carbon::parse($ib->start_date);
                                                                             $end_date = Carbon\Carbon::parse($ib->end_date);
+                                                                            $previous_end_date = Carbon\Carbon::parse($ib->previous_end_date);
                                                                         @endphp
-                                                                        @if($now < $start_date && $ib->status ==1)
-                                                                            {{$now->diffInDays($start_date)}} day's to start
-                                                                        @elseif($now > $start_date && $now < $end_date && $ib->status ==1)
-                                                                            {{$now->diffInDays($end_date)}} day's to end
-                                                                        @else
-                                                                            @if($now <= $end_date)
-                                                                                Hold
+                                                                        @if(!empty($ib->start_date) && !empty($ib->end_date))
+                                                                            @if($now < $start_date && $ib->status ==1)
+                                                                                {{$now->diffInDays($start_date)}} day's to start
+                                                                            @elseif($now > $start_date && $now < $end_date && $ib->status ==1)
+                                                                                {{$now->diffInDays($end_date)}} day's to end
                                                                             @else
-                                                                                Ended
+                                                                                @if($now <= $end_date)
+                                                                                    Hold
+                                                                                @else
+                                                                                    Ended
+                                                                                @endif
+                                                                            @endif
+                                                                        @else
+                                                                            @if(empty($ib->start_date) && !empty($ib->end_date))
+                                                                                Batch start not set!
+                                                                            @elseif(!empty($ib->start_date) && empty($ib->end_date))
+                                                                                Batch end not set!
+                                                                            @else
+                                                                                Batch date not set!
                                                                             @endif
                                                                         @endif
                                                                     </td>
                                                                     <td>
-                                                                        
+                                                                        @if(!empty($ib->previous_end_date) && !empty($ib->end_date) && !empty($ib->start_date))
+                                                                            {{$ib->endChangeCalculate($ib->previous_end_date, $ib->end_date)}}
+                                                                        @endif
                                                                     </td>
                                                                     <td>
                                                                         <a href="{{route('batch.details', $ib->id)}}"
-                                                                           class="btn btn-sm btn-outline-primary"
+                                                                           class="btn btn-sm btn-outline-primary mb-2"
                                                                            >Details</a>
                                                                         <a href="{{route('batch.edit', $ib->id)}}"
-                                                                           class="btn btn-sm btn-outline-info"
+                                                                           class="btn btn-sm btn-outline-info mb-2"
                                                                            >Edit</a>
                                                                         <a href="{{route('batch.delete', $ib->id)}}"
                                                                            onclick="return confirm('Are you sure to delete this?')"
-                                                                           class="btn btn-sm btn-outline-danger"
+                                                                           class="btn btn-sm btn-outline-danger mb-2"
                                                                            >Delete</a>
-                                                                        @if($now <= $end_date)
-                                                                           <a href="{{route('batch.status', $ib->id)}}"
-                                                                           onclick="return confirm('Are you sure you want to change status?')"
-                                                                           class="btn btn-sm @if($ib->status == 1) btn-outline-danger @else btn-outline-info @endif"
-                                                                           > @if($ib->status == 1) Hold Batch @else Start Batch @endif 
-                                                                           </a>
+                                                                        @if(!empty($ib->start_date) && !empty($ib->end_date))
+                                                                            @if($now <= $end_date)
+                                                                                <a href="{{route('batch.status', $ib->id)}}"
+                                                                                onclick="return confirm('Are you sure you want to change status?')"
+                                                                                class="btn btn-sm @if($ib->status == 1) btn-outline-danger @else btn-outline-info @endif mb-2"
+                                                                                > @if($ib->status == 1) Hold Batch @else Start Batch @endif</a>
+                                                                            @else
+                                                                               <a href="javascript:void(0)"
+                                                                               class="btn btn-sm btn-outline-secondary disabled mb-2"
+                                                                               >Batch Ended
+                                                                               </a>
+                                                                            @endif
                                                                         @else
-                                                                            <a href="javascript:void(0)"
-                                                                            class="btn btn-sm btn-outline-secondary disabled"
-                                                                            >Batch Ended
-                                                                            </a>
+                                                                            @if(empty($ib->start_date) && !empty($ib->end_date))
+                                                                                <a href="{{route('batch.edit', $ib->id)}}"class="btn btn-sm btn-outline-info mb-2">Set Start Date</a>
+                                                                            @elseif(!empty($ib->start_date) && empty($ib->end_date))
+                                                                                <a href="{{route('batch.edit', $ib->id)}}"class="btn btn-sm btn-outline-info mb-2">Set End Date</a>
+                                                                            @else
+                                                                                <a href="{{route('batch.edit', $ib->id)}}"class="btn btn-sm btn-outline-info mb-2">Set Batch Date</a>
+                                                                            @endif
                                                                         @endif
                                                                     </td>
                                                                 </tr>
@@ -235,7 +258,9 @@
                                                                 @php    
                                                                     $start_date = Carbon\Carbon::parse($pb->start_date);
                                                                     $end_date = Carbon\Carbon::parse($pb->end_date);
+                                                                    $previous_end_date = Carbon\Carbon::parse($pb->previous_end_date);
                                                                 @endphp
+                                                                @if(!empty($pb->start_date) && !empty($pb->end_date))
                                                                 @if($now < $start_date && $pb->status ==1)
                                                                     {{$now->diffInDays($start_date)}} day's to start
                                                                 @elseif($now > $start_date && $now < $end_date && $pb->status ==1)
@@ -247,33 +272,53 @@
                                                                         Ended
                                                                     @endif
                                                                 @endif
+                                                                @else
+                                                                    @if(empty($pb->start_date) && !empty($pb->end_date))
+                                                                        Batch start not set!
+                                                                    @elseif(!empty($pb->start_date) && empty($pb->end_date))
+                                                                        Batch end not set!
+                                                                    @else
+                                                                        Batch date not set!
+                                                                    @endif
+                                                                @endif
                                                             </td>
                                                             <td>
-                                                                
+                                                                @if(!empty($pb->previous_end_date) && !empty($pb->end_date) && !empty($pb->start_date))
+                                                                    {{$pb->endChangeCalculate($pb->previous_end_date, $pb->end_date)}}
+                                                                @endif
                                                             </td>
                                                             <td>
                                                                 <a href="{{route('batch.details', $pb->id)}}"
-                                                                   class="btn btn-sm btn-outline-primary"
+                                                                   class="btn btn-sm btn-outline-primary mb-2"
                                                                    >Details</a>
                                                                 <a href="{{route('batch.edit', $pb->id)}}"
-                                                                   class="btn btn-sm btn-outline-info"
+                                                                   class="btn btn-sm btn-outline-info mb-2"
                                                                    >Edit</a>
                                                                 <a href="{{route('batch.delete', $pb->id)}}"
                                                                    onclick="return confirm('Are you sure to delete this?')"
-                                                                   class="btn btn-sm btn-outline-danger"
+                                                                   class="btn btn-sm btn-outline-danger mb-2"
                                                                    >Delete</a>
-                                                                @if($now <= $end_date)
-                                                                   <a href="{{route('batch.status', $pb->id)}}"
-                                                                   onclick="return confirm('Are you sure you want to change status?')"
-                                                                   class="btn btn-sm @if($pb->status == 1) btn-outline-danger @else btn-outline-info @endif"
-                                                                   > @if($pb->status == 1) Hold Batch @else Start Batch @endif 
-                                                                   </a>
+                                                                @if(!empty($pb->start_date) && !empty($pb->end_date))
+                                                                    @if($now <= $end_date)
+                                                                        <a href="{{route('batch.status', $pb->id)}}"
+                                                                        onclick="return confirm('Are you sure you want to change status?')"
+                                                                        class="btn btn-sm @if($pb->status == 1) btn-outline-danger @else btn-outline-info @endif mb-2"
+                                                                        > @if($pb->status == 1) Hold Batch @else Start Batch @endif</a>
+                                                                    @else
+                                                                        <a href="javascript:void(0)"
+                                                                        class="btn btn-sm btn-outline-secondary disabled mb-2"
+                                                                        >Batch Ended
+                                                                        </a>
+                                                                    @endif
                                                                 @else
-                                                                    <a href="javascript:void(0)"
-                                                                    class="btn btn-sm btn-outline-secondary disabled"
-                                                                    >Batch Ended
-                                                                    </a>
-                                                                @endif
+                                                                    @if(empty($pb->start_date) && !empty($pb->end_date))
+                                                                        <a href="{{route('batch.edit', $pb->id)}}"class="btn btn-sm btn-outline-info mb-2">Set Start Date</a>
+                                                                    @elseif(!empty($pb->start_date) && empty($pb->end_date))
+                                                                        <a href="{{route('batch.edit', $pb->id)}}"class="btn btn-sm btn-outline-info mb-2">Set End Date</a>
+                                                                    @else
+                                                                        <a href="{{route('batch.edit', $pb->id)}}"class="btn btn-sm btn-outline-info mb-2">Set Batch Date</a>
+                                                                    @endif
+                                                               @endif
                                                             </td>
                                                         </tr>
                                                     @endforeach

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 use App\Models\Account;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 class Batch extends Model
@@ -36,6 +37,17 @@ class Batch extends Model
     public function lab()
     {
         return $this->belongsTo(Lab::class, 'lab_id');
+    }
+    public function endChangeCalculate($previous_end_date, $endDate){
+        $end_date = Carbon::parse($endDate);
+        $pre_end_date = Carbon::parse($previous_end_date);
+        if($pre_end_date < $end_date){
+            $adding_day = 'Added '. $pre_end_date->diffInDays($end_date).' days';
+            return $adding_day;
+        }elseif($pre_end_date > $end_date){
+            $remove_day = 'Remove '. $end_date->diffInDays($pre_end_date).' days';
+            return $remove_day;
+        }
     }
 
 
