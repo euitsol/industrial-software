@@ -22,6 +22,15 @@ class BatchController extends Controller
             } elseif ('Professional' == $batch->course->type) {
                 $pro_batches[$batch->course->title][] = $batch;
             }
+            if($batch->lab != null){
+                if($batch->students->count() >= $batch->lab->capacity){
+                    $batch->status = 0;
+                    $batch->save();
+                }else{
+                    $batch->status = 1;
+                    $batch->save();
+                }
+            }
         }
         $now = Carbon::now();
         $this->batch_end();
@@ -80,15 +89,18 @@ class BatchController extends Controller
         ]);
 
         $b = Batch::findOrFail($request->id);
-        $b->start_date = $request->start_date;
-        if($b->previous_end_date == null){
+        if($b->previous_end_date == null && $b->start_date == $request->start_date){
             $b->previous_end_date = $b->end_date;
+        }elseif($b->start_date != $request->start_date){
+            $b->previous_end_date = null;
         }
+        $b->start_date = $request->start_date;
         $b->end_date = $request->end_date;
+        
         if($request->lab != 'null'){
             $b->lab_id = $request->lab;
         }
-        $b->save();
+        $b->update();
 
         $this->message('success', 'Batch info update successfully');
         return redirect()->route('batches');
@@ -110,16 +122,24 @@ class BatchController extends Controller
     
     public function status($bid){
         $batch = Batch::findOrFail($bid);
-        
-        if($batch->status == 1){
-            $batch->status = 0;  
+        // dd($batch->lab);
+        if($batch->lab == null){
+            $this->message('error', "Please set your lab/classroom");
         }else{
-            $batch->status = 1;
+            if($batch->students->count() < $batch->lab->capacity){
+                if($batch->status == 1){
+                    $batch->status = 0; 
+                    $this->message('success', 'Batch closed successfully'); 
+                }else{
+                    $batch->status = 1;
+                    $this->message('success', 'Batch open successfully');
+                }
+                $batch->save();            
+            }
+            else{
+                $this->message('error', "Batch full can't open");
+            }
         }
-        
-        $batch->save();            
-        
-        $this->message('success', 'Batch status changed successfully');
         return redirect()->route('batches');
     }
     

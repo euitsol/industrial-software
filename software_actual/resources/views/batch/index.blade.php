@@ -161,16 +161,12 @@
                                                                             $previous_end_date = Carbon\Carbon::parse($ib->previous_end_date);
                                                                         @endphp
                                                                         @if(!empty($ib->start_date) && !empty($ib->end_date))
-                                                                            @if($now < $start_date && $ib->status ==1)
+                                                                            @if($now < $start_date)
                                                                                 {{$now->diffInDays($start_date)}} day's to start
-                                                                            @elseif($now > $start_date && $now < $end_date && $ib->status ==1)
+                                                                            @elseif($now > $start_date && $now < $end_date)
                                                                                 {{$now->diffInDays($end_date)}} day's to end
                                                                             @else
-                                                                                @if($now <= $end_date)
-                                                                                    Hold
-                                                                                @else
                                                                                     Ended
-                                                                                @endif
                                                                             @endif
                                                                         @else
                                                                             @if(empty($ib->start_date) && !empty($ib->end_date))
@@ -203,7 +199,7 @@
                                                                                 <a href="{{route('batch.status', $ib->id)}}"
                                                                                 onclick="return confirm('Are you sure you want to change status?')"
                                                                                 class="btn btn-sm @if($ib->status == 1) btn-outline-danger @else btn-outline-info @endif mb-2"
-                                                                                > @if($ib->status == 1) Hold Batch @else Start Batch @endif</a>
+                                                                                > @if($ib->status == 1) Batch Closed @else Batch Open @endif</a>
                                                                             @else
                                                                                <a href="javascript:void(0)"
                                                                                class="btn btn-sm btn-outline-secondary disabled mb-2"
@@ -261,17 +257,13 @@
                                                                     $previous_end_date = Carbon\Carbon::parse($pb->previous_end_date);
                                                                 @endphp
                                                                 @if(!empty($pb->start_date) && !empty($pb->end_date))
-                                                                @if($now < $start_date && $pb->status ==1)
-                                                                    {{$now->diffInDays($start_date)}} day's to start
-                                                                @elseif($now > $start_date && $now < $end_date && $pb->status ==1)
-                                                                    {{$now->diffInDays($end_date)}} day's to end
-                                                                @else
-                                                                    @if($now <= $end_date)
-                                                                        Hold
+                                                                    @if($now < $start_date)
+                                                                        {{$now->diffInDays($start_date)}} day's to start
+                                                                    @elseif($now > $start_date && $now < $end_date)
+                                                                        {{$now->diffInDays($end_date)}} day's to end
                                                                     @else
-                                                                        Ended
+                                                                            Ended
                                                                     @endif
-                                                                @endif
                                                                 @else
                                                                     @if(empty($pb->start_date) && !empty($pb->end_date))
                                                                         Batch start not set!
@@ -300,10 +292,10 @@
                                                                    >Delete</a>
                                                                 @if(!empty($pb->start_date) && !empty($pb->end_date))
                                                                     @if($now <= $end_date)
-                                                                        <a href="{{route('batch.status', $pb->id)}}"
+                                                                    <a href="{{route('batch.status', $pb->id)}}"
                                                                         onclick="return confirm('Are you sure you want to change status?')"
                                                                         class="btn btn-sm @if($pb->status == 1) btn-outline-danger @else btn-outline-info @endif mb-2"
-                                                                        > @if($pb->status == 1) Hold Batch @else Start Batch @endif</a>
+                                                                        > @if($pb->status == 1) Batch Closed @else Batch Open @endif</a>
                                                                     @else
                                                                         <a href="javascript:void(0)"
                                                                         class="btn btn-sm btn-outline-secondary disabled mb-2"
