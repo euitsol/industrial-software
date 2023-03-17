@@ -98,11 +98,19 @@ class BatchController extends Controller
         $b->end_date = $request->end_date;
         
         if($request->lab != 'null'){
-            $b->lab_id = $request->lab;
+            $lab = Lab::findOrFail($request->lab);
+            if($b->students->count() <= $lab->capacity){
+                $b->lab_id = $request->lab;
+                $b->update();
+                $this->message('success', 'Batch info update successfully');
+            }else{
+                $this->message('error', 'Total student over the lab capacity');
+            }
+                
+        }else{
+            $b->update();
+            $this->message('success', 'Batch info update successfully');
         }
-        $b->update();
-
-        $this->message('success', 'Batch info update successfully');
         return redirect()->route('batches');
     }
 
