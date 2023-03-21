@@ -174,6 +174,11 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('/attendance/store', 'AttendanceController@store')->name('attendance.store');
         Route::get('/attendance/report/{id}', 'AttendanceController@attendanceReport')->name('attendance.report');
 
+//Attendance Report(Batch Wise)
+        Route::get('/attendance_batch' ,'AttendanceReportController@batchWise')->name('attendance.batch');
+        Route::post('/attendance_batch/search', 'AttendanceReportController@batchWiseSearch')->name('attendance_batch.search');
+        Route::get('/attendance_report/batch/{id}', 'AttendanceReportController@batchAttendanceReport')->name('attendance_report.batch');
+
 
 // Discount Report
         Route::get('/discount-report' ,'ReportController@discount_report')->name('discount.report');
@@ -339,7 +344,7 @@ Route::group(['middleware' => 'auth'], function () {
 
                 Route::get('/course/{cid}/batches', 'CourseController@getBatchesByCourse')->name('course.batches');
                 Route::get('/course/mentor/{cid}/batches', 'CourseController@getBatchesByMentor')->name('mentor.batches');
-                
+
                 Route::get('/course/{cid}/{year}/batch-name', 'CourseController@createBatchName')->name('course.batch.create');
                 Route::get('/course-details/{id}', 'CourseController@course_details')->name('courses.id');
 

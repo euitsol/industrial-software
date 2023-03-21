@@ -55,7 +55,7 @@
                             <h4>Classes for {{ $minfo->course->title }}</h4>
                         </span>
                         <span class="float-right">
-                                <a href="{{ route('attendance.page',$minfo->id) }}" class="btn btn-info back_btn">Back</a>
+                                <a href="{{  url()->previous() }}" class="btn btn-info back_btn">Back</a>
                         </span>
 
                     </div>
