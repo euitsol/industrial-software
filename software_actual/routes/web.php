@@ -417,7 +417,12 @@ Route::group(['middleware' => 'auth'], function () {
                 Route::post('/transaction_session_wise/find', 'ReportController@transaction_session_wise_find')->name('transaction_session_wise.find');
                 Route::get('/transaction_session_wise/{uid}/{session_id}/show', 'ReportController@session_wise_user_transaction_show')->name('transaction_session_wise.user.show');
 
+        //Reference Wise Admission Report
+                Route::get('/reference_wise_admission_report', 'ReportController@reference_wise_report')->name('reference_wise_report');
+                Route::post('/reference_wise_admission_report/find', 'ReportController@reference_wise_report_find')->name('reference_wise_report.find');
+                Route::get('/reference_wise_admission_report/show/{source_id?}/{referral_id?}/{from_date}/{to_date}', 'ReportController@reference_wise_report_show')->name('reference_wise_report.show');
 
+                
                 Route::get('/student/{sid}/course/{bid}/migration', 'StudentController@student_course_migration')->name('student.course.migration');
                 Route::post('/student/course/migrate', 'StudentController@student_course_migrate')->name('student.course.migrate');
                 Route::get('/student/{sid}/course/{cid}/previous', 'StudentController@migrated_previous_course')->name('student.course.previous');

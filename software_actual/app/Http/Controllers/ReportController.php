@@ -10,7 +10,9 @@ use App\Models\CourseType;
 use App\Models\InstallmentDate;
 use App\Models\Institute;
 use App\Models\Payment;
+use App\Models\Referral;
 use App\Models\Session as Sessions;
+use App\Models\Source;
 use App\Models\Student;
 use App\Models\Sms_history;
 use App\Models\User;
@@ -476,6 +478,66 @@ class ReportController extends Controller
         }
         return view('transaction_session_wise.transaction_session_wise_user', compact('user', 'session', 'results'));
     }
+
+    //Admission Report -Reference Wise
+    public function reference_wise_report()
+    {
+        $referrals = Referral::all();
+        $sources = Source::all();
+        $accounts = [];
+        return view('reference_wise_report.index', compact('referrals','sources', 'accounts'));
+    }
+    public function reference_wise_report_find(Request $request)
+    {
+        if(!empty($request->source) && empty($request->referral)){
+            $request->validate([
+                'referral' => 'nullable',
+            ]);
+        }
+        elseif(empty($request->source) && !empty($request->referral)){
+            $request->validate([
+                'source' => 'nullable',
+            ]);
+        }
+        else{
+            $request->validate([
+                'referral' => 'required',
+                'source' => 'required',
+            ]);
+        }
+        $request->validate([
+            'from_date' => 'required|date',
+            'to_date' => 'required|date',
+        ]);
+        return redirect()->route('reference_wise_report.show', [
+            'source_id' => $request->source ?? 'null',
+            'referral_id' => $request->referral ?? 'null',
+            'from_date' => $request->from_date,
+            'to_date' => $request->to_date
+        ]);
+    }
+    function reference_wise_report_show($source_id = false, $referral_id = false, $from_date, $to_date){
+        if($source_id != 'null'){
+            $source = Source::findOrFail($source_id);
+            $results = Payment::whereHas('account.student', function($query) use ($source_id, $from_date, $to_date) {
+                $query->whereDate('created_at', '>=', date('Y-m-d', strtotime($from_date)))
+                ->whereDate('created_at', '<=', date('Y-m-d', strtotime($to_date)))->where('students.source_id', $source_id);
+            })->get();
+            return view('reference_wise_report.reference_report', compact('source','source_id','results','from_date', 'to_date'));
+
+        }
+        elseif($referral_id != 'null'){
+            $referral = Referral::findOrFail($referral_id);
+            $results = Payment::whereHas('account.student', function($query) use ($referral_id, $from_date, $to_date) {
+                $query->whereDate('created_at', '>=', date('Y-m-d', strtotime($from_date)))
+                ->whereDate('created_at', '<=', date('Y-m-d', strtotime($to_date)))->where('students.referral_id', $referral_id);
+            })->get();
+            return view('reference_wise_report.reference_report', compact('referral','referral_id', 'results','from_date', 'to_date'));
+        }
+    }
+
+
+
 
 
     public function today_installment_dates()
