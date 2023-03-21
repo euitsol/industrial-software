@@ -28,6 +28,10 @@
         /* #date_row_1, #date_row_2{
             border-bottom:2px solid #dee2e6;
         } */
+        .table th{
+            font-weight: bold !important;
+            text-transform: uppercase;
+        }
         .table th, .table td{
             border:1px solid #dee2e6 !important;
             font-size: 9px;
@@ -107,15 +111,15 @@
                                             </tr>
                                         @endfor
                                         <tr>
-                                            <th colspan="2">
+                                            <td colspan="2">
                                                 Total Class
                                                 ({{$minfo->completeClassCount()}}) 
-                                            </th>
+                                            </td>
                                             @foreach ($students as $key => $student)
-                                                <th> 
+                                                <td> 
                                                     Total Present 
                                                     ({{ $minfo->studentTotalPresentCount($student->student->id) }})
-                                                </th>
+                                                </td>
                                             @endforeach  
                                         </tr>
                                     </tbody>
