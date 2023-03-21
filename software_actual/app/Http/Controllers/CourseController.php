@@ -136,6 +136,42 @@ class CourseController extends Controller
         }
         return false;
     }
+    public function getBatchesByMentor($cid)
+
+    {
+
+        if (request()->ajax() && Auth::user()->role != 'admin' && Auth::user()->role != 'superadmin') {
+            $batch_id = DB::table('batch_mentor')->where('mentor_id', Auth::user()->mentor_id)->get();
+            $output = '';
+            foreach($batch_id as $bid){
+                $batches = Batch::where('course_id', $cid)->where('id',$bid->batch_id)->get();
+                foreach ($batches as $key => $batch) {
+                    $batch_name = batch_name($batch->course->title_short_form, $batch->year, $batch->month, $batch->batch_number);
+                    $output .= '<option value="' . $batch->id . '">' . $batch_name . '</option>';
+                }
+            }
+            
+
+            return $output;
+
+        }
+        elseif (request()->ajax() && Auth::user()->role == 'admin' || Auth::user()->role != 'superadmin') {
+            $batches = Batch::where('course_id', $cid)->get();
+            $output = '';
+            foreach ($batches as $key => $batch) {
+                $batch_name = batch_name($batch->course->title_short_form, $batch->year, $batch->month, $batch->batch_number);
+                $output .= '<option value="' . $batch->id . '">' . $batch_name . '</option>';
+            }
+            return $output;
+        } else {
+
+            abort(403, 'Unauthorized');
+
+        }
+
+        return false;
+
+    }
 
     public function createBatchName($cid, $year)
     {
@@ -186,6 +222,49 @@ class CourseController extends Controller
             abort(403, 'Unauthorized');
         }
         return false;
+    }
+    public function courseByMentor($type)
+
+    {
+
+        if (request()->ajax() && !empty($type) && Auth::user()->role != 'admin' && Auth::user()->role != 'superadmin') {
+                $output = '';
+                $course_id = DB::table('course_mentor')->where('mentor_id', Auth::user()->mentor_id)->get();
+                foreach($course_id as $cid){
+                    $courses = Course::where('type', $type)->where('id',$cid->course_id)->where('running', 1)->get();
+                    foreach ($courses as $course) {
+                        $output .= '<option value="' . $course->id . '">' . $course->title . '</option>';
+                    }
+                }
+            return $output;  
+        }
+        elseif(request()->ajax() && !empty($type) && (Auth::user()->role == 'admin' || Auth::user()->role == 'superadmin')){
+            $output = '';
+
+            $courseTypes = CourseType::all();
+
+            foreach ($courseTypes as $courseType) {
+
+                $courses = $courseType->courses()->where('type', $type)->where('running', 1)->get();
+
+                $output .= '<optgroup label="' . $courseType->type_name . '">';
+
+                foreach ($courses as $course) {
+
+                    $output .= '<option value="' . $course->id . '">' . $course->title . '</option>';
+
+                }
+
+                $output .= '</optgroup>';
+
+            }
+
+            return $output;
+        } else {
+            abort(403, 'Unauthorized');
+        }
+        return false;
+
     }
     public function course_details($id){
         if (request()->ajax() && !empty($id)){

@@ -166,6 +166,14 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/summary_report/type/{ct}/report', 'summary_reportController@reportsByCourseType')->name('summary_report.report.course_type');
         Route::get('/summary_report/all', 'summary_reportController@all_reports')->name('summary_report.all');
 
+//Attendance
+        Route::get('/attendance' ,'AttendanceController@index')->name('attendance');
+        Route::post('/attendance/search', 'AttendanceController@attendanceClass')->name('attendance.search');
+        Route::get('/attendance/page/{id}', 'AttendanceController@attendancePage')->name('attendance.page');
+        Route::get('/attendance/create/{id}/{class}', 'AttendanceController@create')->name('attendance.create');
+        Route::post('/attendance/store', 'AttendanceController@store')->name('attendance.store');
+        Route::get('/attendance/report/{id}', 'AttendanceController@attendanceReport')->name('attendance.report');
+
 
 // Discount Report
         Route::get('/discount-report' ,'ReportController@discount_report')->name('discount.report');
@@ -327,7 +335,11 @@ Route::group(['middleware' => 'auth'], function () {
 
                 // AJAX Request
                 Route::get('/courses/{type}', 'CourseController@courseByType')->name('courses.type');
+                Route::get('/courses/mentor/{type}', 'CourseController@courseByMentor')->name('courses.mentor');
+
                 Route::get('/course/{cid}/batches', 'CourseController@getBatchesByCourse')->name('course.batches');
+                Route::get('/course/mentor/{cid}/batches', 'CourseController@getBatchesByMentor')->name('mentor.batches');
+                
                 Route::get('/course/{cid}/{year}/batch-name', 'CourseController@createBatchName')->name('course.batch.create');
                 Route::get('/course-details/{id}', 'CourseController@course_details')->name('courses.id');
 
@@ -422,7 +434,7 @@ Route::group(['middleware' => 'auth'], function () {
                 Route::post('/reference_wise_admission_report/find', 'ReportController@reference_wise_report_find')->name('reference_wise_report.find');
                 Route::get('/reference_wise_admission_report/show/{source_id?}/{referral_id?}/{from_date}/{to_date}', 'ReportController@reference_wise_report_show')->name('reference_wise_report.show');
 
-                
+
                 Route::get('/student/{sid}/course/{bid}/migration', 'StudentController@student_course_migration')->name('student.course.migration');
                 Route::post('/student/course/migrate', 'StudentController@student_course_migrate')->name('student.course.migrate');
                 Route::get('/student/{sid}/course/{cid}/previous', 'StudentController@migrated_previous_course')->name('student.course.previous');
