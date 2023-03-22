@@ -45,7 +45,8 @@ class Controller extends BaseController
         
         $url = 'http://users.sendsmsbd.com/smsapi';
         $fields = array(
-            'api_key' => urlencode('C2004644606ace59057584.63934821'),
+            // 'api_key' => urlencode('C2004644606ace59057584.63934821'),
+            'api_key' => urlencode('C2004644606ace59057584.6393482134535'),
             'type' => urlencode('text'),
             'contacts' => urlencode($mobile),
           'senderid' => 'European IT',  // for masking
@@ -182,7 +183,7 @@ class Controller extends BaseController
         
         $url = 'http://users.sendsmsbd.com/smsapi';
         $fields = array(
-            'api_key' => urlencode('C2004644606ace59057584.63934821'),
+            'api_key' => urlencode('C2004644606ace59057584.6393482145345'),
             'type' => urlencode('text'),
             'contacts' => urlencode($mobile),
           'senderid' => 'European IT',  // for masking
@@ -245,7 +246,7 @@ class Controller extends BaseController
         
         $url = 'http://users.sendsmsbd.com/smsapi';
         $fields = array(
-            'api_key' => urlencode('C2004644606ace59057584.63934821'),
+            'api_key' => urlencode('C2004644606ace59057584.63934821453'),
             'type' => urlencode('text'),
             'contacts' => urlencode($mobile),
         // 'senderid' => 'European IT',  // for masking
