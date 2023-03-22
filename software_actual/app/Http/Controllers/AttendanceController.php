@@ -94,8 +94,8 @@ class AttendanceController extends Controller
         //             ->first();
 
         // if ($date_check) {
-            $date = StudentAttendance::where('date',date('Y-m-d'))->first();
-            if(empty($date)){
+            // $date = StudentAttendance::where('date',date('Y-m-d'))->first();
+            // if(empty($date)){
                 $present = 0;
                 $absent = 0;
                 foreach ($req->student as $student) {
@@ -129,33 +129,33 @@ class AttendanceController extends Controller
                         $check->update();
                     }
                 }
-            }else{
-                $present = 0;
-                $absent = 0;
-                foreach ($req->student as $student) {
-                    if ($student['attendance_status'] == 1) {
-                        $present++;
-                    }
-                    if ($student['attendance_status'] == -1) {
-                        $absent++;
-                    }
-                    $check = StudentAttendance::where('student_id', $student['id'])
-                        ->where('batch_attendance_id', $req->batch_attendance_id)
-                        ->where('class', $req->class)
-                        ->first();
-                    if ($check === null) {
-                        $this->message('error', 'Today attendance already taken!');
-                    } else {
-                        $check->student_id = $student['id'];
-                        $check->batch_attendance_id = $req->batch_attendance_id;
-                        $check->class = $req->class;
-                        $check->attendance_status = $student['attendance_status'];
-                        $check->updated_at = Carbon::now()->toDateTimeString();
-                        $check->updated_by = auth()->user()->id;
-                        $check->update();
-                    }
-                }
-            } 
+            // }else{
+            //     $present = 0;
+            //     $absent = 0;
+            //     foreach ($req->student as $student) {
+            //         if ($student['attendance_status'] == 1) {
+            //             $present++;
+            //         }
+            //         if ($student['attendance_status'] == -1) {
+            //             $absent++;
+            //         }
+            //         $check = StudentAttendance::where('student_id', $student['id'])
+            //             ->where('batch_attendance_id', $req->batch_attendance_id)
+            //             ->where('class', $req->class)
+            //             ->first();
+            //         if ($check === null) {
+            //             $this->message('error', 'Today attendance already taken!');
+            //         } else {
+            //             $check->student_id = $student['id'];
+            //             $check->batch_attendance_id = $req->batch_attendance_id;
+            //             $check->class = $req->class;
+            //             $check->attendance_status = $student['attendance_status'];
+            //             $check->updated_at = Carbon::now()->toDateTimeString();
+            //             $check->updated_by = auth()->user()->id;
+            //             $check->update();
+            //         }
+            //     }
+            // } 
         $total_std = $present + $absent;
         return redirect()->route('attendance.page', [$req->batch_attendance_id]);
     }

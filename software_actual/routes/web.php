@@ -179,6 +179,9 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('/attendance_batch/search', 'AttendanceReportController@batchWiseSearch')->name('attendance_batch.search');
         Route::get('/attendance_report/batch/{id}', 'AttendanceReportController@batchAttendanceReport')->name('attendance_report.batch');
 
+// Attendance Report(Institute Wise)
+        Route::get('/attendance/institute', 'AttendanceReportController@institute_index')->name('attendance.institute.index');
+        Route::post('/attendance/session/institute/find', 'AttendanceReportController@sessionInstituteStudents')->name('attendance.session.institute.find');
 
 // Discount Report
         Route::get('/discount-report' ,'ReportController@discount_report')->name('discount.report');
@@ -420,6 +423,7 @@ Route::group(['middleware' => 'auth'], function () {
                 Route::get('/report/institute/{iid}/{yr}/students/{shift?}', 'ReportController@studentsByInstitute')->name('report.institute.students');
                 Route::get('/report/institute/{iid}/{yr}/students-due/{shift?}', 'ReportController@studentsByInstituteDue')->name('report.institute.students.due');
                 Route::get('/report/division/{division}/{yr}/students', 'ReportController@studentsByDivision')->name('report.division.students');
+                
                 
                 Route::get('/report/institute', 'ReportController@institute_index')->name('report.institute.index');
                 Route::get('/report/division', 'ReportController@division_index')->name('report.division.index');

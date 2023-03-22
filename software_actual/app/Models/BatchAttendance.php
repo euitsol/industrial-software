@@ -90,6 +90,15 @@ class BatchAttendance extends Model
         ->count();
         return $studentTotalPresentCount;
     }
+    public function studentTotalAbsentCount($std_id){
+        $id = $this->id;
+        $studentTotalPresentCount = StudentAttendance::where('batch_attendance_id',$id)
+        ->where('student_id', $std_id)
+        ->where('attendance_status',-1)
+        ->get()
+        ->count();
+        return $studentTotalPresentCount;
+    }
 
     public function mentorName($batch_id){
         $batch_mentors = DB::table('batch_mentor')->where('batch_id', $batch_id)->first();

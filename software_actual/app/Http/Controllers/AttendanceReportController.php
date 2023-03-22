@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\BatchAttendance;
 use App\Models\StudentAttendance;
+use App\Models\Session;
+use App\Models\Student;
 use App\Models\Course;
 use App\Models\BatchStudent;
 use App\Models\Institute;
@@ -53,5 +55,94 @@ class AttendanceReportController extends Controller
                         ->where('batch_id', $n['minfo']->batch_id)
                         ->get();
         return view('attendance.attendance_report', $n);
+    }
+
+
+    // Attendance Report Session and Institute wise
+    public function institute_index()
+    {
+        $institutes = Institute::all();
+        $sessions = Session::all();
+        return view('attendance_report.attendance_reportBy_institute', compact('institutes', 'sessions'));
+    }
+    public function sessionInstituteStudents(Request $request)
+    {
+        $session_id = $request->session;
+        $institute_id = $request->institute;
+        $shift = $request->shift;
+        $ids = array();
+        $student = '';
+        if($session_id == 'all' && $shift == 'all'){
+            $students = Student::with(['batches'])
+                    ->where('institute_id', $institute_id)
+                    ->get();
+        }elseif($session_id == 'all' ){
+            $students = Student::with(['batches'])
+                    ->where('institute_id', $institute_id)
+                    ->where('shift',$shift)
+                    ->get();
+        }elseif($shift == 'all'){
+            $students = Student::with(['batches'])->where('session_id',$session_id)
+                    ->where('institute_id', $institute_id)
+                    ->get();
+        }else{
+        $students = Student::with(['batches'])->where('session_id',$session_id)
+                    ->where('institute_id', $institute_id)
+                    ->where('shift',$shift)
+                    ->get();
+        }
+        foreach($students as $student){
+                foreach($student->batches as $batch){
+                    // echo '<pre>';
+                    // print_r($course->id) ;
+                    // echo '</pre>';
+                    // foreach($course->batches as $batch){
+                        $check = BatchAttendance::where('course_id',$batch->course->id)->where('batch_id',$batch->id)->first();
+                        if($check ==null) {
+                            $insert = new BatchAttendance();
+                            $insert->course_type = 'Industrial';
+                            $insert->course_id = $batch->course->id;
+                            $insert->batch_id = $batch->id;
+                            $insert->created_at = Carbon::now();
+                            $insert->created_by = auth()->user()->id;
+                            $insert->save();
+                            $ids[] = $insert->id;
+                                
+                        }else{
+                            $ids[] = $check->id;
+                        }
+                        
+                    // }
+                }
+        }
+        $minfo = array();
+        // dd($ids);
+        $ids = array_unique($ids);
+        // dd($ids);
+        foreach($ids as $id){
+            // echo $id;
+            $minfo[]= BatchAttendance::with(['created_user', 'course', 'batch'])->findOrFail($id);
+        }
+        // dd($minfo);
+        // dd($id);
+        // $minfo = array();
+        // $students = array();
+        // $batchs = array();
+        // $courses = array();
+        // foreach($ids as $id){
+        //     $minfo[] = BatchAttendance::with(['created_user', 'course', 'batch'])->findOrFail($id);
+        // }
+        // foreach($minfo as $info){
+        //     // dd($info->batch_id);
+        //     $batchs[]=$info->batch_id;
+        //     $courses[]=$info->course_id;
+        //     $students[] = BatchStudent::with('student')
+        //                 ->where('batch_id', $info->batch_id)
+        //                 ->get();
+        // }
+        // dd($batch, $course);
+        $institute = Institute::find($institute_id);
+        $session = Session::find($session_id);
+        return view('attendance_report.students_by_institute', compact('students','institute','shift','session','minfo'));
     }
 }
