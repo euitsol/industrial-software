@@ -27,13 +27,7 @@
                             </p>
                         @endif
                         <div class="clearfix mb-3">
-                            {{-- <div class="float-left" title="Without Payment Info">
-                                <button type="button" onclick="print_content_without_money('print_content', '{{$institute->name}}')"
-                                        class="btn btn-success">
-                                    <i class="fa fa-print"></i>
-                                </button>
-                            </div> --}}
-                            <div class="float-left" title="With Payment Info">
+                            <div class="float-left" title="Print Report">
                                 <button type="button" onclick="printT('print_content', '{{$institute->name}}')"
                                         class="btn btn-info">
                                     <i class="fa fa-print"></i>
@@ -42,7 +36,6 @@
                             
                             <div class="float-right">
                                 <h4 class="font-weight-normal">
-                                    {{-- {{dd($students->count())}} --}}
                                     @if ($students->count() > 0)
                                         <span class="text-success">{{$students->count()}}</span> Students found
                                     @else
@@ -52,7 +45,6 @@
                             </div>
                         </div>
                         <div id="print_content">
-                            {{-- {{dd($students)}} --}}
                             @if ($students->count() > 0)
                                 <div style="margin-top: 40px">
 
@@ -153,7 +145,7 @@
                                                             @endif
                                                         </td>
                                                         <td class="action text-center">
-                                                            <a href="javascript:void(0)" class="btn btn-sm btn-dark">
+                                                            <a href="{{route('attendance_report.single_student.view',[$student->id, $info->id])}}" class="btn btn-sm btn-dark">
                                                                 <i class="fa fa-eye"></i>
                                                             </a>
                                                         </td>                                                    

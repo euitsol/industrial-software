@@ -122,4 +122,19 @@ class AttendanceReportController extends Controller
         $session = Session::find($session_id);
         return view('attendance_report.students_by_institute', compact('students','institute','shift','session','minfo'));
     }
+    public function StudentSingleAttendanceView($stid, $baid){
+        
+        $n['student'] = Student::findOrFail($stid);
+        $n['minfo'] = array();
+        foreach($n['student']->courses as $ck => $course){
+            foreach($n['student']->batches as $bk => $batch){
+                $n['minfo'][] = BatchAttendance::where('course_id',$course->id)->where('batch_id',$batch->id)->get();
+            }
+        }
+        // dd($n['minfo']);
+
+
+        return view('attendance_report.single_attendance_report',$n);
+
+    }
 }
