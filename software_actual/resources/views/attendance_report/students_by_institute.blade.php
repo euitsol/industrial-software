@@ -59,7 +59,7 @@
                                             Noor Mansion (3rd Floor), Plot#04, Main Road#01, Mirpur-10, Dhaka-1216
                                         </div>
                                     </div>
-                                    <h5 class="mb-2 text-center">Attendance Report By</h5>
+                                    <h5 class="mb-2 text-center">--Attendance Report--</h5>
                                     <h5 class="mb-4 text-center">{{$institute->name}} ( @if($shift == 1) 1st shift @elseif($shift == 2) 2nd shift @elseif($shift == null) Other Shift @else All Shift @endif )<span class="session"> - @if($session == null)All Session @else {{ $session->name }} @endif</span></h5>
                                     <div class="table-responsive">
                                         <table class="table table-bordered">
