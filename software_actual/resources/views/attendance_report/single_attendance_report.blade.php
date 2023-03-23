@@ -59,6 +59,7 @@
                                         </div>
                                     </div>
                                     <div class="p-0 mb-4 text-center">
+                                        <h5 class="mb-2 text-center">--Single Attendance Report--</h5>
                                         <h4>
                                             {{ $student->institute->name }}
                                         </h4>
