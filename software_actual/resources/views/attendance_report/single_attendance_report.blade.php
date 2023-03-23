@@ -61,12 +61,13 @@
                                     <div class="p-0 mb-4 text-center">
                                         <h5 class="mb-2 text-center">--Single Attendance Report--</h5>
                                         <h4>
-                                            {{ $student->institute->name }}
+                                            {{ $student->name }}
+                                            
                                         </h4>
                                     </div>
                                     <div class="p-0 mx-auto d-flex info">
-                                        <p class="w-25"><i class="fa fa-check-circle"></i><span> Name: </span>
-                                            {{ $student->name }}
+                                        <p class="w-25"><i class="fa fa-check-circle"></i><span> Institute: </span>
+                                            {{ $student->institute->name }}
                                         </p>
                                         <p class="w-25"><i class="fa fa-check-circle"></i> <span> Board Roll: </span>
                                             {{ $student->board_roll ?? '---' }}
