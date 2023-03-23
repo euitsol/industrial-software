@@ -70,6 +70,10 @@ class AttendanceReportController extends Controller
         $session_id = $request->session;
         $institute_id = $request->institute;
         $shift = $request->shift;
+        return redirect()->route('attendance_report.institute', compact('session_id','institute_id','shift'));
+    }
+    public function instituteAttendanceReport($session_id,$institute_id,$shift){
+
         $ids = array();
         $student = '';
         if($session_id == 'all' && $shift == 'all'){
@@ -92,55 +96,28 @@ class AttendanceReportController extends Controller
                     ->get();
         }
         foreach($students as $student){
-                foreach($student->batches as $batch){
-                    // echo '<pre>';
-                    // print_r($course->id) ;
-                    // echo '</pre>';
-                    // foreach($course->batches as $batch){
-                        $check = BatchAttendance::where('course_id',$batch->course->id)->where('batch_id',$batch->id)->first();
-                        if($check ==null) {
-                            $insert = new BatchAttendance();
-                            $insert->course_type = 'Industrial';
-                            $insert->course_id = $batch->course->id;
-                            $insert->batch_id = $batch->id;
-                            $insert->created_at = Carbon::now();
-                            $insert->created_by = auth()->user()->id;
-                            $insert->save();
-                            $ids[] = $insert->id;
-                                
-                        }else{
-                            $ids[] = $check->id;
-                        }
+            foreach($student->batches as $batch){
+                $check = BatchAttendance::where('course_id',$batch->course->id)->where('batch_id',$batch->id)->first();
+                if($check ==null) {
+                    $insert = new BatchAttendance();
+                    $insert->course_type = 'Industrial';
+                    $insert->course_id = $batch->course->id;
+                    $insert->batch_id = $batch->id;
+                    $insert->created_at = Carbon::now();
+                    $insert->created_by = auth()->user()->id;
+                    $insert->save();
+                    $ids[] = $insert->id;
                         
-                    // }
+                }else{
+                    $ids[] = $check->id;
                 }
+            }
         }
         $minfo = array();
-        // dd($ids);
         $ids = array_unique($ids);
-        // dd($ids);
         foreach($ids as $id){
-            // echo $id;
             $minfo[]= BatchAttendance::with(['created_user', 'course', 'batch'])->findOrFail($id);
         }
-        // dd($minfo);
-        // dd($id);
-        // $minfo = array();
-        // $students = array();
-        // $batchs = array();
-        // $courses = array();
-        // foreach($ids as $id){
-        //     $minfo[] = BatchAttendance::with(['created_user', 'course', 'batch'])->findOrFail($id);
-        // }
-        // foreach($minfo as $info){
-        //     // dd($info->batch_id);
-        //     $batchs[]=$info->batch_id;
-        //     $courses[]=$info->course_id;
-        //     $students[] = BatchStudent::with('student')
-        //                 ->where('batch_id', $info->batch_id)
-        //                 ->get();
-        // }
-        // dd($batch, $course);
         $institute = Institute::find($institute_id);
         $session = Session::find($session_id);
         return view('attendance_report.students_by_institute', compact('students','institute','shift','session','minfo'));

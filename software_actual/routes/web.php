@@ -182,6 +182,7 @@ Route::group(['middleware' => 'auth'], function () {
 // Attendance Report(Institute Wise)
         Route::get('/attendance/institute', 'AttendanceReportController@institute_index')->name('attendance.institute.index');
         Route::post('/attendance/session/institute/find', 'AttendanceReportController@sessionInstituteStudents')->name('attendance.session.institute.find');
+        Route::get('/attendance_report/institute/{session_id}/{institute_id}/{shift}', 'AttendanceReportController@instituteAttendanceReport')->name('attendance_report.institute');
 
 // Discount Report
         Route::get('/discount-report' ,'ReportController@discount_report')->name('discount.report');

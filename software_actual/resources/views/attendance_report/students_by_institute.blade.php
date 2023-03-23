@@ -81,6 +81,7 @@
                                                 <th>Total Class</th>
                                                 <th>Total Present</th>
                                                 <th>Total Absent</th>
+                                                <th class="action">Action</th>
                                             </tr>
                                             @foreach ($students as $sk => $student)
                                                     <tr>
@@ -150,6 +151,11 @@
                                                                     @endforeach
                                                                 @endforeach
                                                             @endif
+                                                        </td>
+                                                        <td class="action text-center">
+                                                            <a href="javascript:void(0)" class="btn btn-sm btn-dark">
+                                                                <i class="fa fa-eye"></i>
+                                                            </a>
                                                         </td>                                                    
                                                     </tr>
                                             @endforeach
@@ -170,6 +176,7 @@
         function printT(el, title = '') {
             var rp = document.body.innerHTML;
             $('.session').hide();
+            $('.action').hide();
             var pc = document.getElementById(el).innerHTML;
             document.body.innerHTML = pc;
             document.title = title ? title : '';
