@@ -32,7 +32,7 @@
                         <h4>Student Information With Job Placement</h4>
                     </span>
                         <span class="float-right">
-                        <a href="{{ route('account') }}" class="btn btn-dark btn-sm">Back</a>
+                        <a href="{{ route('job_placement.profile') }}" class="btn btn-dark btn-sm">Back</a>
                     </span>
                     </div>
 
@@ -168,7 +168,7 @@
                                         <td>{{$job_placement->company_address}}</td>
                                         {{-- <td>{{$job_placement->company_phone ?? "N/A"}}</td> --}}
                                         {{-- <td>{{$job_placement->company_email ?? "N/A"}}</td> --}}
-                                        <td>
+                                        <td style="min-width: 88px;">
                                             <a href="{{ route('job_placement.show', $job_placement->id) }}"
                                                 class="btn btn-sm btn-dark">
                                                  <i class="fa fa-eye"></i>
