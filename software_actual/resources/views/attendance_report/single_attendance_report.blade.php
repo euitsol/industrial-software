@@ -125,23 +125,23 @@
                                             @if($course->total_class > 0)
                                                 <thead>
                                                     <tr>
-                                                        <th> Class </th>
-                                                        <th> Date</th>
-                                                        <th> Attendance</th>
+                                                        <th class="text-center"> Class </th>
+                                                        <th class="text-center"> Date</th>
+                                                        <th class="text-center"> Attendance</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
                                                     @for ($i = 1; $i <= $course->total_class; $i++)
                                                         <tr>
-                                                            <td> {{'Class-'.$i}}</td>
+                                                            <td class="text-center"> {{'Class-'.$i}}</td>
                                                             @foreach($student->batches as $bk => $batch)
                                                                 @foreach($minfo as $infos)
                                                                     @foreach($infos as $info)
                                                                         @if($course->id == $info->course_id && $batch->id == $info->batch_id)
-                                                                            <td>{{ $info->getDate($i)->date ?? 'Date' }}</td>
-                                                                            <td>
+                                                                            <td class="text-center">{{ $info->getDate($i)->date ?? 'Date' }}</td>
+                                                                            <td class="text-center">
                                                                                 <i class="{{optional($info->getAttend($i, $student->id))->attedanceStatus()}}"></i> 
-                                                                            </td>
+                                                                            </td class="text-center">
                                                                         @endif
                                                                     @endforeach
                                                                 @endforeach

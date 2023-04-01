@@ -491,6 +491,26 @@ Route::group(['middleware' => 'auth'], function () {
 
             });
 
+        //Student Job Placement
+        Route::prefix('job_placement')->name('job_placement.')->group(function () {
+
+                Route::get('/profile', 'JobPlacementController@index')->name('profile');
+                Route::post('/profile/search', 'JobPlacementController@profileSearch')->name('profile.search');
+                Route::get('/profile/student/{sid}/courses', 'JobPlacementController@studentCourses')->name('profile.student.info');
+
+                Route::get('/create/{id}', 'JobPlacementController@create')->name('create');
+                Route::post('/store', 'JobPlacementController@store')->name('store');
+                Route::get('/show/{jp_id}', 'JobPlacementController@show')->name('show');
+                Route::get('/edit/{jp_id}', 'JobPlacementController@edit')->name('edit');
+                Route::post('/update', 'JobPlacementController@update')->name('update');
+                // Route::get('/course/{cid}/delete', 'CourseController@destroy')->name('course.delete');
+
+
+
+
+
+        });
+
             Route::get('/account', 'AccountController@index')->name('account');
             Route::post('/account/search', 'AccountController@accountSearch')->name('account.search');
             Route::get('/account/student/{sid}/courses', 'AccountController@studentCourses')->name('account.student.courses');
