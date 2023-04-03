@@ -68,6 +68,23 @@
                                             <td>:</td>
                                             <td>{{$jp->company_email ?? "N/A"}}</td>
                                         </tr>
+                                        <tr>
+                                            <th>Created By</th>
+                                            <td>:</td>
+                                            <td>{{$jp->created_user->name}}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Created Date</th>
+                                            <td>:</td>
+                                            <td>
+                                                {{date('jS, F, Y', strtotime($jp->created_at))}}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>Updated By</th>
+                                            <td>:</td>
+                                            <td>{{$jp->updated_user->name ?? "N/A"}}</td>
+                                        </tr>
                                     </table>
                                 </div>
                             </div>

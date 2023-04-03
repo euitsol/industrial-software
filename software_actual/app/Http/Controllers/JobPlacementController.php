@@ -70,6 +70,8 @@ class JobPlacementController extends Controller
             {
                 $m->company_email = $request->company_email;
             }
+            $m->created_by = auth()->user()->id;
+            $m->created_at = Carbon::now();
             $m->save();
 
             $this->message('success', 'Job placement add successfully');
@@ -114,6 +116,8 @@ class JobPlacementController extends Controller
             {
                 $m->company_email = $request->company_email;
             }
+            $m->updated_by = auth()->user()->id;
+            $m->updated_at = Carbon::now();
             $m->update();
 
             $this->message('success', 'Job placement update successfully');

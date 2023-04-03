@@ -16,6 +16,7 @@ use App\Models\Source;
 use App\Models\Student;
 use App\Models\Sms_history;
 use App\Models\User;
+use App\Models\JobPlacement;
 use Carbon\Carbon;
 use function GuzzleHttp\Psr7\str;
 use Illuminate\Http\Request;
@@ -321,6 +322,41 @@ class ReportController extends Controller
         }
         return view('report.students_by_division', compact('division', 'institutes', 'total_students', 'year'));
     }
+
+// Job Placement Report
+    public function jobPlacementReport()
+    {
+        return view('job_placement_report.index');
+    }
+    public function jobPlacementReportSearch(Request $request)
+    {
+        $request->validate([
+            'from_date' => 'required|date',
+            'to_date' => 'required|date',
+        ]);
+        return redirect()->route('job_placement.report.show', [
+            'from_date' => $request->from_date,
+            'to_date' => $request->to_date,
+        ]);
+    }
+    public function jobPlacementReportShow($from_date, $to_date){
+
+        if (empty($from_date) || empty($to_date)) {
+            return redirect()->route('job_placement.report');
+        }
+        $job_placements = JobPlacement::with('student')->whereDate('joining_date', '>=', date('Y-m-d', strtotime($from_date)))
+                ->whereDate('joining_date', '<=', date('Y-m-d', strtotime($to_date)))->get();
+        return view('job_placement_report.report', compact('from_date', 'to_date','job_placements'));
+
+    }
+
+    public function studentJobPlacementReportView($jp_id){
+        $jp = JobPlacement::where('id', $jp_id)->first();
+        return view('job_placement_report.single_view', compact('jp'));
+    }
+
+
+
 
 
     public function transaction()

@@ -431,6 +431,12 @@ Route::group(['middleware' => 'auth'], function () {
                 Route::get('/report/institute', 'ReportController@institute_index')->name('report.institute.index');
                 Route::get('/report/division', 'ReportController@division_index')->name('report.division.index');
 
+                // Job placement report
+                Route::get('/job_placement/report', 'ReportController@jobPlacementReport')->name('job_placement.report');
+                Route::post('/job_placement/report/search', 'ReportController@jobPlacementReportSearch')->name('job_placement.report.search');
+                Route::get('/job_placement/report/{from_date}/{to_date}/show', 'ReportController@jobPlacementReportShow')->name('job_placement.report.show');
+                Route::get('/student/job_placement/report/{jp_id}/view', 'ReportController@studentJobPlacementReportView')->name('student.job_placement.report.view');
+
                 Route::get('/transaction', 'ReportController@transaction')->name('transaction');
                 Route::post('/transaction/find', 'ReportController@transaction_find')->name('transaction.find');
         //        Route::get('/transaction/{from_date}/{to_date}/found', 'ReportController@transaction_show')->name('transaction.show');
