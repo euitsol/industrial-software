@@ -17,6 +17,7 @@ use App\Models\Student;
 use App\Models\Sms_history;
 use App\Models\User;
 use App\Models\JobPlacement;
+use App\Models\LinkageIndustryInfo;
 use Carbon\Carbon;
 use function GuzzleHttp\Psr7\str;
 use Illuminate\Http\Request;
@@ -353,6 +354,41 @@ class ReportController extends Controller
     public function studentJobPlacementReportView($jp_id){
         $jp = JobPlacement::where('id', $jp_id)->first();
         return view('job_placement_report.single_view', compact('jp'));
+    }
+
+
+
+
+    // Linkage With Industry Information Report
+    public function linkageIndustryInfosReport()
+    {
+        return view('linkage_industry_infos_report.index');
+    }
+    public function linkageIndustryInfosReportSearch(Request $request)
+    {
+        $request->validate([
+            'from_date' => 'required|date',
+            'to_date' => 'required|date',
+        ]);
+        return redirect()->route('linkage_industry_infos.report.show', [
+            'from_date' => $request->from_date,
+            'to_date' => $request->to_date,
+        ]);
+    }
+    public function linkageIndustryInfosReportShow($from_date, $to_date){
+
+        if (empty($from_date) || empty($to_date)) {
+            return redirect()->route('linkage_industry_infos.report');
+        }
+        $datas = LinkageIndustryInfo::with('created_user')->whereDate('created_at', '>=', date('Y-m-d', strtotime($from_date)))
+                ->whereDate('created_at', '<=', date('Y-m-d', strtotime($to_date)))->get();
+        return view('linkage_industry_infos_report.report', compact('from_date', 'to_date','datas'));
+
+    }
+
+    public function linkageIndustryInfosReportView($id){
+        $data = LinkageIndustryInfo::with('created_user','updated_user')->where('id', $id)->first();
+        return view('linkage_industry_infos_report.single_view', compact('data'));
     }
 
 
