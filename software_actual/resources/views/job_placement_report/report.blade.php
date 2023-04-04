@@ -82,7 +82,7 @@
                                         </td>
                                         <td>{{ $jp->company_name }}</td>
                                         <td>{{ $jp->designation }}</td>
-                                        <td>{{ $jp->joining_date }}</td>
+                                        <td>{{ date('jS, F, Y', strtotime($jp->joining_date)) }}</td>
                                         <td>{{ $jp->company_phone ?? "N/A" }}</td>
                                         <td>{{ $jp->company_web_url ?? "N/A" }}</td>
                                         <td class="hide">

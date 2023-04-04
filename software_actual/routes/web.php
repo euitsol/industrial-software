@@ -86,6 +86,16 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/lab-running/{labid}' ,'LabController@lab_runnig')->name('lab.running');
         Route::get('/lab-closed/{labid}' ,'LabController@lab_closed')->name('lab.closed');
 
+// Linkage With Industry Information
+        Route::get('/linkage-industry-info' ,'LinkageIndustryInfosController@index')->name('linkage_industry.info');
+        Route::get('/linkage-industry-info/create', 'LinkageIndustryInfosController@create')->name('linkage_industry.info.create');
+        Route::post('/linkage-industry-info/store' ,'LinkageIndustryInfosController@store')->name('linkage_industry.info.store');
+        Route::get('/linkage-industry-info/show/{id}', 'LinkageIndustryInfosController@show')->name('linkage_industry.info.show');
+        Route::get('/linkage-industry-info/{id}/edit', 'LinkageIndustryInfosController@edit')->name('linkage_industry.info.edit');
+        Route::post('/linkage-industry-info/update', 'LinkageIndustryInfosController@update')->name('linkage_industry.info.update');
+        Route::get('/linkage-industry-info/delete/{id}', 'LinkageIndustryInfosController@destroy')->name('linkage_industry.info.delete');
+
+
 
 // Session
 
