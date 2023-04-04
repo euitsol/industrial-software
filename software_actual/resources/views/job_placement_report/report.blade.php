@@ -84,7 +84,7 @@
                                         <td>{{ $jp->designation }}</td>
                                         <td>{{ $jp->joining_date }}</td>
                                         <td>{{ $jp->company_phone ?? "N/A" }}</td>
-                                        <td>{{ $jp->company_email ?? "N/A" }}</td>
+                                        <td>{{ $jp->company_web_url ?? "N/A" }}</td>
                                         <td class="hide">
                                             <a href="
                                             {{ route('student.job_placement.report.view', $jp->id) }}

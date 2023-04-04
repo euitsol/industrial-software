@@ -80,7 +80,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <label class="col-md-3 form-control-label">Conatact Number</label>
+                                    <label class="col-md-3 form-control-label">Contact Number</label>
                                     <div class="col-md-9">
                                         <input type="number" name="company_phone" value="{{ $jp->company_phone }}" id="company_phone" class="form-control form-control-success">
                                         @if ($errors->has('company_phone'))
@@ -89,7 +89,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <label class="col-md-3 form-control-label">Conatact Email</label>
+                                    <label class="col-md-3 form-control-label">Contact Email</label>
                                     <div class="col-md-9">
                                         <input type="email" name="company_email" value="{{ $jp->company_email }}" id="company_email" class="form-control form-control-success">
                                         @if ($errors->has('company_email'))
