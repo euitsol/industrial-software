@@ -87,7 +87,7 @@
                                                     <tr>
                                                         <th>Updated By</th> 
                                                         <td>:</td>
-                                                        <td> {{ $data->updated_user->name }} </td>
+                                                        <td> {{ $data->updated_user->name ?? "N/A" }} </td>
                                                     </tr>
                                             </tbody>
                                         </table>
