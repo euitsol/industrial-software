@@ -32,7 +32,7 @@ class LinkageIndustryInfosController extends Controller
             'company_website' => 'required|max:255',
             'company_address' => 'required|max:255',
             'contact_person_name' => 'required|max:255',
-            'contact_number' => 'required|max:11|min:11',
+            'contact_number' => 'required',
             'contact_email' => 'required',
             'description' => 'required|max:10000',
         ]);
@@ -74,7 +74,7 @@ class LinkageIndustryInfosController extends Controller
             'company_website' => 'required|max:255',
             'company_address' => 'required|max:255',
             'contact_person_name' => 'required|max:255',
-            'contact_number' => 'required|max:11|min:11',
+            'contact_number' => 'required',
             'contact_email' => 'required',
             'description' => 'required|max:10000',
         ]);
