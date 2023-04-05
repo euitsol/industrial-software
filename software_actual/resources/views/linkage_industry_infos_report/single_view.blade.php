@@ -82,6 +82,11 @@
                                         <td> {{ $data->contact_email }} </td>
                                     </tr>
                                     <tr>
+                                        <th>Description</th> 
+                                        <td>:</td>
+                                        <td> {{ $data->description }} </td>
+                                    </tr>
+                                    <tr>
                                         <th>Created By</th>
                                         <td>:</td>
                                         <td> {{ $data->created_user->name }} </td>

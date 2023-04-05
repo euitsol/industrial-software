@@ -345,14 +345,14 @@ class ReportController extends Controller
         if (empty($from_date) || empty($to_date)) {
             return redirect()->route('job_placement.report');
         }
-        $job_placements = JobPlacement::with('student')->whereDate('joining_date', '>=', date('Y-m-d', strtotime($from_date)))
+        $job_placements = JobPlacement::with(['student','linkageIndustry'])->whereDate('joining_date', '>=', date('Y-m-d', strtotime($from_date)))
                 ->whereDate('joining_date', '<=', date('Y-m-d', strtotime($to_date)))->get();
         return view('job_placement_report.report', compact('from_date', 'to_date','job_placements'));
 
     }
 
     public function studentJobPlacementReportView($jp_id){
-        $jp = JobPlacement::where('id', $jp_id)->first();
+        $jp = JobPlacement::with('linkageIndustry')->where('id', $jp_id)->first();
         return view('job_placement_report.single_view', compact('jp'));
     }
 
@@ -381,7 +381,7 @@ class ReportController extends Controller
             return redirect()->route('linkage_industry_infos.report');
         }
         $datas = LinkageIndustryInfo::with('created_user')->whereDate('created_at', '>=', date('Y-m-d', strtotime($from_date)))
-                ->whereDate('created_at', '<=', date('Y-m-d', strtotime($to_date)))->get();
+                ->whereDate('created_at', '<=', date('Y-m-d', strtotime($to_date)))->latest()->get();
         return view('linkage_industry_infos_report.report', compact('from_date', 'to_date','datas'));
 
     }

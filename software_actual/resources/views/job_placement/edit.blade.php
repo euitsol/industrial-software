@@ -28,9 +28,15 @@
                                 <div class="form-group row">
                                     <label class="col-md-3 form-control-label">Company Name <span class="text-danger">*</span> </label>
                                     <div class="col-md-9">
-                                        <input type="text" name="company_name" value="{{ $jp->company_name }}" id="company_name" class="form-control form-control-success" required>
-                                        @if ($errors->has('company_name'))
-                                            <span class="text-danger">{{ $errors->first('company_name') }}</span>
+                                        <select name="linkage_industry_info_id" class="form-control form-control-success" required>
+                                            @foreach ($linkage_industries as $linkage_industry)
+                                                <option value="{{ $linkage_industry->id }}" @if($linkage_industry->id == $jp->linkage_industry_info_id)selected @endif>
+                                                    {{ $linkage_industry->company_name }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                        @if ($errors->has('linkage_industry_info_id'))
+                                            <span class="text-danger">{{ $errors->first('linkage_industry_info_id') }}</span>
                                         @endif
                                     </div>
                                 </div>
@@ -61,7 +67,7 @@
                                         @endif
                                     </div>
                                 </div>
-                                <div class="form-group row">
+                                {{-- <div class="form-group row">
                                     <label class="col-md-3 form-control-label">Website URL</label>
                                     <div class="col-md-9">
                                         <input type="text" name="company_web_url" value="{{ $jp->company_web_url }}" id="company_web_url" class="form-control form-control-success">
@@ -96,7 +102,7 @@
                                             <span class="text-danger">{{ $errors->first('company_email') }}</span>
                                         @endif
                                     </div>
-                                </div>
+                                </div> --}}
                                 <div class="form-group row">
                                     <div class="col-md-9 ml-auto">
                                         <input type="submit" value="Update" class="btn btn-primary">

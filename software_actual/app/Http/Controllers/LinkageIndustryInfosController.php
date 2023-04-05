@@ -34,6 +34,7 @@ class LinkageIndustryInfosController extends Controller
             'contact_person_name' => 'required|max:255',
             'contact_number' => 'required|max:11|min:11',
             'contact_email' => 'required',
+            'description' => 'required|max:10000',
         ]);
 
         $data = new LinkageIndustryInfo;
@@ -52,6 +53,7 @@ class LinkageIndustryInfosController extends Controller
         $data->contact_person_name = $request->contact_person_name;
         $data->contact_number = $request->contact_number;
         $data->contact_email = $request->contact_email;
+        $data->description = $request->description;
         $data->created_by = auth()->user()->id;
         $data->created_at = Carbon::now();
         $data->save();
@@ -74,6 +76,7 @@ class LinkageIndustryInfosController extends Controller
             'contact_person_name' => 'required|max:255',
             'contact_number' => 'required|max:11|min:11',
             'contact_email' => 'required',
+            'description' => 'required|max:10000',
         ]);
 
         $data = LinkageIndustryInfo::findOrFail($request->id);
@@ -94,6 +97,7 @@ class LinkageIndustryInfosController extends Controller
         $data->contact_person_name = $request->contact_person_name;
         $data->contact_number = $request->contact_number;
         $data->contact_email = $request->contact_email;
+        $data->description = $request->description;
         $data->updated_by = auth()->user()->id;
         $data->updated_at = Carbon::now();
         $data->update();

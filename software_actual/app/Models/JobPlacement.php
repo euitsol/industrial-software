@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\User;
 use App\Models\Student;
+use App\Models\LinkageIndustryInfo;
 
 class JobPlacement extends Model
 {
@@ -21,5 +22,8 @@ class JobPlacement extends Model
     }
     public function student(){
         return $this->belongsTo(Student::class,'student_id','id');
+    }
+    public function linkageIndustry(){
+        return $this->belongsTo(LinkageIndustryInfo::class,'linkage_industry_info_id','id');
     }
 }

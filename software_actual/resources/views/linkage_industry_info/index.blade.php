@@ -34,7 +34,7 @@
                     @endif
                     
                     <div class="table-responsive">
-                        <table id="table" class="display nowrap">
+                        <table id="table" class="display">
                             <thead>
                                 <tr>
                                     <th class="align-middle">SL</th>

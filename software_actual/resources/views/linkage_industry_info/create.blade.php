@@ -88,6 +88,16 @@
                                         @endif
                                     </div>
                                 </div>
+                                <div class="form-group row">
+                                    <label class="col-md-3 form-control-label">Description<span class="text-danger">*</span></label>
+                                    <div class="col-md-9">
+                                        <textarea name="description" id="description"
+                                                  class="form-control form-control-success">{{ old('description') }}</textarea>
+                                        @if ($errors->has('description'))
+                                            <span class="text-danger">{{ $errors->first('description') }}</span>
+                                        @endif
+                                    </div>
+                                </div>
                                 
                                 <div class="form-group row">
                                     <div class="col-md-9 ml-auto">

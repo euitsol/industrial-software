@@ -128,7 +128,7 @@
                                 <tr>
                                     <th>Company Name</th>
                                     <td>:</td>
-                                    <td>{{$jp->company_name}}</td>
+                                    <td>{{$jp->linkageIndustry->company_name}}</td>
                                 </tr>
                                 <tr>
                                     <th>Designation</th>
@@ -147,22 +147,22 @@
                                 </tr>
                                     <th>Company Website</th>
                                     <td>:</td>
-                                    <td>{{$jp->company_web_url ?? "N/A"}}</td>
+                                    <td>{{$jp->linkageIndustry->company_website ?? "N/A"}}</td>
                                 <tr>
                                 <tr>
                                     <th>Company Address</th>
                                     <td>:</td>
-                                    <td>{{$jp->company_address}}</td>
+                                    <td>{{$jp->linkageIndustry->company_address}}</td>
                                 </tr>
                                 <tr>
                                     <th>Company Phone</th>
                                     <td>:</td>
-                                    <td>{{$jp->company_phone ?? "N/A"}}</td>
+                                    <td>{{$jp->linkageIndustry->contact_number ?? "N/A"}}</td>
                                 </tr>
                                 <tr>
                                     <th>Company Email</th>
                                     <td>:</td>
-                                    <td>{{$jp->company_email ?? "N/A"}}</td>
+                                    <td>{{$jp->linkageIndustry->contact_email ?? "N/A"}}</td>
                                 </tr>
                                 <tr>
                                     <th>Created By</th>

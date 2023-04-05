@@ -160,12 +160,12 @@
                                     @if($job_placement)
                                     <tr>
                                         <td>{{$key + 1}}</td>
-                                        <td>{{$job_placement->company_name}}</td>
+                                        <td>{{$job_placement->linkageIndustry->company_name}}</td>
                                         <td>{{$job_placement->designation}}</td>
                                         {{-- <td>{{$job_placement->department ?? "N/A"}}</td> --}}
                                         <td>{{date('jS, F, Y', strtotime($job_placement->joining_date))}}</td>
-                                        <td>{{$job_placement->company_web_url ?? "N/A"}}</td>
-                                        <td>{{$job_placement->company_address}}</td>
+                                        <td>{{$job_placement->linkageIndustry->company_website ?? "N/A"}}</td>
+                                        <td>{{$job_placement->linkageIndustry->company_address}}</td>
                                         {{-- <td>{{$job_placement->company_phone ?? "N/A"}}</td> --}}
                                         {{-- <td>{{$job_placement->company_email ?? "N/A"}}</td> --}}
                                         <td style="min-width: 88px;">
