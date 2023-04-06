@@ -100,7 +100,7 @@ class IndustrialMarketingController extends Controller
         
     public function message_index()
     {
-        $courses = Course::where('type','Industrial')->get();
+        $courses = Course::where('type','Industrial')->latest()->get();
         $years = IndustrialMarketing::select('year')->distinct()->orderBy('year', 'desc')->get();
         $current_year = $date = Carbon::now()->format('Y');
         $institutes = IndustrialMarketing::select('institute')->distinct()->orderBy('institute', 'desc')->get();
@@ -229,6 +229,39 @@ class IndustrialMarketingController extends Controller
             return redirect()->route('marketing.industrial.message');
         }
 
+    }
+
+    // Marketing Student UED
+    public function marketingStudents(){
+        $data['students']=IndustrialMarketing::with(['created_user'])->latest()->take(1000)->get();
+        return view('industrial_marketing.students',$data);
+    }
+    public function marketingStudentView($id)
+    {
+        $student = IndustrialMarketing::findOrFail($id);
+        return view('industrial_marketing.single_view', compact('student'));
+    }
+
+    public function marketingStudentEdit($id){
+        $data['student'] = IndustrialMarketing::findOrFail($id);
+        $data['institutes'] = Institute::latest()->get();
+        $data['courses'] = Course::where('type','Industrial')->get();
+        return view('industrial_marketing.student_edit', $data);
+    }
+    public function marketingStudentUpdate(Request $request, $id){
+        $request->validate([
+            'name' => 'required|max:170',
+            'phone' => 'required|unique:industrial_marketings,phone,'.$id.'|max:11|min:11',
+            'course' => 'required',
+            'shift' => 'required',
+        ]);
+        $input = $request->all();
+        $data = IndustrialMarketing::find($id);
+        $input['updated_by'] = auth()->user()->id;
+        $input['updated_at'] = Carbon::now();
+        $data->update($input);
+        Session::flash('success', "Student $request->name update successfully");
+        return redirect()->route('industrial.marketing.student');
     }
    
 

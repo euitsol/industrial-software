@@ -141,6 +141,12 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/industrial/message/view' ,'IndustrialMarketingController@view')->name('marketing.industrial.message.view');
     Route::post('/industrial/message/send' ,'IndustrialMarketingController@message_send')->name('marketing.industrial.message.send');
 
+//     All Student
+    Route::get('industrial/marketing/students','IndustrialMarketingController@marketingStudents')->name('industrial.marketing.student');
+    Route::get('industrial/marketing/student/view/{id}','IndustrialMarketingController@marketingStudentView')->name('industrial.marketing.student.view');
+    Route::get('industrial/marketing/student/edit/{id}','IndustrialMarketingController@marketingStudentEdit')->name('industrial.marketing.student.edit');
+    Route::post('industrial/marketing/student/update/{id}','IndustrialMarketingController@marketingStudentUpdate')->name('industrial.marketing.student.update');
+
 
 //Institute visit
     Route::get('/institute-visit' ,'InstituteVisitController@index')->name('iv');
@@ -448,7 +454,7 @@ Route::group(['middleware' => 'auth'], function () {
                 Route::get('/student/job_placement/report/{jp_id}/view', 'ReportController@studentJobPlacementReportView')->name('student.job_placement.report.view');
                 
                 
-                // Job placement report
+                // linkage industry infos report
                 Route::get('/linkage_industry_infos/report', 'ReportController@linkageIndustryInfosReport')->name('linkage_industry_infos.report');
                 Route::post('/linkage_industry_infos/report/search', 'ReportController@linkageIndustryInfosReportSearch')->name('linkage_industry_infos.report.search');
                 Route::get('/linkage_industry_infos/report/{from_date}/{to_date}/show', 'ReportController@linkageIndustryInfosReportShow')->name('linkage_industry_infos.report.show');
@@ -529,11 +535,6 @@ Route::group(['middleware' => 'auth'], function () {
                 Route::get('/edit/{jp_id}', 'JobPlacementController@edit')->name('edit');
                 Route::post('/update', 'JobPlacementController@update')->name('update');
                 // Route::get('/course/{cid}/delete', 'CourseController@destroy')->name('course.delete');
-
-
-
-
-
         });
 
             Route::get('/account', 'AccountController@index')->name('account');
