@@ -49,7 +49,11 @@ Route::post('/token', 'BkashController@token')->name('token');
 
 
 
-Auth::routes();
+// Auth::routes();
+
+Route::get('admin/login', 'Auth\LoginController@showLoginForm')->name('login');
+Route::post('admin/login', 'Auth\LoginController@login');
+Route::post('admin/logout', 'Auth\LoginController@logout')->name('logout');
 
 Route::get('/pdf', function () {
     $pdf = PDF::loadView('utility.cv2');
@@ -301,7 +305,7 @@ Route::group(['middleware' => 'auth'], function () {
 
             Route::get('/', 'HomeController@index')->name('home');
 
-            Route::get('/logout', 'Auth\LoginController@logout')->name('logout');
+        //     Route::get('/logout', 'Auth\LoginController@logout')->name('logout');
 
             Route::group(['middleware' => 'admin'], function () {
                 Route::get('/users', 'UserController@index')->name('users');
@@ -585,3 +589,20 @@ Route::group(['middleware' => 'auth'], function () {
 
 
         });
+
+        //Student Pannel Routes
+
+        //Login Log Out Routes
+        Route::get('/student/login', 'AuthStudent\Auth\StudentAuthController@showLoginForm')->name('student.login');
+        Route::post('/student/login', 'AuthStudent\Auth\StudentAuthController@studentLogin')->name('student.login.submit');
+        Route::post('/student/logout', 'AuthStudent\Auth\StudentAuthController@studentLogout')->name('student.logout');
+
+        //Registration Routes
+        // Route::get('/student/register', 'AuthStudent\Auth\StudentAuthController@showRegistrationForm')->name('student.register');
+        // Route::post('/student/register', 'AuthStudent\Auth\StudentAuthController@register')->name('student.register.submit');
+
+        Route::group(['middleware' => 'student'], function () {
+                Route::get('/student/profile', 'AuthStudent\StudentController@studentProfile')->name('student.profile');
+        });
+
+
