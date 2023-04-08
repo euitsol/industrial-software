@@ -20,7 +20,7 @@
     <!-- Favicon-->
     <link rel="icon" href="{{asset('/')}}images/icon.png" type="image/png">
 
-
+    @stack('third_party_css')
     @stack('css')
 
 </head>
