@@ -146,7 +146,7 @@
                                                                 <th>Lab/Classroom Name</th>
                                                                 <th>Available Students</th>
                                                                 <th>Status</th>
-                                                                <th>Duration Changing</th>
+                                                                <th>Extra Time</th>
                                                                 <th>Action</th>
                                                             </tr>
                                                             @foreach($in_batch as $ib)
