@@ -603,6 +603,7 @@ Route::group(['middleware' => 'auth'], function () {
 
         Route::group(['middleware' => 'student'], function () {
                 Route::get('/student/profile', 'AuthStudent\StudentController@studentProfile')->name('student.profile');
+                Route::post('/student/profile/photo/update', 'AuthStudent\StudentController@studentProfileImgUpdate')->name('student.profile.photo.update');
         });
 
 

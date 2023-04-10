@@ -17,7 +17,11 @@
                     @if(isset(Auth::guard('student')->user()->photo))
                     <img style="height: 20px; width:20px;" class="mr-2 rounded-circle" src="{{ asset(Auth::guard('student')->user()->photo)}}" alt="Profile">
                     @else
-                    <img style="height: 20px; width:20px;" class="mr-2 rounded-circle" src="{{ asset('images/avatar-male.jpg')}}" alt="Profile">
+                        @if( Auth::guard('student')->user()->gender == 'male')
+                            <img style="height: 20px; width:20px;" class="mr-2 rounded-circle" src="{{asset('images/avatar-male.jpg')}}" alt="Profile">
+                        @else
+                            <img style="height: 20px; width:20px;" class="mr-2 rounded-circle" src="{{asset('images/avater-female.jpg')}}" alt="Profile">
+                        @endif
                     @endif
                     {{ Auth::guard('student')->user()->name }}
                 </a>
@@ -45,14 +49,14 @@
                             @forelse (Auth::guard('student')->user()->batches as $key=>$b)
                                 <tr>
                                     <th style="padding: 2px 8px !important;">
-                                        Course @if($key>0){{'-'.$key+1}}@endif :
+                                        Course:
                                     </th>
                                 </tr>
                                 <tr>
                                     <td style="padding: 2px 8px !important;">{{$b->course->title}}</td>
                                 </tr>
                                 <tr>
-                                    <th style="padding: 2px 8px !important;">Batch @if($key>0){{'-'.$key+1}}@endif :</th>
+                                    <th style="padding: 2px 8px !important;">Batch:</th>
                                 </tr>
                                 <tr>
                                     <td style="padding: 2px 8px !important;">{{batch_name($b->course->title_short_form, $b->year, $b->month, $b->batch_number)}}</td>
