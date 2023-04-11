@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="{{ asset('assets/vendor/jquery-ui/jquery-ui.css') }}">
 @endpush
 @push('css')
+<link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
 <style>
     a {
         text-decoration: none !important;
@@ -38,6 +39,111 @@
         background-color : #ECECEC !important;
     }
 </style>
+<style>
+/* Student Card Styles */
+.main_card{
+width: 316px;
+height: 496px;
+position: relative;
+    
+}
+.card_header{
+    background: #303140;
+    height:6%;
+}
+.card_footer {
+    background-color: #0097d5;
+    height: 4%;
+    position: absolute;
+    bottom: 0;
+}
+
+.logo_area{
+    height: 30%;
+}
+
+.logo_area img{
+    margin-top: 23px;
+}
+
+.body_area {
+    height: 60%;
+    background: #303140;
+    padding-top: 77px;
+    padding:77px 10px 0px;
+}
+.id_logo {
+    width: 248px;
+}
+.body_area h2 {
+    color: #4ebff8;
+    font-size: 23px;
+    font-weight: 400;
+    font-family: "Roboto";
+    margin-bottom: 5px;
+    line-height: 22px;
+}
+.profile-pic {
+    width: 130px;
+    height: 130px;
+    border: 5px solid;
+    position: absolute;
+    top: 125px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+    .body_area p {
+    font-size: 19px;
+    color: #ffffff;
+    font-weight: 400;
+    font-family: "Roboto";
+    line-height: 21px;
+}
+
+.logo_area{
+    position: relative
+}
+.logo_area::after {
+    content: '';
+    width: 100%;
+    height: 32px;
+    background: #4ebff8;
+    position: absolute;
+    bottom: -32px;
+    left: 0;
+}
+.student_details {
+    justify-content: baseline;
+    padding-left:20px;
+}
+
+.student_details .left_column{
+    width: 30%
+}
+.student_details .right_column {
+    width: 70%;
+    padding-left: 38px;
+}
+
+.student_details ul li {
+    list-style: none;
+    color: #ffffff;
+    font-size: 12px;
+    line-height: 20px;
+    overflow-wrap: break-word;
+}
+.student_details ul li span{
+    margin-right: 2px;
+}
+.student_details .right_column ul li:last-child{
+    line-height: 12px;
+}
+
+.student_details ul{
+    margin: 0;
+    padding: 0;
+}
+</style>
 @endpush
 
 @section('content')
@@ -54,10 +160,12 @@
         <div class="row justify-content-center">
             <div class="col-lg-12">
                 <div class="card">
-                    <div class="card-header">
-                    <span class="float-left">
+                    <div class="card-header d-flex justify-content-between">
                         <h4> My Profile </h4>
-                    </span>
+                        <div class="d-flex align-items-center">
+                            <a href="#!" class="btn btn-sm btn-outline-info ml-2">Certificate</a>
+                            <a href="#!" class="btn btn-sm btn-outline-success ml-2" data-toggle="modal" data-target="#StudentCardModal">ID Card</a>
+                        </div>
                     </div>
 
                     <div class="card-body">
@@ -422,6 +530,84 @@
             </div>
         </div>
     </div>
+    <!-- Start ID Card Modal Modal -->
+    <div class="modal fade" id="StudentCardModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">ID Card</h5>
+                <div class="text-center ml-3 hide">
+                    <button type="button" onclick="printT('print')"
+                            class="btn btn-dark btn-sm text-center hide"><i class="fa fa-print"></i>
+                    </button>
+                </div>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                </div>
+                <div class="modal-body text-center">
+                    <div class="id_card w-100" id="print">
+                        <div class="main_card mb-2 mx-auto">
+                            <div class="card_header"></div>
+                            <div class="logo_area bg-white">
+                            <div class="id_logo mx-auto">
+                                    <img class="img-fluid" src="{{asset('images/EUITSols Institute New.png')}}" alt="logo">
+                            </div>
+                            
+                            </div>
+                            @if(isset($student->photo))
+                                <img src="{{asset($student->photo)}}" alt="" class="profile-pic rounded-circle">                    
+                                @else
+                                    @if( $student->gender == 'male')
+                                    <img src="{{asset('images/avatar-male.jpg')}}" alt="" class="profile-pic rounded-circle">
+                                    @else
+                                    <img src="{{asset('images/avater-female.jpg')}}" alt="" class="profile-pic rounded-circle">
+                                    @endif
+                                @endif
+                            <div class="body_area">
+                            
+                            <div class="body_content">
+                                <div class="student_name text-center">
+                                    <h2>{{$student->name}}</h2>
+                                    @foreach($student->batches as $batch)
+                                        <p>{{$batch->course->title}}</p>
+                                    @endforeach
+                                </div>
+                                <div class="student_details text-left d-flex flex-wrap">
+                                    <div class="left_column">
+                                        <ul>
+                                            <li>ID NO</li>
+                                            <li>Batch No</li>
+                                            <li>Phone</li>
+                                            <li>Blood</li>
+                                            <li>Email</li>
+                                        </ul>
+                                    </div>
+                                    <div class="right_column">
+                                        <ul>
+                                            <li><span>:</span>{{$student->year.$student->reg_no}}</li>
+                                            @foreach($student->batches as $batch)
+                                                <li><span>:</span>{{batch_name($batch->course->title_short_form, $batch->year, $batch->month, $batch->batch_number)}}</li>
+                                            @endforeach
+                                            <li><span>:</span>+88{{$student->phone}}</li>
+                                            <li><span>:</span>{{$student->blood ?? 'N/A'}}</li>
+                                            <li><span>:</span>{{$student->email ?? 'N/A'}}</li>
+                                        </ul>
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card_footer w-100"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" id="closeBtn" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+    <!-- End ID Card Modal -->
     <!-- Start Student Image Modal -->
     <div class="modal fade" id="StudentImgModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
@@ -470,14 +656,14 @@
 
 @push('js')
     <script>
-    function print_registration_form() {
-            printT('student-info', 'student-info');
-        }
+    // Id Card Print
         function printT(el, title = '') {
+            console.log(el);
             var rp = document.body.innerHTML;
+            $('.hide').addClass("d-none");
             var pc = document.getElementById(el).innerHTML;
             document.body.innerHTML = pc;
-            document.title = title ? title : '';
+            document.title = 'Student ID Card - European IT Solution Institute';
             window.print();
             document.body.innerHTML = rp;
         }
@@ -492,17 +678,5 @@
         reader.readAsDataURL(event.target.files[0]);
       };
     </script>
-    {{-- <script>
-        function previewImage() {
-        const file = fileInput.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.addEventListener('load', () => {
-            previewImage.src = reader.result;
-            });
-            reader.readAsDataURL(file);
-        }
-        }
-    </script> --}}
 @endpush
 

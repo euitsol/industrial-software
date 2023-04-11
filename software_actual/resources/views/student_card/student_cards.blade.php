@@ -6,28 +6,28 @@
 <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
 <style>
     
-    .main_column{
-        display: grid;
-        grid-template-columns: 1fr 1fr 1fr;
-        background: #f4f4fb;
-    }
-    .main_card{
-        width: 316px;
-        height: 496px;
-        /* height: 475px; */
-        position: relative;
-       
-    }
-    .card_header{
-        background: #303140;
-        height:6%;
-    }
-    .card_footer {
-        background-color: #0097d5;
-        height: 4%;
-        position: absolute;
-        width: 100%;
-        bottom: 0;
+.main_column{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    background: #f4f4fb;
+}
+.main_card{
+    width: 316px;
+    height: 496px;
+    /* height: 475px; */
+    position: relative;
+    
+}
+.card_header{
+    background: #303140;
+    height:6%;
+}
+.card_footer {
+    background-color: #0097d5;
+    height: 4%;
+    position: absolute;
+    width: 100%;
+    bottom: 0;
 }
 
 .logo_area{
@@ -206,10 +206,7 @@
         @else
         <h4 class="text-center mx-auto text-danger">Empty</h4>
         @endif
-      </div>
-            
-        
-       
+      </div>  
 </div>
 @endsection
 
@@ -219,9 +216,6 @@
         console.log(el);
         var rp = document.body.innerHTML;
         $('.hide').addClass("d-none");
-        // $('.main_column').css({"height": "1480px",'align-items':'center','margin':'0','padding':'0'});
-        // $('.main_column').css({'margin':'0 !important','padding':'0 !important'});
-        // $('.main_card').css({'margin-bottom':'5px !important'});
         var pc = document.getElementById(el).innerHTML;
         document.body.innerHTML = pc;
         document.title = 'Student Cards';
