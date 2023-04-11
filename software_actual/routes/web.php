@@ -451,6 +451,12 @@ Route::group(['middleware' => 'auth'], function () {
                 Route::get('/report/institute', 'ReportController@institute_index')->name('report.institute.index');
                 Route::get('/report/division', 'ReportController@division_index')->name('report.division.index');
 
+
+                // Student Card
+                Route::get('/student-card/institute', 'StudentCardController@index')->name('student_card.institute.index');
+                Route::post('/student-card/institute/find', 'StudentCardController@studentCardFind')->name('student_card.institute.find');
+                Route::get('/student-card/institute/{iid}/{yr}', 'StudentCardController@studentsCardInstitute')->name('student_card.institute.cards');
+
                 // Job placement report
                 Route::get('/job_placement/report', 'ReportController@jobPlacementReport')->name('job_placement.report');
                 Route::post('/job_placement/report/search', 'ReportController@jobPlacementReportSearch')->name('job_placement.report.search');
