@@ -7,29 +7,36 @@
 
         <ul class="sidebar-menu list-unstyled">
             <li class="sidebar-list-item">
-                <a href="javascript:void(0)" class="sidebar-link text-muted">
-                <i class="fas fa-church"></i>
-                <span>Static Test Menu</span>
+                <a href="{{route('student.profile')}}" class="sidebar-link text-muted">
+                <i class="o-home-1 text-gray"></i>
+                <span>Home</span>
                 </a>
-                <div class="collapse">
+            </li> 
+            <li class="sidebar-list-item">
+                <a href="{{route('student.registration_card')}}" class="sidebar-link text-muted">
+                <i class="fa fa-list-alt text-gray"></i>
+                <span>Registration Card</span>
+                </a>
+            </li>       
+            <li class="sidebar-list-item">
+                <a href="{{route('student.studentAttendance')}}" class="sidebar-link text-muted">
+                <i class="fas fa-chalkboard-teacher text-gray"></i>
+                <span>Attendance Report</span>
+                </a>
+            </li>   
+            <li class="sidebar-list-item">
+                <a href="javascript:void(0)" data-toggle="collapse" data-target="#AttendanceReport" class="sidebar-link text-muted" aria-expanded="false" aria-controls="StaticSubNav2">
+                    <i class="fas fa-church"></i><span>Static Menu</span>
+                </a>
+                <div class="collapse" id="AttendanceReport">
                     <ul class="sidebar-menu list-unstyled border-left border-primary border-thick">
                         <li class="sidebar-list-item">
                             <a href="#" class="sidebar-link text-muted">
-                                <i class= "fas fa-minus text-gray"></i><span>Static Sub Nav</span>
+                                <i class= "fas fa-minus text-gray"></i><span>Static Sub Nav2</span>
                             </a>
                         </li>
                     </ul>
                 </div>
-            </li>        
-            <li class="sidebar-list-item">
-                <a href="#" class="sidebar-link text-muted">
-                    <i class="fas fa-church"></i><span>Static Test Menu-2</span>
-                </a>
-            </li>
-            <li class="sidebar-list-item">
-                <a href="#" class="sidebar-link text-muted">
-                <i class="fas fa-street-view"></i><span>Navigattion</span>
-                </a>
             </li>
         </ul>
 

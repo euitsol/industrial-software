@@ -1,6 +1,6 @@
 @extends('student_panel.layouts.master')
 
-@section('title', 'Session Wise Students - European IT Solutions Institute')
+@section('title', 'Student Profile - European IT Solutions Institute')
 
 @push('third_party_css')
     <link rel="stylesheet" href="{{ asset('assets/vendor/jquery-ui/jquery-ui.css') }}">
@@ -42,8 +42,8 @@
 <style>
 /* Student Card Styles */
 .main_card{
-width: 316px;
-height: 496px;
+width: 300px;
+height: 484px;
 position: relative;
     
 }
@@ -147,15 +147,16 @@ position: relative;
 @endpush
 
 @section('content')
-@if(session('success'))
-<p class="alert alert-success text-center">
-    {{ session('success') }}
-</p>
-@elseif(session('error'))
-<p class="alert alert-danger text-center">
-    {{ session('error') }}
-</p>
-@endif
+
+    @if(session('success'))
+    <p class="alert alert-success text-center">
+        {{ session('success') }}
+    </p>
+    @elseif(session('error'))
+    <p class="alert alert-danger text-center">
+        {{ session('error') }}
+    </p>
+    @endif
     <div class="container-fluid">
         <div class="row justify-content-center">
             <div class="col-lg-12">
@@ -164,7 +165,7 @@ position: relative;
                         <h4> My Profile </h4>
                         <div class="d-flex align-items-center">
                             <a href="#!" class="btn btn-sm btn-outline-info ml-2">Certificate</a>
-                            <a href="#!" class="btn btn-sm btn-outline-success ml-2" data-toggle="modal" data-target="#StudentCardModal">ID Card</a>
+                            <a href="#!" class="btn btn-sm btn-outline-success ml-2" data-toggle="modal" data-target="#StudentCardModal" data-whatever="@mdo">ID Card</a>
                         </div>
                     </div>
 
@@ -190,7 +191,7 @@ position: relative;
                     
                                                             @endif
                                                         </p>
-                                                        <a href="#!" class="btn btn-md btn-outline-info mt-4" data-toggle="modal" data-target="#StudentImgModal">Edit Photo</a>
+                                                        <a href="#!" class="btn btn-md btn-outline-info mt-4" data-toggle="modal" data-target="#StudentImg" data-whatever="@fat">Edit Photo</a>
                                                     </div>
                                                 </div>
                                             </div>
@@ -530,6 +531,50 @@ position: relative;
             </div>
         </div>
     </div>
+    <!-- Start Student Image Modal -->
+    <div class="modal fade" id="StudentImg" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Edit Profile Photo</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                </div>
+                <div class="modal-body text-center">
+                <form action="{{route('student.profile.photo.update')}}" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    <input type="hidden" name="id" value="{{$student->id}}">
+                    <div class="mb-1">
+                        @if(isset($student->photo))
+                        <img src="{{asset($student->photo)}}" id="output"
+                            class="upImg1 rounded-circle me-50 border" alt="profile image" height="200" width="200">
+                        @else
+
+                            @if( $student->gender == 'male')
+                                <img src="{{asset('images/avatar-male.jpg')}}" id="output"
+                                class="upImg1 rounded-circle me-50 border" alt="profile image" height="200" width="200">
+                            @else
+                                <img src="{{asset('images/avater-female.jpg')}}" id="output"
+                                class="upImg1 rounded-circle me-50 border" alt="profile image" height="200" width="200">
+                            @endif
+                        @endif
+                    </div>
+                    <div class="mb-1">
+                        <input type="file" accept="image/*" name="photo" onchange="loadFile(event)" class="form-control-file form-control-success">
+                        @if ($errors->has('photo'))
+                            <span class="text-danger">{{ $errors->first('photo') }}</span>
+                        @endif
+                    </div>
+                    <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Update</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- End Student Image Modal -->
     <!-- Start ID Card Modal Modal -->
     <div class="modal fade" id="StudentCardModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
@@ -603,55 +648,11 @@ position: relative;
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" id="closeBtn" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
             </div>
         </div>
     </div>
     <!-- End ID Card Modal -->
-    <!-- Start Student Image Modal -->
-    <div class="modal fade" id="StudentImgModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLongTitle">Edit Profile Photo</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-                </div>
-                <div class="modal-body text-center">
-                <form action="{{route('student.profile.photo.update')}}" method="POST" enctype="multipart/form-data">
-                    @csrf
-                    <input type="hidden" name="id" value="{{$student->id}}">
-                    <div class="mb-1">
-                        @if(isset($student->photo))
-                        <img src="{{asset($student->photo)}}" id="output"
-                            class="upImg1 rounded-circle me-50 border" alt="profile image" height="200" width="200">
-                        @else
-
-                            @if( $student->gender == 'male')
-                                <img src="{{asset('images/avatar-male.jpg')}}" id="output"
-                                class="upImg1 rounded-circle me-50 border" alt="profile image" height="200" width="200">
-                            @else
-                                <img src="{{asset('images/avater-female.jpg')}}" id="output"
-                                class="upImg1 rounded-circle me-50 border" alt="profile image" height="200" width="200">
-                            @endif
-                        @endif
-                    </div>
-                    <div class="mb-1">
-                        <input type="file" accept="image/*" name="photo" onchange="loadFile(event)" class="form-control-file form-control-success">
-                        @if ($errors->has('photo'))
-                            <span class="text-danger">{{ $errors->first('photo') }}</span>
-                        @endif
-                    </div>
-                    <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Update</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-    <!-- End Student Image Modal -->
 @endsection
 
 @push('js')

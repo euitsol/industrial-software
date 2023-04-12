@@ -41,4 +41,19 @@ class StudentController extends Controller
         $this->message('success', 'Profile photo update successfully');
         return redirect()->back();
     }
+
+    public function registrationCard(){
+        $data['student'] = Student::with(['courses', 'batches'])->find(Auth::guard('student')->user()->id);
+        return view('student_panel.student.registration_card', $data);
+    }
+    public function studentAttendance(){
+        $data['student'] = Student::findOrFail(Auth::guard('student')->user()->id);
+        $data['minfo'] = array();
+        foreach($data['student']->courses as $ck => $course){
+            foreach($data['student']->batches as $bk => $batch){
+                $data['minfo'][] = BatchAttendance::where('course_id',$course->id)->where('batch_id',$batch->id)->get();
+            }
+        }
+        return view('student_panel.student.attendance_report', $data);
+    }
 }

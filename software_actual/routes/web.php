@@ -610,6 +610,8 @@ Route::group(['middleware' => 'auth'], function () {
         Route::group(['middleware' => 'student'], function () {
                 Route::get('/student/profile', 'AuthStudent\StudentController@studentProfile')->name('student.profile');
                 Route::post('/student/profile/photo/update', 'AuthStudent\StudentController@studentProfileImgUpdate')->name('student.profile.photo.update');
+                Route::get('/student/registration-card', 'AuthStudent\StudentController@registrationCard')->name('student.registration_card');
+                Route::get('/student/attendance-report', 'AuthStudent\StudentController@studentAttendance')->name('student.studentAttendance');
         });
 
 

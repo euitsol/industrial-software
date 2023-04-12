@@ -10,11 +10,11 @@
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     background: #f4f4fb;
+    row-gap: 29.5px;
 }
 .main_card{
-    width: 316px;
-    height: 496px;
-    /* height: 475px; */
+    width: 300px;
+    height: 484px;
     position: relative;
     
 }
@@ -144,7 +144,7 @@
             @foreach($students->chunk(9) as $students)
             <div class="main_column">
                 @forelse ($students as $student)
-                    <div class="main_card mb-2 mx-auto">
+                    <div class="main_card mx-auto">
                         <div class="card_header"></div>
                         <div class="logo_area bg-white">
                         <div class="id_logo">
@@ -218,7 +218,7 @@
         $('.hide').addClass("d-none");
         var pc = document.getElementById(el).innerHTML;
         document.body.innerHTML = pc;
-        document.title = 'Student Cards';
+        document.title = 'Student ID Cards';
         window.print();
         document.body.innerHTML = rp;
     }

@@ -131,9 +131,6 @@ class AttendanceReportController extends Controller
                 $n['minfo'][] = BatchAttendance::where('course_id',$course->id)->where('batch_id',$batch->id)->get();
             }
         }
-        // dd($n['minfo']);
-
-
         return view('attendance_report.single_attendance_report',$n);
 
     }
