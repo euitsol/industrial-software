@@ -23,7 +23,13 @@
                 <i class="fas fa-chalkboard-teacher text-gray"></i>
                 <span>Attendance Report</span>
                 </a>
-            </li>   
+            </li>  
+            <li class="sidebar-list-item">
+                <a href="{{route('student.job_placement.info')}}" class="sidebar-link text-muted">
+                <i class="fas fa-bacon text-gray"></i>
+                <span>Job Placement</span>
+                </a>
+            </li>  
             <li class="sidebar-list-item">
                 <a href="javascript:void(0)" data-toggle="collapse" data-target="#AttendanceReport" class="sidebar-link text-muted" aria-expanded="false" aria-controls="StaticSubNav2">
                     <i class="fas fa-church"></i><span>Static Menu</span>

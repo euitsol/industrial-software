@@ -596,22 +596,31 @@ Route::group(['middleware' => 'auth'], function () {
 
         });
 
-        //Student Pannel Routes
+//Student Pannel Routes
 
         //Login Log Out Routes
         Route::get('/student/login', 'AuthStudent\Auth\StudentAuthController@showLoginForm')->name('student.login');
         Route::post('/student/login', 'AuthStudent\Auth\StudentAuthController@studentLogin')->name('student.login.submit');
         Route::post('/student/logout', 'AuthStudent\Auth\StudentAuthController@studentLogout')->name('student.logout');
 
-        //Registration Routes
-        // Route::get('/student/register', 'AuthStudent\Auth\StudentAuthController@showRegistrationForm')->name('student.register');
-        // Route::post('/student/register', 'AuthStudent\Auth\StudentAuthController@register')->name('student.register.submit');
 
         Route::group(['middleware' => 'student'], function () {
                 Route::get('/student/profile', 'AuthStudent\StudentController@studentProfile')->name('student.profile');
                 Route::post('/student/profile/photo/update', 'AuthStudent\StudentController@studentProfileImgUpdate')->name('student.profile.photo.update');
+                // Registration Card
                 Route::get('/student/registration-card', 'AuthStudent\StudentController@registrationCard')->name('student.registration_card');
+                // Attendance Report
                 Route::get('/student/attendance-report', 'AuthStudent\StudentController@studentAttendance')->name('student.studentAttendance');
+
+                // Job Placement
+                Route::prefix('student/job_placement')->name('student.job_placement.')->group(function () {
+                        Route::get('/student', 'AuthStudent\StudentController@studentJobPlace')->name('info');
+                        Route::get('/create/{id}', 'AuthStudent\StudentController@JPcreate')->name('create');
+                        Route::post('/store', 'AuthStudent\StudentController@JPstore')->name('store');
+                        Route::get('/show/{jp_id}', 'AuthStudent\StudentController@JPshow')->name('show');
+                        Route::get('/edit/{jp_id}', 'AuthStudent\StudentController@JPedit')->name('edit');
+                        Route::post('/update', 'AuthStudent\StudentController@JPupdate')->name('update');
+                });
         });
 
 
