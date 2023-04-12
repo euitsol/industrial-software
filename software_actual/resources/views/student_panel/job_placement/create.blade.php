@@ -144,7 +144,7 @@
                                 <div class="form-group row">
                                     <label class="col-md-3 form-control-label">Designation <span class="text-danger">*</span> </label>
                                     <div class="col-md-9">
-                                        <input type="text" name="designation" value="{{ old('designation') }}" id="designation" class="form-control form-control-success">
+                                        <input type="text" name="designation" value="{{ old('designation') }}" id="designation" class="form-control form-control-success" required>
                                         @if ($errors->has('designation'))
                                             <span class="text-danger">{{ $errors->first('designation') }}</span>
                                         @endif
@@ -162,7 +162,7 @@
                                 <div class="form-group row">
                                     <label class="col-md-3 form-control-label">Joining Date <span class="text-danger">*</span></label>
                                     <div class="col-md-9">
-                                        <input type="date" name="joining_date" value="{{ old('joining_date') }}" id="joining_date" class="form-control form-control-success">
+                                        <input type="date" name="joining_date" value="{{ old('joining_date') }}" id="joining_date" class="form-control form-control-success" required>
                                         @if ($errors->has('joining_date'))
                                             <span class="text-danger">{{ $errors->first('joining_date') }}</span>
                                         @endif
