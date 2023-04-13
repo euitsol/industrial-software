@@ -7,6 +7,7 @@
 @endpush
 @push('css')
 <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+{{-- <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,300;0,400;1,300;1,400&family=Teko:wght@300;400;500;600;700&display=swap" rel="stylesheet"> --}}
 <style>
     a {
         text-decoration: none !important;
@@ -14,9 +15,10 @@
     body {
         margin: 0;
         padding: 0;
-    }
-    body {
         background: white !important;
+        /* font-family: "Teko", Sans-serif; */
+        /* font-size: 20px; */
+        /* font-weight: 400; */
     }
     .name-field span {
         margin-left: 100px !important;
@@ -177,7 +179,7 @@ position: relative;
                         <h4> My Profile </h4>
                         <div class="d-flex align-items-center">
                             <a href="#!" class="btn btn-sm btn-outline-info ml-2">Certificate</a>
-                            <a href="#!" class="btn btn-sm btn-outline-success ml-2" data-toggle="modal" data-target="#StudentCardModal" data-whatever="@mdo">ID Card</a>
+                            <button type="button" class="btn btn-sm btn-outline-success ml-2" data-toggle="modal" data-target="#StudentCardModal">ID Card</button>
                         </div>
                     </div>
 
@@ -203,7 +205,7 @@ position: relative;
                     
                                                             @endif
                                                         </p>
-                                                        <a href="#!" class="btn btn-md btn-outline-info mt-4" data-toggle="modal" data-target="#StudentImg" data-whatever="@fat">Edit Photo</a>
+                                                        <button type="button" class="btn btn-md btn-outline-info mt-4" data-toggle="modal" data-target="#StudentImg" >Edit Photo</button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -215,7 +217,7 @@ position: relative;
                                                     </div>
                                                     <div class="card-body">
                                                         @if ($student->courses->count() > 0)
-                                                            @foreach($student->courses as $ck => $course)
+                                                        @foreach($student->courses as $ck => $course)
                                                             <p><i class="fa fa-check-circle"></i> <span> Course Name: </span>
                                                                 {{$course->title}}
                                                             </p>
@@ -268,7 +270,7 @@ position: relative;
                                                                     @endforeach
                                                                 @endforeach
                                                             </p>
-                                                            @endforeach
+                                                        @endforeach
                                                         @endif
                                                     </div>
                                                 </div>
@@ -543,6 +545,52 @@ position: relative;
             </div>
         </div>
     </div>
+    <!-- Start Student Image Modal -->
+    <div class="modal fade" id="StudentImg" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Edit Profile Photo</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                </div>
+                <div class="modal-body text-center">
+                <form action="{{route('student.profile.photo.update')}}" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    <input type="hidden" name="id" value="{{$student->id}}">
+                    <div class="mb-1 profile-image">
+                        @if(isset($student->photo))
+                        <img src="{{asset($student->photo)}}" id="output"
+                            class="upImg1 rounded-circle me-50 border" alt="profile image" height="200" width="200">
+                        @else
+
+                            @if( $student->gender == 'male')
+                                <img src="{{asset('images/avatar-male.jpg')}}" id="output"
+                                class="upImg1 rounded-circle me-50 border" alt="profile image" height="200" width="200">
+                            @else
+                                <img src="{{asset('images/avater-female.jpg')}}" id="output"
+                                class="upImg1 rounded-circle me-50 border" alt="profile image" height="200" width="200">
+                            @endif
+                        @endif
+                    </div>
+                    <div class="mb-2" style="height:0px">
+                        <label for="profile-picture" class="img-lebel"><i class="fa fa-camera"></i></label>
+                        <input type="file" accept="image/*" name="photo" id="profile-picture" onchange="loadFile(event)" class="form-control-file form-control-success invisible">
+                        @if ($errors->has('photo'))
+                            <span class="text-danger">{{ $errors->first('photo') }}</span>
+                        @endif
+                    </div>
+                    <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Update</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    </div>
+    <!-- End Student Image Modal -->
     <!-- Start ID Card Modal Modal -->
     <div class="modal fade" id="StudentCardModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
@@ -619,53 +667,10 @@ position: relative;
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
             </div>
         </div>
-    </div>
-    <!-- End ID Card Modal -->
-    <!-- Start Student Image Modal -->
-    <div class="modal fade" id="StudentImg" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLongTitle">Edit Profile Photo</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-                </div>
-                <div class="modal-body text-center">
-                <form action="{{route('student.profile.photo.update')}}" method="POST" enctype="multipart/form-data">
-                    @csrf
-                    <input type="hidden" name="id" value="{{$student->id}}">
-                    <div class="mb-1 profile-image">
-                        @if(isset($student->photo))
-                        <img src="{{asset($student->photo)}}" id="output"
-                            class="upImg1 rounded-circle me-50 border" alt="profile image" height="200" width="200">
-                        @else
-
-                            @if( $student->gender == 'male')
-                                <img src="{{asset('images/avatar-male.jpg')}}" id="output"
-                                class="upImg1 rounded-circle me-50 border" alt="profile image" height="200" width="200">
-                            @else
-                                <img src="{{asset('images/avater-female.jpg')}}" id="output"
-                                class="upImg1 rounded-circle me-50 border" alt="profile image" height="200" width="200">
-                            @endif
-                        @endif
-                    </div>
-                    <div class="mb-1">
-                        <label for="profile-picture" class="img-lebel"><i class="fa fa-camera"></i></label>
-                        <input type="file" accept="image/*" name="photo" id="profile-picture" onchange="loadFile(event)" class="form-control-file form-control-success invisible">
-                        @if ($errors->has('photo'))
-                            <span class="text-danger">{{ $errors->first('photo') }}</span>
-                        @endif
-                    </div>
-                    <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Update</button>
-                    </div>
-                </form>
-            </div>
         </div>
     </div>
-    <!-- End Student Image Modal -->
+    <!-- End ID Card Modal -->
+    
 @endsection
 
 @push('js')
