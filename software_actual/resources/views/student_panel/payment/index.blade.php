@@ -69,16 +69,16 @@
                                                 $paid += $payment->amount;
                                             @endphp
                                         @endforeach
-                                        <td class="align-middle"> {{ $paid }} </td>
+                                        <td class="align-middle"> {{ $paid ?? '0' }} </td>
                                         <td class="align-middle text-center"> {{ $account->get_due($payment->id) }} </td>
                                         <td class="align-middle text-center">
                                                 @if($account->get_due($payment->id) == 0)
                                                     <a href="javascript:void(0)"class="btn btn-sm btn-outline-secondary disabled">Paid</a>
                                                 @else
-                                                    <a href=""class="btn btn-sm btn-outline-success">Payment</a>
+                                                    <a href="{{route('student.payment.checkout',encrypt($course->id))}}"class="btn btn-sm btn-outline-success">Payment</a>
                                                 @endif
                                                 
-                                                <a href="" class="btn btn-sm btn-outline-info">Details</a>
+                                                <a href="{{route('student.payment.details',[encrypt($student->id),encrypt($course->id)])}}" class="btn btn-sm btn-outline-info">Details</a>
                                         </td>
                                     </tr>
                                 @endforeach

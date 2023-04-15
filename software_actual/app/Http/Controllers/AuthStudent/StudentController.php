@@ -7,9 +7,13 @@ use App\Models\Student;
 use App\Models\BatchAttendance;
 use App\Models\JobPlacement;
 use App\Models\LinkageIndustryInfo;
+use App\Models\Course;
+use App\Models\Account;
+use App\Models\Payment;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Crypt;
 
 class StudentController extends Controller
 {
@@ -194,8 +198,142 @@ class StudentController extends Controller
 
     }
 
+
     public function studentCourse(){
         $data['student'] = Student::with(['courses','batches'])->where('id',Auth::guard('student')->user()->id)->first();
         return view('student_panel.payment.index',$data);
+    }
+    public function paymentCheckout($id){
+            $id = Crypt::decrypt($id);
+            $data['student'] = Student::findOrFail(Auth::guard('student')->user()->id);
+            $data['course'] = Course::findOrFail($id);
+        
+            return view('student_panel.payment.checkout', $data);
+    }
+    public function paymentDetails($sid, $cid){
+        $sid = Crypt::decrypt($sid);
+        $cid = Crypt::decrypt($cid);
+        $data['student'] = Student::findOrFail($sid);
+        $data['course'] = Course::findOrFail($cid);
+        $data['account'] = Account::where('student_id',$sid)->where('course_id',$cid)->first();
+        $data['payments'] = Payment::where('account_id',$data['account']->id)->get();
+        return view('student_panel.payment.details',$data);
+    }
+
+    public function paymentReceipt($aid ,$pid)
+    {
+        if ($pid == 'null')
+        {
+            $account = Account::with('student')->with('student.batches')->with('course')->find($aid);
+            $student = $account->student;
+            $course = $account->course;
+
+            $batch_name = '';
+            if (isset($student->batches)) {
+                foreach ($student->batches as $b) {
+                    if ($b->course_id == $account->course_id) {
+                        $batch_name = batch_name($course->title_short_form, $b->year, $b->month, $b->batch_number, $b->batch_number);
+                    }
+                }
+            }
+
+            $total_fee = $this->courseFeeCalculate($account, $course->fee);
+
+            $payments = $account->payments;
+            $total_payments = $payments->sum('amount');
+
+            $due = $total_fee - $total_payments;
+
+            $installment_dates = $account->installment_dates;
+            $installment_dates_arr = [];
+            foreach ($installment_dates as $key1 => $value1) {
+                $installment_dates_arr[] = $value1->installment_date;
+            }
+
+            if (count(array_slice($installment_dates_arr, ($payments->count() - 1))) > 0) {
+                $installment_amount = $due / count(array_slice($installment_dates_arr, ($payments->count() - 1)));
+            } else {
+                $installment_amount = $due;
+            }
+            $_installment_dates = array_slice($installment_dates_arr, ($payments->count() - 1));
+
+            return view('student_panel.payment.money_receipt', [
+                'account' => $account,
+                'student' => $student,
+                'course' => $course,
+                'batch_name' => $batch_name,
+                'total_fee' => $total_fee,
+                'due' => $due,
+                'payments' => $payments,
+                'total_payments' => $total_payments,
+                'installment_amount' => $installment_amount,
+                '_installment_dates' => $_installment_dates,
+                'receipt_no' => $payments->max('id') ?? 1
+            ]);
+            
+        }
+        else 
+        {   $total_payments = 0;
+            $account = Account::with('student')->with('student.batches')->with('course')->find($aid);
+            $student = $account->student;
+            $course = $account->course;
+
+            $batch_name = '';
+            if (isset($student->batches)) {
+                foreach ($student->batches as $b) {
+                    if ($b->course_id == $account->course_id) {
+                        $batch_name = batch_name($course->title_short_form, $b->year, $b->month, $b->batch_number, $b->batch_number);
+                    }
+                }
+            }
+
+            $total_fee = $this->courseFeeCalculate($account, $course->fee);
+            
+            $payments_2 = $account->payments;
+            
+            
+            foreach ($payments_2 as $p2)
+            {
+                if( $p2->id <= $pid )
+                {
+                    $total_payments += $p2->amount;
+                }
+            }
+            
+
+            $due = $total_fee - $total_payments;
+            $payments = Payment::where('id', $pid)->get();
+            $installment_dates = $account->installment_dates;
+            $installment_dates_arr = [];
+            foreach ($installment_dates as $key1 => $value1) {
+                $installment_dates_arr[] = $value1->installment_date;
+            }
+
+            if (count(array_slice($installment_dates_arr, ($payments_2->count() - 1))) > 0) {
+                $installment_amount = $due / count(array_slice($installment_dates_arr, ($payments_2->count() - 1)));
+            } else {
+                $installment_amount = $due;
+            }
+            $_installment_dates = array_slice($installment_dates_arr, ($payments_2->count() - 1));
+
+            return view('student_panel.payment.money_receipt', [
+                'account' => $account,
+                'student' => $student,
+                'course' => $course,
+                'batch_name' => $batch_name,
+                'total_fee' => $total_fee,
+                'due' => $due,
+                'payments' => $payments,
+                'total_payments' => $total_payments,
+                'installment_amount' => $installment_amount,
+                '_installment_dates' => $_installment_dates,
+                'receipt_no' => $payments->max('id') ?? 1
+            ]);
+
+            
+
+            
+        }
+
     }
 }

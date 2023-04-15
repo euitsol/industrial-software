@@ -623,7 +623,10 @@ Route::group(['middleware' => 'auth'], function () {
                 });
 
                 // Student Payment
-                Route::get('student/courses/payment','AuthStudent\StudentController@studentCourse')->name('student.courses');
+                Route::get('student/courses/paymeny','AuthStudent\StudentController@studentCourse')->name('student.courses');
+                Route::get('student/payment/checkout/{id}','AuthStudent\StudentController@paymentCheckout')->name('student.payment.checkout');
+                Route::get('student/payment/details/{sid}/{cid}','AuthStudent\StudentController@paymentDetails')->name('student.payment.details');
+                Route::get('student/payment/{aid}/{pid?}/receipt', 'AuthStudent\StudentController@paymentReceipt')->name('student.payment.receipt');
         });
 
 

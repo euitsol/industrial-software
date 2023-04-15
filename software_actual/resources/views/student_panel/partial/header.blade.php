@@ -86,7 +86,7 @@
                                         <th style="padding: 2px 8px !important;">Paid :</th>
                                     </tr>
                                     <tr>
-                                        <td style="padding: 2px 8px !important;">{{ $pay }}.00Tk</td>           
+                                        <td style="padding: 2px 8px !important;">{{ $pay ?? '0' }}.00Tk</td>           
                                     </tr>
                                     {{-- @php
                                         $due = $b->course->fee - $pay;
