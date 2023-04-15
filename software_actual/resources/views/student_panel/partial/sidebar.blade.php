@@ -31,6 +31,12 @@
                 </a>
             </li>  
             <li class="sidebar-list-item">
+                <a href="{{route('student.courses')}}" class="sidebar-link text-muted">
+                <i class="fa fa-money-bill-alt text-gray"></i>
+                <span>Payment</span>
+                </a>
+            </li>  
+            <li class="sidebar-list-item">
                 <a href="javascript:void(0)" data-toggle="collapse" data-target="#AttendanceReport" class="sidebar-link text-muted" aria-expanded="false" aria-controls="StaticSubNav2">
                     <i class="fas fa-church"></i><span>Static Menu</span>
                 </a>

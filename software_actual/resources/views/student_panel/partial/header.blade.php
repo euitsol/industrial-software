@@ -77,25 +77,25 @@
                                     $payments = App\Models\Payment::where('account_id',$account->id)->get();
                                     $pay = 0;
                                 @endphp
-                                    @foreach ($payments as $payment)
-                                        @php
-                                            $pay += $payment->amount;
-                                        @endphp
-                                    @endforeach
+                                @foreach ($payments as $payment)
+                                    @php
+                                        $pay += $payment->amount;
+                                    @endphp
+                                @endforeach
                                     <tr>
                                         <th style="padding: 2px 8px !important;">Paid :</th>
                                     </tr>
                                     <tr>
                                         <td style="padding: 2px 8px !important;">{{ $pay }}.00Tk</td>           
                                     </tr>
-                                    @php
+                                    {{-- @php
                                         $due = $b->course->fee - $pay;
-                                    @endphp
+                                    @endphp --}}
                                     <tr>
                                         <th style="padding: 2px 8px !important;">Due :</th>
                                     </tr>
                                     <tr>
-                                        <td style="padding: 2px 8px !important;"> {{ $due }}.00Tk</td>
+                                        <td style="padding: 2px 8px !important;"> {{ $account->get_due($payment->id) }}.00Tk</td>
                                     </tr>
                                     
                                 @endforeach

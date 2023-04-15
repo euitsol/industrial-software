@@ -20,6 +20,10 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-12 col-lg-12">
+
+
+                @if ($student->courses->count() > 0)
+                @foreach($student->courses as $ck => $course)
                 <div class="card">
                     <div class="card-header">
                         <span class="float-left"><h4> Attendance Report</h4></span>
@@ -36,15 +40,13 @@
                         @endif
                         <div class="clearfix mb-3">
                             <div class="float-left" title="Print Report">
-                                <button type="button" onclick="printT('print_content', '{{$student->institute->name}}')"
+                                <button type="button" onclick="printT('print_content{{$ck}}', '{{$student->institute->name}}')"
                                         class="btn btn-info">
                                     <i class="fa fa-print"></i>
                                 </button>
                             </div>
                         </div>
-                        <div id="print_content">
-                            @if ($student->courses->count() > 0)
-                                @foreach($student->courses as $ck => $course)
+                        <div id="print_content{{$ck}}">
                                     <div style="margin-top: 40px">
                                         <div class="row">
                                             <div class="col-md-7">
@@ -161,11 +163,14 @@
                                             @endif
                                         </table> 
                                     </div>
-                                @endforeach
-                            @endif
                         </div>
                     </div>
                 </div>
+                @endforeach
+                @endif
+
+
+
             </div>
         </div>
     </div>

@@ -193,4 +193,9 @@ class StudentController extends Controller
             return redirect()->route('student.job_placement.info',$m->student_id);
 
     }
+
+    public function studentCourse(){
+        $data['student'] = Student::with(['courses','batches'])->where('id',Auth::guard('student')->user()->id)->first();
+        return view('student_panel.payment.index',$data);
+    }
 }

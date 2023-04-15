@@ -621,6 +621,9 @@ Route::group(['middleware' => 'auth'], function () {
                         Route::get('/edit/{jp_id}', 'AuthStudent\StudentController@JPedit')->name('edit');
                         Route::post('/update', 'AuthStudent\StudentController@JPupdate')->name('update');
                 });
+
+                // Student Payment
+                Route::get('student/courses/payment','AuthStudent\StudentController@studentCourse')->name('student.courses');
         });
 
 
