@@ -609,6 +609,8 @@ Route::group(['middleware' => 'auth'], function () {
                 Route::post('/student/profile/photo/update', 'AuthStudent\StudentController@studentProfileImgUpdate')->name('student.profile.photo.update');
                 // Registration Card
                 Route::get('/student/registration-card', 'AuthStudent\StudentController@registrationCard')->name('student.registration_card');
+                // ID Card
+                Route::get('/student/ID-card', 'AuthStudent\StudentController@idCard')->name('student.id_card');
                 // Attendance Report
                 Route::get('/student/attendance-report', 'AuthStudent\StudentController@studentAttendance')->name('student.studentAttendance');
 

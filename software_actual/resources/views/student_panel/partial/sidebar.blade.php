@@ -11,13 +11,7 @@
                 <i class="o-home-1 text-gray"></i>
                 <span>Home</span>
                 </a>
-            </li> 
-            <li class="sidebar-list-item">
-                <a href="{{route('student.registration_card')}}" class="sidebar-link text-muted">
-                <i class="fa fa-list-alt text-gray"></i>
-                <span>Registration Card</span>
-                </a>
-            </li>       
+            </li>        
             <li class="sidebar-list-item">
                 <a href="{{route('student.studentAttendance')}}" class="sidebar-link text-muted">
                 <i class="fas fa-chalkboard-teacher text-gray"></i>
@@ -25,28 +19,41 @@
                 </a>
             </li>  
             <li class="sidebar-list-item">
-                <a href="{{route('student.job_placement.info')}}" class="sidebar-link text-muted">
-                <i class="fas fa-bacon text-gray"></i>
-                <span>Job Placement</span>
-                </a>
-            </li>  
-            <li class="sidebar-list-item">
                 <a href="{{route('student.courses')}}" class="sidebar-link text-muted">
                 <i class="fa fa-money-bill-alt text-gray"></i>
                 <span>Payment</span>
                 </a>
-            </li>  
+            </li>
+            <li class="sidebar-list-item">
+                <a href="{{route('student.job_placement.info')}}" class="sidebar-link text-muted">
+                <i class="fas fa-bacon text-gray"></i>
+                <span>Job Placement</span>
+                </a>
+            </li>   
             <li class="sidebar-list-item">
                 <a href="javascript:void(0)" data-toggle="collapse" data-target="#AttendanceReport" class="sidebar-link text-muted" aria-expanded="false" aria-controls="StaticSubNav2">
-                    <i class="fas fa-church"></i><span>Static Menu</span>
+                    <i class="fa fa-list-alt text-gray"></i><span>Document</span>
                 </a>
                 <div class="collapse" id="AttendanceReport">
                     <ul class="sidebar-menu list-unstyled border-left border-primary border-thick">
                         <li class="sidebar-list-item">
-                            <a href="#" class="sidebar-link text-muted">
-                                <i class= "fas fa-minus text-gray"></i><span>Static Sub Nav2</span>
+                            <a href="{{route('student.registration_card')}}" class="sidebar-link text-muted">
+                            <i class= "fas fa-minus text-gray"></i>
+                            <span>Registration Card</span>
                             </a>
-                        </li>
+                        </li> 
+                        <li class="sidebar-list-item">
+                            <a href="#" class="sidebar-link text-muted">
+                            <i class= "fas fa-minus text-gray"></i>
+                            <span>Certificate</span>
+                            </a>
+                        </li> 
+                        <li class="sidebar-list-item">
+                            <a href="{{route('student.id_card')}}" class="sidebar-link text-muted">
+                            <i class= "fas fa-minus text-gray"></i>
+                            <span>ID Card</span>
+                            </a>
+                        </li> 
                     </ul>
                 </div>
             </li>

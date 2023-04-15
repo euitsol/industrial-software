@@ -53,6 +53,10 @@ class StudentController extends Controller
         $data['student'] = Student::with(['courses', 'batches'])->find(Auth::guard('student')->user()->id);
         return view('student_panel.student.registration_card', $data);
     }
+    public function idCard(){
+        $data['student']= Student::findOrFail(Auth::guard('student')->user()->id);
+        return view('student_panel.student.id_card',$data);
+    }
     public function studentAttendance(){
         $data['student'] = Student::findOrFail(Auth::guard('student')->user()->id);
         $data['minfo'] = array();
