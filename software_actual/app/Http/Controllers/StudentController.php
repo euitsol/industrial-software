@@ -234,6 +234,8 @@ class StudentController extends Controller
         $s->board_reg = $request->board_reg;
 
         $s->phone = $request->phone;
+        $password = uniqid();
+        $s->password = bcrypt($password);
         $s->parents_phone = $request->parents_phone;
         $s->email = $request->email;
         $s->nationality = $request->nationality;
@@ -262,7 +264,12 @@ class StudentController extends Controller
             
                     $message = "প্রিয় শিক্ষার্থী, \n";
                     $message .= "আপনার নিবন্ধন সম্পন্ন হয়েছে। \n \n";
+                    $message .= "Your Login Information \n";
+                    $message .= "Phone:".$s->phone." \n";
+                    $message .= "Password:".$password." \n";
+                    $message .= "Website: https://industrial-software.ict-skills.com/student/login \n \n";
                     $message .= "ইউরোপিয়ান আইটি ইনস্টিটিউট। \n";
+                    
                     
                     // $message  = "Dear ".$s->name.",\n";
                     // $message .= "Your registration is completed.\n";
