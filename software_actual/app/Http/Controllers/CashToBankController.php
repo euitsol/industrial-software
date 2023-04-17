@@ -63,4 +63,25 @@ class CashToBankController extends Controller
 
         return view('cashtobank.details', compact('payments'));
     }
+
+    public function ctbr_index(){
+        return view('cashtobank_report.index');
+    }
+    public function ctbr_find(Request $request)
+    {
+        $request->validate([
+            'from_date' => 'required|date',
+            'to_date' => 'required|date',
+        ]);
+        return redirect()->route('ctb.report.show', [
+            'from_date' => $request->from_date,
+            'to_date' => $request->to_date
+        ]);
+    }
+    public function ctbr_show($from_date, $to_date){
+        $payments = Payment::where('cashtobank','!=', 0)->whereDate('updated_at', '>=', date('Y-m-d', strtotime($from_date)))
+        ->whereDate('updated_at', '<=', date('Y-m-d', strtotime($to_date)))->get();
+
+        return view('cashtobank.details', compact('payments','from_date','to_date'));
+    }
 }

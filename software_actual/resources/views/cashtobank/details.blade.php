@@ -1,6 +1,9 @@
 @extends('layouts.master')
-
+@if(isset($from_date) && isset($to_date))
+@section('title', 'Cash To Bank Report - European IT Solutions Institute')
+@else
 @section('title', 'Cash To Bank - European IT Solutions Institute')
+@endif
 
 @push('css')
     <link rel="stylesheet" href="{{ asset('assets/vendor/data-table/css/jquery.dataTables.min.css') }}">
@@ -14,14 +17,18 @@
                 <div class="card">
                     <div class="card-header">
                     <span class="float-left">
-                        <h4> Detail Report 
-                            <span class="text-danger">
-                                
-                            </span>
-                        </h4>
+                        @if(isset($from_date) && isset($to_date))
+                        <h4>Cash To Bank Report -({{date('jS, F, Y', strtotime($from_date))}} - {{date('jS, F, Y', strtotime($to_date))}})</h4>
+                        @else
+                        <h4> Detail Report</h4>
+                        @endif
                     </span>
                     <span class="float-right">
-                        <a href="{{ route('ctb') }}" class="btn btn-success ml-1">Back</a>
+                        @if(isset($from_date) && isset($to_date))
+                            <a href="{{ route('ctb.report.search') }}" class="btn btn-success ml-1">Back</a>
+                        @else
+                            <a href="{{ route('ctb') }}" class="btn btn-success ml-1">Back</a>
+                        @endif
                     </span>
 
                     </div>
@@ -42,6 +49,9 @@
                         @if ($payments->count() > 0)
                             <div class="table-responsive">
                                 <table class="table table-bordered display nowrap" id="table_one">
+                                    @if(isset($from_date) && isset($to_date))
+                                    <caption>({{date('jS, F, Y', strtotime($from_date))}} - {{date('jS, F, Y', strtotime($to_date))}})</caption>
+                                    @endif
                                     <thead>
                                     <tr>
                                         <th class="text-center align-middle">SL</th>

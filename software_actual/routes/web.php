@@ -298,6 +298,12 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/cash-to-bank/{date}/{user}/{type}', 'CashToBankController@ctb_all')->name('ctb.all');
         Route::post('/cash-to-bank/add', 'CashToBankController@cash_add')->name('ctb.add');
         Route::get('/cash-to-bank/details', 'CashToBankController@ctb_detail')->name('ctb.detail');
+
+        //Cash to Bank Date wise
+        Route::get('/cash-to-bank-report/search', 'CashToBankController@ctbr_index')->name('ctb.report.search');
+        Route::post('/cash-to-bank-report/find', 'CashToBankController@ctbr_find')->name('ctb.report.find');
+        Route::get('/cash-to-bank-report/show/{from_date}/{to_date}', 'CashToBankController@ctbr_show')->name('ctb.report.show');
+
         
         // additional fee
         Route::get('/additional-fee', 'AccountController@additional_fee')->name('add_fee');
