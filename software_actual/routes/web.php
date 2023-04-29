@@ -17,14 +17,14 @@ use Illuminate\Support\Facades\Route;
     // SSLCOMMERZ Start
     Route::get('/online-payment/example1', 'SslCommerzPaymentController@exampleEasyCheckout');
     Route::get('/online-payment/example2', 'SslCommerzPaymentController@exampleHostedCheckout');
-    
+
     Route::post('/online-payment/pay', 'SslCommerzPaymentController@index');
     Route::post('/online-payment/pay-via-ajax', 'SslCommerzPaymentController@payViaAjax');
-    
+
     Route::post('/online-payment/success', 'SslCommerzPaymentController@success');
     Route::post('/online-payment/fail', 'SslCommerzPaymentController@fail');
     Route::post('/online-payment/cancel', 'SslCommerzPaymentController@cancel');
-    
+
     Route::post('/online-payment/ipn', 'SslCommerzPaymentController@ipn');
     //SSLCOMMERZ END
 
@@ -36,14 +36,14 @@ Route::get('/registration/{student_id}/cheackout', 'Online_registrationControlle
 Route::post('/post-checkout', 'Online_registrationController@course_update')->name('web.post-checkout');
 Route::get('/registration/{student_id}/cheackout/payment', 'Online_registrationController@payment1')->name('web.payment1');
 
-//online payment 
+//online payment
 Route::get('/online-payment', 'OnlinePaymentController@index')->name('op.index');
 Route::post('/online-payment/student/search', 'OnlinePaymentController@search')->name('op.student.search');
 Route::get('/online-payment/student/{id}', 'OnlinePaymentController@checkout')->name('op.student.checkout');
 
 Route::get('/online-payment/successfull-payments', 'OnlinePaymentController@successfullPayments')->name('op.payments.success');
 
-//bkash 
+//bkash
 Route::post('/token', 'BkashController@token')->name('token');
 
 
@@ -76,7 +76,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('/classroom/exam/store' ,'ClassroomController@exam_store')->name('classroom.exam.store');
         Route::get('/classroom/exam/{exam_id}/question_paper' ,'ClassroomController@exam_question_paper')->name('classroom.question_paper');
         Route::post('/classroom/exam/store' ,'ClassroomController@exam_question_paper_store')->name('classroom.question_paper.store');
-        
+
 //Lab-management
 
         Route::get('/lab-management' ,'LabController@index')->name('lab-management');
@@ -139,7 +139,7 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::get('/industrial/student' ,'IndustrialMarketingController@student')->name('marketing.industrial.student');
     Route::post('/industrial/student/add' ,'IndustrialMarketingController@add_student')->name('marketing.industrial.student.add');
-    
+
     Route::get('/industrial/message' ,'IndustrialMarketingController@message_index')->name('marketing.industrial.message');
     Route::post('/industrial/message/search' ,'IndustrialMarketingController@message_search')->name('marketing.industrial.message.search');
     Route::post('/industrial/message/view' ,'IndustrialMarketingController@view')->name('marketing.industrial.message.view');
@@ -174,8 +174,8 @@ Route::group(['middleware' => 'auth'], function () {
         //course status
         Route::get('/course_status' ,'Online_opController@course_status')->name('course_status');
         Route::post('/course_status/store' ,'Online_opController@course_status_store')->name('course_status.store');
-        
-        
+
+
         Route::get('/online-operation/admit/{id}' ,'Online_opController@admit')->name('online_op.admit');
 
 //summary report
@@ -304,7 +304,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('/cash-to-bank-report/find', 'CashToBankController@ctbr_find')->name('ctb.report.find');
         Route::get('/cash-to-bank-report/show/{from_date}/{to_date}', 'CashToBankController@ctbr_show')->name('ctb.report.show');
 
-        
+
         // additional fee
         Route::get('/additional-fee', 'AccountController@additional_fee')->name('add_fee');
 
@@ -452,8 +452,8 @@ Route::group(['middleware' => 'auth'], function () {
                 Route::get('/report/institute/{iid}/{yr}/students/{shift?}', 'ReportController@studentsByInstitute')->name('report.institute.students');
                 Route::get('/report/institute/{iid}/{yr}/students-due/{shift?}', 'ReportController@studentsByInstituteDue')->name('report.institute.students.due');
                 Route::get('/report/division/{division}/{yr}/students', 'ReportController@studentsByDivision')->name('report.division.students');
-                
-                
+
+
                 Route::get('/report/institute', 'ReportController@institute_index')->name('report.institute.index');
                 Route::get('/report/division', 'ReportController@division_index')->name('report.division.index');
 
@@ -468,8 +468,8 @@ Route::group(['middleware' => 'auth'], function () {
                 Route::post('/job_placement/report/search', 'ReportController@jobPlacementReportSearch')->name('job_placement.report.search');
                 Route::get('/job_placement/report/{from_date}/{to_date}/show', 'ReportController@jobPlacementReportShow')->name('job_placement.report.show');
                 Route::get('/student/job_placement/report/{jp_id}/view', 'ReportController@studentJobPlacementReportView')->name('student.job_placement.report.view');
-                
-                
+
+
                 // linkage industry infos report
                 Route::get('/linkage_industry_infos/report', 'ReportController@linkageIndustryInfosReport')->name('linkage_industry_infos.report');
                 Route::post('/linkage_industry_infos/report/search', 'ReportController@linkageIndustryInfosReportSearch')->name('linkage_industry_infos.report.search');
@@ -482,7 +482,7 @@ Route::group(['middleware' => 'auth'], function () {
                 Route::post('/transaction/find', 'ReportController@transaction_find')->name('transaction.find');
         //        Route::get('/transaction/{from_date}/{to_date}/found', 'ReportController@transaction_show')->name('transaction.show');
                 Route::get('/transaction/{uid}/{from_date}/{to_date}/{type}/show', 'ReportController@user_transaction_show')->name('transaction.user.show');
-                
+
         // Transaction Report Session Wise
                 Route::get('/transaction_session_wise', 'ReportController@transaction_session_wise')->name('transaction_session_wise');
                 Route::post('/transaction_session_wise/find', 'ReportController@transaction_session_wise_find')->name('transaction_session_wise.find');
