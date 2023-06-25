@@ -5,7 +5,7 @@
 @push('css')
 <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
 <style>
-    
+
 .main_column{
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
@@ -16,7 +16,7 @@
     width: 300px;
     height: 484px;
     position: relative;
-    
+
 }
 .card_header{
     background: #303140;
@@ -53,7 +53,7 @@
 .id_logo {
     width: 248px;
     margin: 0 auto;
-  
+
 }
 
 
@@ -142,7 +142,7 @@
                 </button>
             </div>
             @foreach($students->chunk(9) as $students)
-            <div class="main_column">
+            <div class="main_column mb-4">
                 @forelse ($students as $student)
                     <div class="main_card mx-auto">
                         <div class="card_header"></div>
@@ -150,10 +150,10 @@
                         <div class="id_logo">
                                 <img class="img-fluid" src="{{asset('images/EUITSols Institute New.png')}}" alt="logo">
                         </div>
-                        
+
                         </div>
                         @if(isset($student->photo))
-                            <img src="{{asset($student->photo)}}" alt="" class="profile-pic">                    
+                            <img src="{{asset($student->photo)}}" alt="" class="profile-pic">
                             @else
                                 @if( $student->gender == 'male')
                                 <img src="{{asset('images/avatar-male.jpg')}}" alt="" class="profile-pic">
@@ -162,10 +162,10 @@
                                 @endif
                             @endif
                         <div class="body_area">
-                        
+
                         <div class="body_content">
                                 <div class="student_name">
-                                    <h2>{{$student->name}}</h2>
+                                    <h2 class="mt-1 text-capitalize">{{strtolower($student->name)}}</h2>
                                     @foreach($student->batches as $batch)
                                         <p>{{$batch->course->title}}</p>
                                     @endforeach
@@ -191,7 +191,7 @@
                                             <li><span>:</span>{{$student->email ?? 'N/A'}}</li>
                                         </ul>
                                     </div>
-                                    
+
                                 </div>
                         </div>
                         </div>
@@ -201,12 +201,12 @@
                 @endforelse
             </div>
             @endforeach
-        
+
         </div>
         @else
         <h4 class="text-center mx-auto text-danger">Empty</h4>
         @endif
-      </div>  
+      </div>
 </div>
 @endsection
 
