@@ -1,0 +1,258 @@
+a {
+    text-decoration: none !important;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    background: white !important;
+}
+tbody, .card-body{
+    font-size: 1rem !important;
+}
+
+._table {
+    width: auto !important;
+}
+
+table {
+    background: none !important;
+}
+table tr td{
+    word-wrap: anywhere;
+}
+
+.student-photo {
+    height: 282px;
+    width: 282px;
+    border-radius: 50%;
+    object-fit: cover !important;
+}
+
+/* Profile Photo CSS Start */
+h1 small {
+    display: block;
+    font-size: 15px;
+    padding-top: 8px;
+    color: gray;
+}
+
+.avatar-upload {
+    position: relative;
+    max-width: 205px;
+    margin: 50px auto 100px auto;
+}
+
+.avatar-upload .avatar-edit {
+    position: absolute;
+    right: 5%;
+    z-index: 1;
+    bottom: 20%;
+}
+
+.avatar-upload .avatar-edit input {
+    display: none;
+}
+
+.avatar-upload .avatar-edit input+label {
+    display: inline-block;
+    width: 2.5em;
+    height: 2.5em;
+    line-height: 2.5em;
+    margin-bottom: 0;
+    border-radius: 100%;
+    border: 1px solid transparent;
+    box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.12);
+    background-color: #fff;
+    cursor: pointer;
+    font-weight: normal;
+    transition: all 0.2s ease-in-out;
+}
+
+.avatar-upload .avatar-edit input+label:hover {
+    background: #f1f1f1;
+    border-color: #d6d6d6;
+}
+
+.avatar-upload .avatar-preview {
+    width: 192px;
+    height: 192px;
+    position: relative;
+    border-radius: 100%;
+    border: 6px solid #F8F8F8;
+    box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.1);
+}
+
+.avatar-upload .avatar-preview>div {
+    width: 100%;
+    height: 100%;
+    border-radius: 100%;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.container2 .btn {
+    position: absolute;
+    top: 90%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+
+    color: white;
+    font-size: 16px;
+
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    text-align: center;
+}
+
+#image {
+    display: block;
+    max-width: 100%;
+}
+
+/* Profile Photo CSS End */
+
+/* Student Card Styles */
+.main_card {
+    width: 300px;
+    height: 484px;
+    position: relative;
+
+}
+
+.card_header {
+    background: #303140;
+    height: 6%;
+}
+
+.card_footer {
+    background-color: #0097d5;
+    height: 4%;
+    position: absolute;
+    bottom: 0;
+}
+
+.logo_area {
+    height: 30%;
+}
+
+.logo_area img {
+    margin-top: 23px;
+}
+
+.body_area {
+    height: 60%;
+    background: #303140;
+    padding-top: 77px;
+    padding: 77px 10px 0px;
+}
+
+.id_logo {
+    width: 248px;
+}
+
+.body_area h2 {
+    color: #4ebff8;
+    font-size: 23px;
+    font-weight: 400;
+    font-family: "Roboto";
+    margin-bottom: 5px;
+    line-height: 22px;
+}
+
+.profile-pic {
+    width: 130px;
+    height: 130px;
+    border: 5px solid;
+    position: absolute;
+    top: 125px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.body_area p {
+    font-size: 19px;
+    color: #ffffff;
+    font-weight: 400;
+    font-family: "Roboto";
+    line-height: 21px;
+}
+
+.logo_area {
+    position: relative
+}
+
+.logo_area::after {
+    content: '';
+    width: 100%;
+    height: 32px;
+    background: #4ebff8;
+    position: absolute;
+    bottom: -32px;
+    left: 0;
+}
+
+.student_details {
+    justify-content: baseline;
+    padding-left: 20px;
+}
+
+.student_details .left_column {
+    width: 30%
+}
+
+.student_details .right_column {
+    width: 70%;
+    padding-left: 38px;
+}
+
+.student_details ul li {
+    list-style: none;
+    color: #ffffff;
+    font-size: 12px;
+    line-height: 20px;
+    overflow-wrap: break-word;
+}
+
+.student_details ul li span {
+    margin-right: 2px;
+}
+
+.student_details .right_column ul li:last-child {
+    line-height: 12px;
+}
+
+.student_details ul {
+    margin: 0;
+    padding: 0;
+}
+
+
+@media only screen and (max-width: 767px) {
+    .card-header{
+        padding: 0.75rem 1.25rem !important;
+    }
+    .card-body {
+        padding: .5rem !important;
+    }
+    .sidebar.shrink {
+        width: 6rem;
+        text-align: center;
+        position: absolute !important;
+        min-height: 100vh !important;
+        z-index: 999 !important;
+      }
+    .sidebar.show {
+        margin-left: 0;
+        position: absolute !important;
+        min-height: 100vh !important;
+        z-index: 999 !important;
+    }
+    
+    .sidebar {
+        width: 10rem
+    }
+  }

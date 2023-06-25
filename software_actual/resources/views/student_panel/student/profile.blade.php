@@ -12,214 +12,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.6/cropper.css"/>
 @endpush
 @push('css')
-<style>
-    a {
-        text-decoration: none !important;
-    }
-    body {
-        margin: 0;
-        padding: 0;
-        background: white !important;
-        /* font-family: "Teko", Sans-serif; */
-        /* font-size: 20px; */
-        /* font-weight: 400; */
-    }
-    ._table {
-        width: auto !important;
-    }
-
-    table {
-        background: none !important;
-    }
-    .student-photo {
-        height: 282px;
-        width: 282px;
-        border-radius: 50%;
-        object-fit: cover !important;
-    }
-</style>
-{{-- Profile Photo CSS Start --}}
-<style>
-    h1 small {
-      display: block;
-      font-size: 15px;
-      padding-top: 8px;
-      color: gray;
-    }
-    .avatar-upload {
-    position: relative;
-    max-width: 205px;
-    margin: 50px auto 100px auto;
-    }
-    .avatar-upload .avatar-edit {
-    position: absolute;
-    right: 5%;
-    z-index: 1;
-    bottom: 20%;
-    }
-    .avatar-upload .avatar-edit input {
-      display: none;
-    }
-    .avatar-upload .avatar-edit input + label {
-        display: inline-block;
-        width: 2.5em;
-        height: 2.5em;
-        line-height: 2.5em;
-        margin-bottom: 0;
-        border-radius: 100%;
-        border: 1px solid transparent;
-        box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.12);
-        background-color: #fff;
-        cursor: pointer;
-        font-weight: normal;
-        transition: all 0.2s ease-in-out;
-    }
-    .avatar-upload .avatar-edit input + label:hover {
-      background: #f1f1f1;
-      border-color: #d6d6d6;
-    }
-    .avatar-upload .avatar-preview {
-      width: 192px;
-      height: 192px;
-      position: relative;
-      border-radius: 100%;
-      border: 6px solid #F8F8F8;
-      box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.1);
-    }
-    .avatar-upload .avatar-preview > div {
-      width: 100%;
-      height: 100%;
-      border-radius: 100%;
-      background-size: cover;
-      background-repeat: no-repeat;
-      background-position: center;
-    }
-    .container2 .btn {
-        position: absolute;
-        top: 90%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        -ms-transform: translate(-50%, -50%);
-
-        color: white;
-        font-size: 16px;
-
-        border: none;
-        cursor: pointer;
-        border-radius: 5px;
-        text-align: center;
-    }
-    #image {
-      display: block;
-      max-width: 100%;
-      }
-  </style>
-{{-- Profile Photo CSS End --}}
-<style>
-/* Student Card Styles */
-.main_card{
-width: 300px;
-height: 484px;
-position: relative;
-
-}
-.card_header{
-    background: #303140;
-    height:6%;
-}
-.card_footer {
-    background-color: #0097d5;
-    height: 4%;
-    position: absolute;
-    bottom: 0;
-}
-
-.logo_area{
-    height: 30%;
-}
-
-.logo_area img{
-    margin-top: 23px;
-}
-
-.body_area {
-    height: 60%;
-    background: #303140;
-    padding-top: 77px;
-    padding:77px 10px 0px;
-}
-.id_logo {
-    width: 248px;
-}
-.body_area h2 {
-    color: #4ebff8;
-    font-size: 23px;
-    font-weight: 400;
-    font-family: "Roboto";
-    margin-bottom: 5px;
-    line-height: 22px;
-}
-.profile-pic {
-    width: 130px;
-    height: 130px;
-    border: 5px solid;
-    position: absolute;
-    top: 125px;
-    left: 50%;
-    transform: translateX(-50%);
-}
-    .body_area p {
-    font-size: 19px;
-    color: #ffffff;
-    font-weight: 400;
-    font-family: "Roboto";
-    line-height: 21px;
-}
-
-.logo_area{
-    position: relative
-}
-.logo_area::after {
-    content: '';
-    width: 100%;
-    height: 32px;
-    background: #4ebff8;
-    position: absolute;
-    bottom: -32px;
-    left: 0;
-}
-.student_details {
-    justify-content: baseline;
-    padding-left:20px;
-}
-
-.student_details .left_column{
-    width: 30%
-}
-.student_details .right_column {
-    width: 70%;
-    padding-left: 38px;
-}
-
-.student_details ul li {
-    list-style: none;
-    color: #ffffff;
-    font-size: 12px;
-    line-height: 20px;
-    overflow-wrap: break-word;
-}
-.student_details ul li span{
-    margin-right: 2px;
-}
-.student_details .right_column ul li:last-child{
-    line-height: 12px;
-}
-
-.student_details ul{
-    margin: 0;
-    padding: 0;
-}
-</style>
 @endpush
 
 @section('content')
@@ -233,7 +25,7 @@ position: relative;
         {{ session('error') }}
     </p>
     @endif
-    <div class="container-fluid">
+    <div class="">
         <div class="row justify-content-center">
             <div class="col-lg-12">
                 <div class="card">
@@ -248,12 +40,11 @@ position: relative;
                     <div class="card-body">
                         <div id="student-info">
                             <div class="info clearfix">
-                                <section class="container-fluid" style="font-size: 20px">
-                                    <div class="container-fluid">
+                                <section style="font-size: 20px">
                                         <div class="row mt-3 mb-5">
-                                            <div class="col-md-6 text-center">
+                                            <div class="col-lg-6 col-sm-12 text-center">
                                                 <div class="card">
-                                                    <div class="card-body my-4">
+                                                    <div class="card-body mb-1">
                                                         <p class="text-center">
                                                             @if(isset($student->photo))
                                                                 <img src="{{asset($student->photo)}}" class="student-photo" alt="">
@@ -273,7 +64,7 @@ position: relative;
                                                 </div>
                                             </div>
 
-                                            <div class="col-md-6">
+                                            <div class="col-lg-6 col-sm-12">
                                                 <div class="card">
                                                     <div class="card-header">
                                                         <h4>Student Status</h4>
@@ -347,8 +138,8 @@ position: relative;
                                                     </div>
                                                     <div class="card-body">
                                                         <div class="row">
-                                                            <div class="col-md-6">
-                                                                <table class="table table-borderless">
+                                                            <div class="col-xl-6 col-sm-12 ">
+                                                                <table class="table border">
                                                                     <tr>
                                                                         <td>Student ID</td>
                                                                         <td>:</td>
@@ -382,8 +173,8 @@ position: relative;
                                                                 </table>
                                                             </div>
 
-                                                            <div class="col-md-6">
-                                                                <table class="table _table table-borderless">
+                                                            <div class="col-xl-6 col-sm-12">
+                                                                <table class="table border">
                                                                     <tr>
                                                                         <td>Nationality</td>
                                                                         <td>:</td>
@@ -417,13 +208,13 @@ position: relative;
                                             </div>
                                         </div>
                                         <div class="row guerdian_information mb-5">
-                                            <div class="col-md-6">
+                                            <div class="col-lg-6 col-sm-12">
                                                 <div class="card">
                                                     <div class="card-header">
                                                         <h5 class="my-2 ml-2">Guerdian Information</h5>
                                                     </div>
                                                     <div class="card-body">
-                                                        <table class="table table-borderless mb-5">
+                                                        <table class="table border">
                                                             <tr>
                                                                 <td>Father's Name</td>
                                                                 <td>:</td>
@@ -444,13 +235,13 @@ position: relative;
                                                 </div>
                                             </div>
 
-                                            <div class="col-md-6">
+                                            <div class="col-lg-6 col-sm-12">
                                                 <div class="card">
                                                     <div class="card-header">
                                                         <h5 class="my-2 ml-2">Institute Information</h5>
                                                     </div>
                                                     <div class="card-body">
-                                                        <table class="table table-borderless">
+                                                        <table class="table border">
                                                             @if (optional($student->institute)->name)
                                                                 <tr>
                                                                     <td>Institute Name</td>
@@ -481,8 +272,8 @@ position: relative;
                                                     </div>
                                                     <div class="card-body">
                                                         <div class="row">
-                                                        <div class="col-md-6">
-                                                            <table class="table table-borderless">
+                                                        <div class="col-lg-6 col-sm-12">
+                                                            <table class="table border">
                                                                 <tr>
                                                                     <td>Present Address</td>
                                                                     <td>:</td>
@@ -490,8 +281,8 @@ position: relative;
                                                                 </tr>
                                                             </table>
                                                         </div>
-                                                        <div class="col-md-6">
-                                                            <table class="table table-borderless">
+                                                        <div class="col-lg-6 col-sm-12">
+                                                            <table class="table border">
                                                                 <tr>
                                                                     <td>Permanent Address</td>
                                                                     <td>:</td>
@@ -511,7 +302,7 @@ position: relative;
                                                         My Note
                                                     </div>
                                                     <div class="card-body">
-                                                        <table class="table table-borderless">
+                                                        <table class="table border">
                                                             <tr class="note">
                                                                 <td>Note</td>
                                                                 <td>:</td>
@@ -539,8 +330,8 @@ position: relative;
                                                         </div>
                                                         <div class="card-body">
                                                             <div class="row">
-                                                                <div class="col-md-6">
-                                                                    <table class="table table-borderless">
+                                                                <div class="col-lg-6 col-sm-12">
+                                                                    <table class="table border">
                                                                         <tr>
                                                                             <td>Name</td>
                                                                             <td>:</td>
@@ -553,8 +344,8 @@ position: relative;
                                                                         </tr>
                                                                     </table>
                                                                 </div>
-                                                                <div class="col-md-6">
-                                                                    <table class="table table-borderless">
+                                                                <div class="col-lg-6 col-sm-12">
+                                                                    <table class="table border">
                                                                         <tr>
                                                                             <td>Relation</td>
                                                                             <td>:</td>
@@ -576,26 +367,43 @@ position: relative;
                                         @endif
 
                                         @if ($student->batches->count() > 0)
-                                            <div class="mt-3 clr">
-                                                <table class="table table-bordered text-center ">
-                                                    <tr class = "">
-                                                        <th>Course</th>
-                                                        <th>Batch</th>
-                                                        <th>Duration</th>
-                                                        <th>Fee</th>
-                                                    </tr>
-                                                    @foreach ($student->batches as $b)
-                                                        <tr>
-                                                            <td>{{$b->course->title}}</td>
-                                                            <td>{{batch_name($b->course->title_short_form, $b->year, $b->month, $b->batch_number)}}</td>
-                                                            <td>{{$b->course->duration}}</td>
-                                                            <td>{{$b->course->fee}}</td>
+                                        <div class="row">
+                                            <div class="col-lg-6 col-sm-12">
+                                                <div class="mt-3 clr">
+                                                    <table class="table table-bordered text-center ">
+                                                        <tr class = "">
+                                                            <th>Course</th>
+                                                            <th>Batch</th>
                                                         </tr>
-                                                    @endforeach
-                                                </table>
+                                                        @foreach ($student->batches as $b)
+                                                            <tr>
+                                                                <td>{{$b->course->title}}</td>
+                                                                <td>{{batch_name($b->course->title_short_form, $b->year, $b->month, $b->batch_number)}}</td>
+                                                            </tr>
+                                                        @endforeach
+                                                    </table>
+                                                </div>
                                             </div>
+                                            <div class="col-lg-6 col-sm-12">
+                                                <div class="mt-3 clr">
+                                                    <table class="table table-bordered text-center ">
+                                                        <tr class = "">
+                                                            <th>Duration</th>
+                                                            <th>Fee</th>
+                                                        </tr>
+                                                        @foreach ($student->batches as $b)
+                                                            <tr>
+                                                                <td>{{$b->course->duration}}</td>
+                                                                <td>{{$b->course->fee}}</td>
+                                                            </tr>
+                                                        @endforeach
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+
                                         @endif
-                                    </div>
+
                                 </section>
 
                             </div>
