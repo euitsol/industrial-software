@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\Storage;
 
 class StudentController extends Controller
 {
@@ -25,7 +26,7 @@ class StudentController extends Controller
                 $data['minfo'][] = BatchAttendance::where('course_id',$course->id)->where('batch_id',$batch->id)->get();
             }
         }
-        
+
         return view('student_panel.student.profile',$data);
     }
     public function studentProfileImgUpdate(Request $request){
@@ -34,17 +35,18 @@ class StudentController extends Controller
         ]);
 
         $s = Student::findOrFail($request->id);
-        if ($request->hasFile('photo')) {
-            if (!empty($s->photo) && file_exists($s->photo)) {
-                unlink($s->photo);
-            }
-            $photo = $request->photo;
-            $img_name = time() . '_' . $photo->getClientOriginalName();
-            $photo->move('uploads/images/', $img_name);
-            $s->photo = 'uploads/images/' . $img_name;
+        if ($request->base64image || $request->base64image != '0') {
+            $folderPath = 'uploads/images/';
+            $image_parts = explode(";base64,", $request->base64image);
+            $image_type_aux = explode("image/", $image_parts[0]);
+            $image_type = $image_type_aux[1];
+            $image_base64 = base64_decode($image_parts[1]);
+            $filename = time() . '.'.$image_type;
+            $file =$folderPath.$filename;
+            file_put_contents($file, $image_base64);
+            $s->photo = $file;
+            $s->save();
         }
-        $s->save();
-
         $this->message('success', 'Profile photo update successfully');
         return redirect()->back();
     }
@@ -135,7 +137,7 @@ class StudentController extends Controller
                     $img_name = time() . '_' . $logo->getClientOriginalName();
                     $logo->move('uploads/images/', $img_name);
                     $data->company_logo = 'uploads/images/' . $img_name;
-                    
+
                 }
 
                 $data->company_website = $request->company_website;
@@ -147,7 +149,7 @@ class StudentController extends Controller
                 $data->created_by = 35;
                 $data->created_at = Carbon::now();
                 $data->save();
-                
+
                 $id = LinkageIndustryInfo::latest()->first();
                 $m->linkage_industry_info_id = $id->id;
             } else {
@@ -211,7 +213,7 @@ class StudentController extends Controller
             $id = Crypt::decrypt($id);
             $data['student'] = Student::findOrFail(Auth::guard('student')->user()->id);
             $data['course'] = Course::findOrFail($id);
-        
+
             return view('student_panel.payment.checkout', $data);
     }
     public function paymentDetails($sid, $cid){
@@ -274,9 +276,9 @@ class StudentController extends Controller
                 '_installment_dates' => $_installment_dates,
                 'receipt_no' => $payments->max('id') ?? 1
             ]);
-            
+
         }
-        else 
+        else
         {   $total_payments = 0;
             $account = Account::with('student')->with('student.batches')->with('course')->find($aid);
             $student = $account->student;
@@ -292,10 +294,10 @@ class StudentController extends Controller
             }
 
             $total_fee = $this->courseFeeCalculate($account, $course->fee);
-            
+
             $payments_2 = $account->payments;
-            
-            
+
+
             foreach ($payments_2 as $p2)
             {
                 if( $p2->id <= $pid )
@@ -303,7 +305,7 @@ class StudentController extends Controller
                     $total_payments += $p2->amount;
                 }
             }
-            
+
 
             $due = $total_fee - $total_payments;
             $payments = Payment::where('id', $pid)->get();
@@ -334,9 +336,9 @@ class StudentController extends Controller
                 'receipt_no' => $payments->max('id') ?? 1
             ]);
 
-            
 
-            
+
+
         }
 
     }

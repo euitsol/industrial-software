@@ -13,7 +13,7 @@
         width: 300px;
         height: 484px;
         position: relative;
-            
+
         }
         .card_header{
             background: #303140;
@@ -25,15 +25,15 @@
             position: absolute;
             bottom: 0;
         }
-        
+
         .logo_area{
             height: 30%;
         }
-        
+
         .logo_area img{
             margin-top: 23px;
         }
-        
+
         .body_area {
             height: 60%;
             background: #303140;
@@ -67,7 +67,7 @@
             font-family: "Roboto";
             line-height: 21px;
         }
-        
+
         .logo_area{
             position: relative
         }
@@ -84,7 +84,7 @@
             justify-content: baseline;
             padding-left:20px;
         }
-        
+
         .student_details .left_column{
             width: 30%
         }
@@ -92,7 +92,7 @@
             width: 70%;
             padding-left: 38px;
         }
-        
+
         .student_details ul li {
             list-style: none;
             color: #ffffff;
@@ -106,7 +106,7 @@
         .student_details .right_column ul li:last-child{
             line-height: 12px;
         }
-        
+
         .student_details ul{
             margin: 0;
             padding: 0;
@@ -118,7 +118,7 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8 col-lg-10">
-            
+
             <div class="card mb-4">
                 <div class="card-header d-flex justify-content-between">
                     <span class="float-left">
@@ -136,10 +136,10 @@
                             <div class="id_logo mx-auto">
                                     <img class="img-fluid" src="{{asset('images/EUITSols Institute New.png')}}" alt="logo">
                             </div>
-                            
+
                             </div>
                             @if(isset($student->photo))
-                                <img src="{{asset($student->photo)}}" alt="" class="profile-pic rounded-circle">                    
+                                <img src="{{asset($student->photo)}}" alt="" class="profile-pic rounded-circle">
                                 @else
                                     @if( $student->gender == 'male')
                                     <img src="{{asset('images/avatar-male.jpg')}}" alt="" class="profile-pic rounded-circle">
@@ -148,8 +148,8 @@
                                     @endif
                                 @endif
                             <div class="body_area">
-                            
-                            <div class="body_content">
+
+                            <div class="body_content mt-2">
                                 <div class="student_name text-center">
                                     <h2>{{$student->name}}</h2>
                                     @foreach($student->batches as $batch)
@@ -177,7 +177,7 @@
                                             <li><span>:</span>{{$student->email ?? 'N/A'}}</li>
                                         </ul>
                                     </div>
-                                    
+
                                 </div>
                             </div>
                         </div>

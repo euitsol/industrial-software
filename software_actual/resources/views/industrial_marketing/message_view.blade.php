@@ -112,7 +112,9 @@ $sl = 1;
                             <td>{{ $student->phone }}</td>
                             <td>
                                 @php $inst = App\Models\Institute::findOrFail($student->institute); @endphp
-                               {{ $inst->name }}
+                              @if($inst != null)
+                               {{ $inst->name}}
+                              @endif
                             </td>
                             <td>
                                 @php $course = App\Models\Course::findOrFail($student->course); @endphp

@@ -72,7 +72,6 @@
                                             <div class="btn-group">
                                                 <a href="{{route('industrial.marketing.student.view',$student->id)}}"class="btn btn-sm btn-dark"><i class="fa fa-eye"></i></a>
                                                 <a href="{{route('industrial.marketing.student.edit',$student->id)}}" class="btn btn-sm btn-info"><i class="fa fa-edit"></i></a>
-                                                <a href="" onclick="return confirm('Are you sure?')" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></a>
                                             </div>
                                         </td>
                                     </tr>

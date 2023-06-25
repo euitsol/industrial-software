@@ -68,7 +68,7 @@
                                         <tr>
                                             <td>Note</td>
                                             <td>:</td>
-                                            <td>{{ $student->note ?? '...' }}</td>
+                                            <td>{{ strip_tags($student->note) ?? '...' }}</td>
                                         </tr>
                                         <tr>
                                             <td>Created By</td>
