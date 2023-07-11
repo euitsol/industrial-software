@@ -23,7 +23,7 @@
 @endpush
 
 @section('content')
-    <div class="container">
+    <div class="">
         <div class="row justify-content-center">
             <div class="col-md-10 col-lg-12">
                 <div class="card">
@@ -133,7 +133,7 @@
                             </p>
                         @endif
 
-                        
+
                         <div class="table-responsive mt-3">
                             <table class="table table-striped">
                                 <thead>
@@ -183,7 +183,7 @@
                                 </tbody>
                             </table>
                         </div>
-                        
+
 
                     </div>
                 </div>

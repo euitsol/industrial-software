@@ -43,7 +43,7 @@
                             </a>
                         </li>
                         <li class="sidebar-list-item">
-                            <a href="#" class="sidebar-link text-muted">
+                            <a href="{{route('student.certificate')}}" class="sidebar-link text-muted">
                             <i class= "fas fa-minus text-gray"></i>
                             <span>Certificate</span>
                             </a>

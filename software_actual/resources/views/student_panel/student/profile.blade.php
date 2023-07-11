@@ -32,7 +32,7 @@
                     <div class="card-header d-flex justify-content-between">
                         <h4> My Profile </h4>
                         <div class="d-flex align-items-center">
-                            <a href="#!" class="btn btn-sm btn-outline-info ml-2">Certificate</a>
+                            {{-- <button type="button" class="btn btn-sm btn-outline-info ml-2" data-toggle="modal" data-target="#StudentCertificateModal">Certificate</button> --}}
                             <button type="button" class="btn btn-sm btn-outline-success ml-2" data-toggle="modal" data-target="#StudentCardModal">ID Card</button>
                         </div>
                     </div>
@@ -416,52 +416,6 @@
             </div>
         </div>
     </div>
-    <!-- Start Student Image Modal -->
-        {{-- <div class="modal fade" id="StudentImg" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLongTitle">Edit Profile Photo</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                    </div>
-                    <div class="modal-body text-center">
-                    <form action="{{route('student.profile.photo.update')}}" method="POST" enctype="multipart/form-data">
-                        @csrf
-                        <input type="hidden" name="id" value="{{$student->id}}">
-                        <div class="mb-1 profile-image">
-                            @if(isset($student->photo))
-                            <img src="{{asset($student->photo)}}" id="output"
-                                class="upImg1 rounded-circle me-50 border" alt="profile image" height="200" width="200">
-                            @else
-
-                                @if( $student->gender == 'male')
-                                    <img src="{{asset('images/avatar-male.jpg')}}" id="output"
-                                    class="upImg1 rounded-circle me-50 border" alt="profile image" height="200" width="200">
-                                @else
-                                    <img src="{{asset('images/avater-female.jpg')}}" id="output"
-                                    class="upImg1 rounded-circle me-50 border" alt="profile image" height="200" width="200">
-                                @endif
-                            @endif
-                        </div>
-                        <div class="mb-2" style="height:0px">
-                            <label for="profile-picture" class="img-lebel"><i class="fa fa-camera"></i></label>
-                            <input type="file" accept="image/*" name="photo" id="profile-picture" onchange="loadFile(event)" class="form-control-file form-control-success invisible">
-                            @if ($errors->has('photo'))
-                                <span class="text-danger">{{ $errors->first('photo') }}</span>
-                            @endif
-                        </div>
-                        <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Update</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-        </div> --}}
-    <!-- End Student Image Modal -->
     <!-- Start Student Image Update With Crop Modal -->
     <div class="modal fade" id="StudentImg" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
@@ -626,6 +580,17 @@
             var pc = document.getElementById(el).innerHTML;
             document.body.innerHTML = pc;
             document.title = 'Student ID Card - European IT Solution Institute';
+            window.print();
+            document.body.innerHTML = rp;
+        }
+    // Id Certificate
+        function printL(el, title = '') {
+            console.log(el);
+            var rp = document.body.innerHTML;
+            $('.hide').addClass("d-none");
+            var pc = document.getElementById(el).innerHTML;
+            document.body.innerHTML = pc;
+            document.title = 'Student Certificate - European IT Solution Institute';
             window.print();
             document.body.innerHTML = rp;
         }

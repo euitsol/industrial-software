@@ -602,7 +602,7 @@ Route::group(['middleware' => 'auth'], function () {
 
         });
 
-//Student Pannel Routes
+//Student Pannel Routes Start
 
         //Login Log Out Routes
         Route::get('/student/login', 'AuthStudent\Auth\StudentAuthController@showLoginForm')->name('student.login');
@@ -617,6 +617,8 @@ Route::group(['middleware' => 'auth'], function () {
                 Route::get('/student/registration-card', 'AuthStudent\StudentController@registrationCard')->name('student.registration_card');
                 // ID Card
                 Route::get('/student/ID-card', 'AuthStudent\StudentController@idCard')->name('student.id_card');
+                // Certificate
+                Route::get('/student/certificate', 'AuthStudent\StudentController@certificate')->name('student.certificate');
                 // Attendance Report
                 Route::get('/student/attendance-report', 'AuthStudent\StudentController@studentAttendance')->name('student.studentAttendance');
 
@@ -637,4 +639,5 @@ Route::group(['middleware' => 'auth'], function () {
                 Route::get('student/payment/{aid}/{pid?}/receipt', 'AuthStudent\StudentController@paymentReceipt')->name('student.payment.receipt');
         });
 
+//Student Pannel Routes End
 

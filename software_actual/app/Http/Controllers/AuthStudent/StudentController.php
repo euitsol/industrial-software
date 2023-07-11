@@ -59,6 +59,10 @@ class StudentController extends Controller
         $data['student']= Student::findOrFail(Auth::guard('student')->user()->id);
         return view('student_panel.student.id_card',$data);
     }
+    public function certificate(){
+        $data['student']= Student::findOrFail(Auth::guard('student')->user()->id);
+        return view('student_panel.student.certificate',$data);
+    }
     public function studentAttendance(){
         $data['student'] = Student::findOrFail(Auth::guard('student')->user()->id);
         $data['minfo'] = array();
