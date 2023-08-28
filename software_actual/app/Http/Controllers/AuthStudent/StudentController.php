@@ -18,8 +18,11 @@ use Illuminate\Support\Facades\Storage;
 
 class StudentController extends Controller
 {
-    public function studentProfile(){
-        $data['student'] = Student::with(['courses', 'batches'])->find(Auth::guard('student')->user()->id);
+    public function studentProfile($id = false){
+        if($id == false){
+            $id = Auth::guard('student')->user()->id;
+        }
+        $data['student'] = Student::with(['courses', 'batches'])->find($id);
         $data['minfo'] = array();
         foreach($data['student']->courses as $ck => $course){
             foreach($data['student']->batches as $bk => $batch){
@@ -33,20 +36,23 @@ class StudentController extends Controller
         $request->validate([
             'photo' => 'image|mimes:jpg,jpeg,png,JPG,JPEG,PNG|max:5120',
         ]);
-
-        $s = Student::findOrFail($request->id);
-        if ($request->base64image || $request->base64image != '0') {
-            $folderPath = 'uploads/images/';
-            $image_parts = explode(";base64,", $request->base64image);
-            $image_type_aux = explode("image/", $image_parts[0]);
-            $image_type = $image_type_aux[1];
-            $image_base64 = base64_decode($image_parts[1]);
-            $filename = time() . '.'.$image_type;
-            $file =$folderPath.$filename;
-            file_put_contents($file, $image_base64);
-            $s->photo = $file;
-            $s->save();
+        if ($request->base64image && preg_match('/^data:image\/(\w+);base64,/', $request->base64image, $matches)) {
+            $image_type = $matches[1];
+            $s = Student::findOrFail($request->id);
+            if ($request->base64image || $request->base64image != '0') {
+                $folderPath = 'uploads/images/';
+                $image_parts = explode(";base64,", $request->base64image);
+                $image_type_aux = explode("image/", $image_parts[0]);
+                $image_type = $image_type_aux[1];
+                $image_base64 = base64_decode($image_parts[1]);
+                $filename = time() . '.'.$image_type;
+                $file =$folderPath.$filename;
+                file_put_contents($file, $image_base64);
+                $s->photo = $file;
+                $s->save();
+            }
         }
+        
         $this->message('success', 'Profile photo update successfully');
         return redirect()->back();
     }

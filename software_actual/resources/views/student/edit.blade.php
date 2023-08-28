@@ -59,6 +59,16 @@
                                         </div>
                                     </div>
                                     <div class="form-group row">
+                                        <label class="col-md-3 form-control-label">Update Password </label>
+                                        <div class="col-md-9">
+                                            <input type="text" name="password" placeholder="Enter your new password" 
+                                                   class="form-control form-control-success">
+                                            @if ($errors->has('password'))
+                                                <span class="text-danger">{{ $errors->first('password') }}</span>
+                                            @endif
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
                                         <label class="col-md-3 form-control-label">Mother's Name <span
                                                     class="text-danger">*</span> </label>
                                         <div class="col-md-9">

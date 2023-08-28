@@ -146,6 +146,7 @@
                                             <th>Name</th>
                                             <th>Username</th>
                                             <th>Role</th>
+                                            <th>Mentor Status</th>
                                             <th>Action</th>
                                         </tr>
                                         @forelse ($users as $key => $user)
@@ -154,6 +155,7 @@
                                                 <td>{{$user->name}}</td>
                                                 <td>{{$user->username}}</td>
                                                 <td>{{$user->role}}</td>
+                                                <td><span class='badge {{$user->mentor_id ? "badge-success" : "badge-primary" }}'>{{$user->mentor_id ? 'Yes' : 'N/A' }}</span></td>
                                                 <td>
                                                     <div class="btn-group">
                                                         @if(Auth::user()->role == 'superadmin')

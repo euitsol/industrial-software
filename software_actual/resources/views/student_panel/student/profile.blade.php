@@ -87,6 +87,17 @@
                                                                     @endforeach
                                                                 @endforeach
                                                             </p>
+                                                            <p><i class="fa fa-check-circle"></i> <span> Total Marks: </span>
+                                                                @foreach($student->batches as $bk => $batch)
+                                                                    @foreach($minfo as $infos)
+                                                                        @foreach($infos as $info)
+                                                                            @if($course->id == $info->course_id && $batch->id == $info->batch_id)
+                                                                                {{$info->studentTotalPresentCount($student->id)*2}}
+                                                                            @endif
+                                                                        @endforeach
+                                                                    @endforeach
+                                                                @endforeach
+                                                            </p>
                                                             <p><i class="fa fa-check-circle"></i> <span> Total Class: </span>
                                                                 {{$course->total_class}}
                                                             </p>
@@ -457,7 +468,7 @@
                 </form>
                 <div class="modal fade bd-example-modal-lg imagecrop" id="model" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
                     <div class="modal-dialog modal-lg">
-                      <div class="modal-content">
+                      <div class="modal-content" style='max-height:85vh;'>
                         <div class="modal-header">
                             <h5 class="modal-title" id="exampleModalLabel">New message</h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -535,7 +546,7 @@
                                             <li>ID NO</li>
                                             <li>Batch No</li>
                                             <li>Phone</li>
-                                            <li>Blood</li>
+                                            <li>Blood Group</li>
                                             <li>Email</li>
                                         </ul>
                                     </div>
@@ -546,7 +557,7 @@
                                                 <li><span>:</span>{{batch_name($batch->course->title_short_form, $batch->year, $batch->month, $batch->batch_number)}}</li>
                                             @endforeach
                                             <li><span>:</span>+88{{$student->phone}}</li>
-                                            <li><span>:</span>{{$student->blood ?? 'N/A'}}</li>
+                                            <li><span>:</span>{{$student->blood_group ?? 'N/A'}}</li>
                                             <li><span>:</span>{{$student->email ?? 'N/A'}}</li>
                                         </ul>
                                     </div>

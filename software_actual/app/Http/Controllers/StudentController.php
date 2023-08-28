@@ -13,6 +13,7 @@ use App\Models\Payment;
 use App\Models\Sms_history;
 use App\Models\Referral;
 use App\Models\Source;
+use Illuminate\Support\Str;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -233,7 +234,7 @@ class StudentController extends Controller
         $s->shift = $request->shift;
         $s->board_reg = $request->board_reg;
         $s->phone = $request->phone;
-        $password = 'EUIT/'.uniqid();
+        $password = 'EUIT/'.Str::random(3);
         $s->password = bcrypt($password);
         $s->parents_phone = $request->parents_phone;
         $s->email = $request->email;
@@ -258,27 +259,20 @@ class StudentController extends Controller
         $s->save();
 
         if($s->id > 0){
-            //reg successfull
+            //Student login credential create successfull
 
                     $message = "প্রিয় শিক্ষার্থী, \n";
                     $message .= "আপনার নিবন্ধন সম্পন্ন হয়েছে। \n \n";
-                    $message .= "Your Login Information \n";
-                    $message .= "Phone: $s->phone  \n";
-                    $message .= "Password: $password  \n";
-                    $message .= "Website: https://industrial-software.ict-skills.com/student/login \n \n";
+                    $message .= "আপনার লগইন তথ্য \n";
+                    $message .= "ফোন: $s->phone  \n";
+                    $message .= "পাসওয়ার্ড: $password  \n";
+                    $message .= "লগইন ইউআরএল: https://sandeepc4.sg-host.com/student/login ";
                     $message .= "ইউরোপিয়ান আইটি ইনস্টিটিউট। \n";
 
-                    // $message  = "Dear ".$s->name.",\n";
-                    // $message .= "Your registration is completed.\n";
-                    // $message .= "Please collect your gift from our institute. \n";
-                    // $message .= "Sincerely,\n";
-                    // $message .= "European IT Institute\n";
-                    // $message .= "Contact Us: 01889977951\n";
-
-                    $result = $this->sendMaskingSms($s->phone, $message);
+                    $result = $this->sendNonMaskingSms($s->phone, $message);
 
             //sms history
-                    $type = "Registration Successful";
+                    $type = "Student Login Credential create successfull";
                     $save = new Sms_history;
                     $save->user_id = Auth::id();
                     $save->message = $message;
@@ -321,7 +315,8 @@ class StudentController extends Controller
             'dob' => 'required',
             'gender' => 'required',
             'phone' => 'required|max:11|min:11',
-            'student_as' => 'required'
+            'student_as' => 'required',
+            'password' => 'nullable|min:6'
         ]);
 
         $s = Student::findOrFail($request->id);
@@ -364,8 +359,33 @@ class StudentController extends Controller
         $s->emergency_contact_relation = $request->emergency_contact_relation;
         $s->emergency_contact_phone = $request->emergency_contact_phone;
 
+        $s->password = bcrypt($request->password);
+
         $s->user_id = Auth::id();
         $s->save();
+        if($request->password != null){
+            //Student login credential create successfull
+
+                    $message = "প্রিয় শিক্ষার্থী, \n";
+                    $message .= "আপনার পাসওয়ার্ড আপডেট করা হয়েছে। \n \n";
+                    $message .= "আপনার লগইন তথ্য \n";
+                    $message .= "ফোন: $s->phone  \n";
+                    $message .= "পাসওয়ার্ড: $request->password  \n";
+                    $message .= "লগইন ইউআরএল: https://sandeepc4.sg-host.com/student/login ";
+                    $message .= "ইউরোপিয়ান আইটি ইনস্টিটিউট। \n";
+
+                    $result = $this->sendNonMaskingSms($s->phone, $message);
+
+            //sms history
+                    $type = "Student Login Credential update successfull";
+                    $save = new Sms_history;
+                    $save->user_id = Auth::id();
+                    $save->message = $message;
+                    $save->type = $type;
+                    $save->status = $result;
+                    $save->receiver_no = $s->phone;
+                    $save->save();
+        }
 
         $this->message('success', 'Student info update successfully');
 

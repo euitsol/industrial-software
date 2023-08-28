@@ -67,6 +67,8 @@ Route::get('/ad', function () {
 
 
 Route::group(['middleware' => 'auth'], function () {
+    
+    
 
 
 //classrooom
@@ -598,8 +600,6 @@ Route::group(['middleware' => 'auth'], function () {
 
             Route::post('/sms-student-institute/{iid}/{yr}', 'ReportController@instituteSms')->name('sms.student.institute');
             Route::post('/sms-student-institute/{iid}/{yr}/due', 'ReportController@instituteSmsDue')->name('sms.student.institute.due');
-
-
         });
 
 //Student Pannel Routes Start
@@ -611,7 +611,7 @@ Route::group(['middleware' => 'auth'], function () {
 
 
         Route::group(['middleware' => 'student'], function () {
-                Route::get('/student/profile', 'AuthStudent\StudentController@studentProfile')->name('student.profile');
+                Route::get('/student/profile/{id?}', 'AuthStudent\StudentController@studentProfile')->name('student.profile');
                 Route::post('/student/profile/photo/update', 'AuthStudent\StudentController@studentProfileImgUpdate')->name('student.profile.photo.update');
                 // Registration Card
                 Route::get('/student/registration-card', 'AuthStudent\StudentController@registrationCard')->name('student.registration_card');

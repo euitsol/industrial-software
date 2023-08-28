@@ -196,12 +196,14 @@ class ReportController extends Controller
                     foreach ($courses as $_k => $course) {
                         if ($course->total_fee > $course->payments) {
                             $b = $student->batches()->where('course_id', $course->id)->first();
+                            if(!empty($b)){
                             $batch_name = batch_name($course->title_short_form, $b->year, $b->month, $b->batch_number);
                             $student['courses'][$_k]['batch'] = $batch_name;
                             $student['courses'][$_k]['due_status'] = true;
                             $student['courses'][$_k]['due_amount'] = $course->total_fee - $course->payments;
                             $student['courses'][$_k]['paid_amount'] = $course->payments;
                             $student['due_count'] += 1;
+                            }
                         }
                     }
                 }
@@ -495,14 +497,22 @@ class ReportController extends Controller
         if (!empty($payments)) {
             foreach ($payments as $payment) {
                 $account = Account::find($payment->account_id);
+                if(!isset($account->student)){
+                    dd($payment);
+                }
                 $batch = $account->student->batches->where('course_id', $account->course_id)->first();
                 if (isset($batch)) {
                     $payment['batch'] = batch_name($account->course->title_short_form, $batch->year, $batch->month, $batch->batch_number);
                 } else {
                     $cm = CourseMigration::where('old_course_id', $account->course_id)
                         ->where('student_id', $account->student_id)->first();
-                    $_batch = Batch::find($cm->old_batch_id);
-                    $payment['batch'] = batch_name($_batch->course->title_short_form, $_batch->year, $_batch->month, $_batch->batch_number);
+                    if(!empty($cm)){
+                        $_batch = Batch::find($cm->old_batch_id);
+                        $payment['batch'] = batch_name($_batch->course->title_short_form, $_batch->year, $_batch->month, $_batch->batch_number);
+                    }else{
+                         $payment['batch'] = 'Not found';
+                    }
+                   
                 }
                 $payment['student_name'] = $account->student->name;
                 $payment['student_phone'] = $account->student->phone;

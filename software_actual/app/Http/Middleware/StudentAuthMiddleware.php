@@ -18,6 +18,9 @@ class StudentAuthMiddleware
         if (Auth::guard('student')->check()) {
             return $next($request);
         }
+        if(isset(Auth::user()->role) && (Auth::user()->role == 'admin' || Auth::user()->role == 'superadmin')){
+            return $next($request);
+        }
 
         return redirect('/student/login');
     }

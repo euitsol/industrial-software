@@ -3,10 +3,47 @@
 @section('title', 'Student ID Card - European IT Solutions Institute')
 @push('css')
     <link rel="stylesheet" href="{{ asset('certificate/style.css') }}">
+    <style>
+    /* .landscape {
+        transform: rotate(90deg);
+        width: 100vw;
+        height: 100vh;
+        overflow: hidden;
+        position: relative;
+        left: -50%;
+    } */
+    @media print {
+        /* .landscape {
+        transform: rotate(-90deg);
+        transform-origin: left top;
+        width: 100vh; / Using the viewport height to set the width /
+        height: 100vw; / Using the viewport width to set the height /
+        position: absolute;
+        top: 100%; / Move the rotated div out of the printable area /
+        page-break-before: always; / Optional: add a page break before the div /
+        } */
+        /* @page {
+        size: landscape; 
+        }
+
+        .landscape {
+            transform: rotate(90deg);
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+            position: relative;
+            left: -50%;
+        } */
+         @page {
+            size: A4 landscape; 
+            margin: 0;
+        }
+    }
+    </style>
 @endpush
 
 @section('content')
-    <div class="container">
+    <div class="container-fluid">
         <div class="row justify-content-center">
             <div class="col-md-12 col-lg-12">
 
@@ -20,18 +57,19 @@
                         </button>
                     </div>
                     <div class="card-body">
-                        <div class="certificate p-0 m-0" id="print">
+                        <div class="certificate landscape p-0 m-0 d-none d-md-block" id="print">
                             @foreach ($student->batches as $batch)
-                                @if ($batch->end_date < Carbon\Carbon::now())
+                                @if (!empty($batch->end_date) && ($batch->end_date < Carbon\Carbon::now()))
                                     <div class="certificater-main-content">
                                         <!--*****Certificate Header Part******-->
                                         <div class="certificate-head-content">
                                             <div class="left-col">
-                                                <p class="sl-no">SL No: 2022194</p>
+                                                <p class="sl-no">SL No: {{$student->year.$student->reg_no}}</p>
                                             </div>
 
                                             <div class="middle-col">
-                                                <h2>CERTIFICATE</h2>
+                                                <img src="{{ asset('certificate/img/euit_logo.svg') }}">
+                                              <h2>CERTIFICATE</h2>
                                                 <h3>OF COMPLETION</h3>
                                                 <h4>THIS IS TO CERTIFY THAT</h4>
                                             </div>
@@ -67,6 +105,7 @@
                                         <!--*****Certificate Footer Part******-->
                                         <div class="certificate-footer-content">
                                             <div class="left-col">
+                                                <span class="daynamic_date"> {{Carbon\Carbon::now()->format('d-m-Y')}}</span>
                                                 <span class="date">DATE OF ISSUE</span>
                                             </div>
                                             <div class="middle-col">
@@ -76,13 +115,13 @@
                                                 <span class="coordinator">COURSE CO-ORDINATOR</span>
                                             </div>
                                         </div>
-                                        <div class="company text-center mt-3">
+                                        <div class="company text-center mt-4">
                                             <p>European IT Solutions Institute, Dhaka, Bangladesh</p>
                                             <a href="www.europeanit-inst.com">www.europeanit-inst.com</a>
                                         </div>
                                     </div>
                                 @else
-                                    <span class="text-center">You got your certificate after finished your course</span>
+                                    <span class="text-center">You get your certificate after completing your course</span>
                                 @endif
                             @endforeach
                         </div>
@@ -100,9 +139,15 @@
             var rp = document.body.innerHTML;
             var pc = document.getElementById(el).innerHTML;
             document.body.innerHTML = pc;
+            // document.body.style.transform = 'rotate(90deg)';
+            document.body.style.width = '100vw';
+            document.body.style.height = '100vh';
             document.title = 'Student Certificate - European IT Solution Institute';
             window.print();
             document.body.innerHTML = rp;
+
+            
         }
+        
     </script>
 @endpush

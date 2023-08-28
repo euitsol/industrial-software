@@ -121,7 +121,7 @@ class PaymentController extends Controller
             }
 // mesage for admin after student 1st payment
             $student = Student::findorFail($request->student_id);
-            $admin = "01773301138";
+            $admin = "01717221398";
             $message = "";            
             
                 // $message .= $student->student_as."\n" ;

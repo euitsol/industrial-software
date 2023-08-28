@@ -10,20 +10,20 @@
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     background: #f4f4fb;
-    row-gap: 29.5px;
+    row-gap: 69.5px;
 }
 .main_card{
-    width: 300px;
-    height: 484px;
+    width: 290px;
+    height: 454px;
     position: relative;
 
 }
 .card_header{
-    background: #303140;
-    height:6%;
+    background: #18182B;
+    height:4.5%;
 }
 .card_footer {
-    background-color: #0097d5;
+    background-color: #00a9ff;
     height: 4%;
     position: absolute;
     width: 100%;
@@ -32,15 +32,17 @@
 
 .logo_area{
     height: 30%;
+    text-align: center;
 }
 
 .logo_area img{
     margin-top: 23px;
+    width: 90% !impotant;
 }
 
 .body_area {
-    height: 60%;
-    background: #303140;
+    height: 61.5%;
+    background: #18182B;
     padding-top: 77px;
     padding-left: 10px;
     padding-right: 10px;
@@ -71,7 +73,7 @@
     border: 5px solid;
     border-radius: 50%;
     position: absolute;
-    top: 125px;
+    top: 100px;
     left: 50%;
     transform: translateX(-50%);
 }
@@ -89,10 +91,11 @@
 .logo_area::after {
     content: '';
     width: 100%;
-    height: 32px;
-    background: #4ebff8;
+    height: 25px;
+    background: #00a9ff;
     position: absolute;
-    bottom: -32px;
+    bottom: 0px;
+    left: 0;
 }
 .student_details {
     display: flex;
@@ -176,7 +179,7 @@
                                             <li>ID NO</li>
                                             <li>Batch No</li>
                                             <li>Phone</li>
-                                            <li>Blood</li>
+                                            <li>Blood Group</li>
                                             <li>Email</li>
                                         </ul>
                                     </div>
@@ -187,7 +190,7 @@
                                                 <li><span>:</span>{{batch_name($batch->course->title_short_form, $batch->year, $batch->month, $batch->batch_number)}}</li>
                                             @endforeach
                                             <li><span>:</span>+88{{$student->phone}}</li>
-                                            <li><span>:</span>{{$student->blood ?? 'N/A'}}</li>
+                                            <li><span>:</span>{{$student->blood_group ?? 'N/A'}}</li>
                                             <li><span>:</span>{{$student->email ?? 'N/A'}}</li>
                                         </ul>
                                     </div>

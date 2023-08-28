@@ -13,11 +13,17 @@ class BatchController extends Controller
 {
     public function index()
     {
-        $batches = Batch::with(['students','user','course','lab'])->get();
+        // $batches = Batch::with(['students','user','course','lab'])->where('end_date','>=',Carbon::now())->get();
+        $batches = Batch::with(['students', 'user', 'course', 'lab'])
+                            ->where(function ($query) {
+                                $query->whereNull('end_date')
+                                    ->orWhere('end_date', '>=', Carbon::now()->format('Y-m-d'));
+                            })
+                            ->get();
         $in_batches = [];
         $pro_batches = [];
         foreach ($batches as $key => $batch) {
-            if ('Industrial' == $batch->course->type) {
+            if ('Industrial' == $batch->course->type ) {
                 $in_batches[$batch->course->title][] = $batch;
             } elseif ('Professional' == $batch->course->type) {
                 $pro_batches[$batch->course->title][] = $batch;

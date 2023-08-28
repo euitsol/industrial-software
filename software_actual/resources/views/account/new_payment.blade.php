@@ -294,7 +294,7 @@
                 output += '<tr><td rowspan="' + (parseInt(installment_quantity_val) + 1) + '" class="gray">Installment Dates</td></tr>';
                 let installment_fee = installment_fee_total / parseInt(installment_quantity_val);
                 for (let i = 0; i < parseInt(installment_quantity_val); i++) {
-                    output += '<tr><td><input type="date" name="installment_date[]" class="form-control form-control-sm" value="2022-11-15"></td>';
+                    output += '<tr><td><input type="date" name="installment_date[]" class="form-control form-control-sm" value="2023-09-25"></td>';
                     output += '<td>' + Math.ceil(installment_fee) + '</td></tr>';
                 }
                 output += '</table>';

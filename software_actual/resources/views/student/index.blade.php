@@ -62,6 +62,7 @@
                                     <th>Name</th>
                                     <th>Phone</th>
                                     <th>Institute</th>
+                                    <th>Image</th>
                                     @if($student_as != null && $student_as == "Industrial")
                                     <th>Shift</th>
                                     @endif
@@ -76,6 +77,7 @@
                                         <td> {{ $student->name }} </td>
                                         <td> {{ $student->phone }} </td>
                                         <td> {{ optional($student->institute)->name }} </td>
+                                        <td><img style="width:50px" src="{{$student->photo ? (asset($student->photo)) : (asset('assets/img/no_img.jpg'))}}"></td>
                                         @if($student_as != null && $student_as == "Industrial")
                                         <td> {{ $student->shift() }} </td>
                                         @endif
@@ -95,6 +97,10 @@
                                                    class="btn btn-sm btn-danger">
                                                     <i class="fa fa-trash"></i>
                                                 </a>
+                                                <a href="{{ route('student.profile',$student->id) }}"
+                                                   class="btn btn-sm btn-dark">
+                                                    <i class="fa fa-user"></i>
+                                                </a>
                                             </div>
                                         </td>
                                     </tr>
@@ -106,6 +112,7 @@
                                     <th>Name</th>
                                     <th>Phone</th>
                                     <th>Institute</th>
+                                    <th>Image</th>
                                     @if($student_as != null && $student_as == "Industrial")
                                     <th>Shift</th>
                                     @endif
