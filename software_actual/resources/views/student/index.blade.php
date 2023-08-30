@@ -142,6 +142,40 @@
     <script src="{{ asset('assets/vendor/data-table/js/buttons.html5.min.js') }}"></script>
     <script src="{{ asset('assets/vendor/data-table/js/buttons.print.min.js') }}"></script>
     <script>
+        $(document).ready(function() {
+        $('.card-print-checkbox').change(function() {
+            var studentId = $(this).data('student-id');
+            var cardPrintStatus = $(this).data('card-print-status');
+            
+            // Toggle the card print status
+            var newCardPrintStatus = cardPrintStatus === 0 ? 1 : 0;
+            let _url = "{{route('updateCardPrintStatus')}}";
+            let token = '{{ csrf_token() }}'
+            console.log(cardPrintStatus);
+            
+            $.ajax({
+                type: 'POST',
+                url: _url,
+                data: {
+                    _token: token,
+                    student_id: studentId,
+                    card_print_status: newCardPrintStatus
+                },
+                success: function(response) {
+                    // Update the data-card-print-status attribute
+                    $('.card-print-checkbox[data-student-id="' + studentId + '"]').data('card-print-status', newCardPrintStatus);
+                    
+                    // Show the success message
+                    $('#success-message').fadeIn().delay(2000).fadeOut();
+                },
+                error: function(xhr, status, error) {
+                    console.error(error);
+                    }
+                });
+            });
+        });
+    </script>
+    <script>
         $(document).ready(function () {
             let type  = $('#studentType').val();
             if( type == 'Professional') 
@@ -178,40 +212,6 @@
                         }
                     }, 'pageLength'
                 ]
-            });
-        });
-    </script>
-    <script>
-        $(document).ready(function() {
-        $('.card-print-checkbox').change(function() {
-            var studentId = $(this).data('student-id');
-            var cardPrintStatus = $(this).data('card-print-status');
-            
-            // Toggle the card print status
-            var newCardPrintStatus = cardPrintStatus === 0 ? 1 : 0;
-            let _url = "{{route('updateCardPrintStatus')}}";
-            let token = '{{ csrf_token() }}'
-            console.log(cardPrintStatus);
-            
-            $.ajax({
-                type: 'POST',
-                url: _url,
-                data: {
-                    _token: token,
-                    student_id: studentId,
-                    card_print_status: newCardPrintStatus
-                },
-                success: function(response) {
-                    // Update the data-card-print-status attribute
-                    $('.card-print-checkbox[data-student-id="' + studentId + '"]').data('card-print-status', newCardPrintStatus);
-                    
-                    // Show the success message
-                    $('#success-message').fadeIn().delay(2000).fadeOut();
-                },
-                error: function(xhr, status, error) {
-                    console.error(error);
-                    }
-                });
             });
         });
     </script>
