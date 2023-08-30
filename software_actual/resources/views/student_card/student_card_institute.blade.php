@@ -1,6 +1,6 @@
 @extends('layouts.master')
 
-@section('title', 'Student Card - European IT Solutions Institute')
+@section('title', 'Student Card Institute Wise - European IT Solutions Institute')
 
 @push('css')
     <style>
@@ -33,7 +33,7 @@
                 <div class="card">
                     <div class="card-header">
                     <span class="float-left">
-                        <h4> Student Cards - Institute </h4>
+                        <h4> Student Cards - Institute Wise </h4>
                     </span>
                     </div>
 

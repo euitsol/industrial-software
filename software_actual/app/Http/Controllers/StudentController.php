@@ -811,4 +811,15 @@ class StudentController extends Controller
     {
         return redirect()->route('student.course.assign', $id);
     }
+
+    public function updateCardPrintStatus(Request $request)
+    {
+        $studentId = $request->input('student_id');
+        $newCardPrintStatus = $request->input('card_print_status');
+        
+        $student = Student::findOrFail($studentId);
+        $student->card_print_status = $newCardPrintStatus;
+        $student->save();
+        return response($student)->json();
+    }
 }

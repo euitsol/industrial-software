@@ -460,10 +460,19 @@ Route::group(['middleware' => 'auth'], function () {
                 Route::get('/report/division', 'ReportController@division_index')->name('report.division.index');
 
 
-                // Student Card
+                // Student Card Institute Wise
                 Route::get('/student-card/institute', 'StudentCardController@index')->name('student_card.institute.index');
                 Route::post('/student-card/institute/find', 'StudentCardController@studentCardFind')->name('student_card.institute.find');
                 Route::get('/student-card/institute/{iid}/{yr}', 'StudentCardController@studentsCardInstitute')->name('student_card.institute.cards');
+
+                // Student Card Batch Wise
+                Route::get('/student-card/batch' ,'StudentCardController@batchWiseCard')->name('student_card.batch');
+                Route::post('/student-card/batch/search', 'StudentCardController@batchWiseSearch')->name('student_card.batch.search');
+                Route::get('/student-card/batch/{ctid}/{cid}/{bid}', 'StudentCardController@batchStudentCard')->name('student_card.batch.view');
+
+                
+                Route::get('/student-card/selected-cards', 'StudentCardController@selectedCards')->name('student_card.selected_cards');
+                Route::get('/selected-cards/clear', 'StudentCardController@selectedCardsClear')->name('selected_cards.clear');
 
                 // Job placement report
                 Route::get('/job_placement/report', 'ReportController@jobPlacementReport')->name('job_placement.report');
@@ -499,10 +508,12 @@ Route::group(['middleware' => 'auth'], function () {
                 Route::get('/student/{sid}/course/{bid}/migration', 'StudentController@student_course_migration')->name('student.course.migration');
                 Route::post('/student/course/migrate', 'StudentController@student_course_migrate')->name('student.course.migrate');
                 Route::get('/student/{sid}/course/{cid}/previous', 'StudentController@migrated_previous_course')->name('student.course.previous');
-
+                
+                
                 Route::get('/students/installment-dates/today', 'ReportController@today_installment_dates')->name('installment_dates.today');
                 Route::post('/students/installment/message', 'AccountController@installment_message_send')->name('student.installment.message');
-
+                
+                Route::post('/update-card-print-status', 'StudentController@updateCardPrintStatus')->name('updateCardPrintStatus');
             });
 
         //     Route::get('/students/{students_type}/{year?}', 'StudentController@index')->name('students.professional',['students_type'=>'Professional']);
