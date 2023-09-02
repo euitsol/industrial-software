@@ -117,6 +117,7 @@ class AttendanceController extends Controller
 
                         $insert->date = date('Y-m-d');
                         $insert->attendance_status = $student['attendance_status'];
+                        $insert->comment = $student['comment'];
                         $insert->created_by = auth()->user()->id;
                         $insert->save();
                     } else {
@@ -124,6 +125,7 @@ class AttendanceController extends Controller
                         $check->batch_attendance_id = $req->batch_attendance_id;
                         $check->class = $req->class;
                         $check->attendance_status = $student['attendance_status'];
+                        $check->comment = $student['comment'];
                         $check->updated_at = Carbon::now()->toDateTimeString();
                         $check->updated_by = auth()->user()->id;
                         $check->update();

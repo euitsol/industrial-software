@@ -137,6 +137,7 @@
                                                         <th class="text-center"> Class </th>
                                                         <th class="text-center"> Date</th>
                                                         <th class="text-center"> Attendance</th>
+                                                        <th class="text-center"> Student Status</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -150,7 +151,10 @@
                                                                             <td class="text-center">{{ $info->getDate($i)->date ?? 'Date' }}</td>
                                                                             <td class="text-center">
                                                                                 <i class="{{optional($info->getAttend($i, $student->id))->attedanceStatus()}}"></i>
-                                                                            </td class="text-center">
+                                                                            </td>
+                                                                                {{$info->comment($student->id,$i)}}
+                                                                            <td class="text-center">
+                                                                            </td>
                                                                         @endif
                                                                     @endforeach
                                                                 @endforeach

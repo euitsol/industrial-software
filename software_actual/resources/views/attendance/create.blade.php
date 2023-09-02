@@ -86,7 +86,8 @@
                                             <th>SL</th>
                                             <th>Student Name</th>
                                             <th>Student Phone</th>
-                                            <th>Action</th>
+                                            <th>Attendance</th>
+                                            <th>Comment</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -113,6 +114,10 @@
                                                             @endisset>
                                                         <label for="attendance_check_a{{ $key }}" class="font-weight-bold"> A</label>
                                                     </div>
+                                                </td>
+                                                <td>
+                                                    <textarea class='w-100' name="student[{{ $key }}][comment]" cols="60">{{$minfo->comment($student->student->id,$class)}}</textarea>
+
                                                 </td>
                                             </tr>
                                         @endforeach
