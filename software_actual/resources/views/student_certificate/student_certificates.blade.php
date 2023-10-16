@@ -50,7 +50,7 @@
                 <div class="card mb-4">
                     <div class="card-header d-flex justify-content-between">
                         <span class="float-left">
-                            <h4>Student Certificate</h4>
+                            <h4>Student Certificates</h4>
                         </span>
                         <button type="button" onclick="printT('print')"
                             class="btn btn-dark btn-sm text-center hide float-right"><i class="fa fa-print"></i>
