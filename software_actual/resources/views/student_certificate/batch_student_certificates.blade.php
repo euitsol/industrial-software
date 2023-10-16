@@ -1,6 +1,6 @@
 @extends('layouts.master')
 
-@section('title', 'Student Certificate - European IT Solutions Institute')
+@section('title', 'Student Certificates - European IT Solutions Institute')
 @push('css')
     <link rel="stylesheet" href="{{ asset('certificate/style.css') }}">
     <style>
@@ -59,13 +59,13 @@
                     <div class="card-body">
                         <div class="certificate landscape p-0 m-0 d-none d-md-block" id="print">
                             @foreach($students as $student)
-                            @foreach ($student->batches as $batch)
+                            @foreach ($student->student->batches as $batch)
                                 {{-- @if (!empty($batch->end_date) && ($batch->end_date < Carbon\Carbon::now())) --}}
                                     <div class="certificater-main-content">
                                         <!--*****Certificate Header Part******-->
                                         <div class="certificate-head-content">
                                             <div class="left-col">
-                                                <p class="sl-no">SL No: {{$student->year.$student->reg_no}}</p>
+                                                <p class="sl-no">SL No: {{$student->student->year.$student->student->reg_no}}</p>
                                             </div>
 
                                             <div class="middle-col">
@@ -85,14 +85,14 @@
                                         <!--*****Certificate Body Part******-->
                                         <div class="certificate-body-content">
                                             <div class="certificate-name">
-                                                <h2>{{ $student->name }}</h2>
+                                                <h2>{{ $student->student->name }}</h2>
                                             </div>
 
                                             <div class="certificate-details">
                                                 <p>
-                                                    Roll No. <span class="roll">{{ $student->board_roll }}</span> Reg.
-                                                    No. <span class="Reg">{{ $student->board_reg }}</span> of
-                                                    <span class="institute">{{ $student->institute->name }}</span> has
+                                                    Roll No. <span class="roll">{{ $student->student->board_roll }}</span> Reg.
+                                                    No. <span class="Reg">{{ $student->student->board_reg }}</span> of
+                                                    <span class="institute">{{ $student->student->institute->name }}</span> has
                                                     participated and successfully
                                                     completed the course of
                                                     <span class="course">Industrial Attachment -

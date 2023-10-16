@@ -470,14 +470,19 @@ Route::group(['middleware' => 'auth'], function () {
                 Route::post('/student-card/batch/search', 'StudentCardController@batchWiseSearch')->name('student_card.batch.search');
                 Route::get('/student-card/batch/{ctid}/{cid}/{bid}', 'StudentCardController@batchStudentCard')->name('student_card.batch.view');
 
-                // Student Certificate Institute Wise
-                Route::get('/student-certificate/institute', 'StudentCertificateController@index')->name('student_certificate.institute.index');
-                Route::post('/student-certificate/institute/find', 'StudentCertificateController@studentCertificateFind')->name('student_certificate.institute.find');
-                Route::get('/student-certificate/institute/{iid}/{yr}', 'StudentCertificateController@studentsCertificateInstitute')->name('student_certificate.institute.certificates');
-
-
                 Route::get('/student-card/selected-cards', 'StudentCardController@selectedCards')->name('student_card.selected_cards');
                 Route::get('/selected-cards/clear', 'StudentCardController@selectedCardsClear')->name('selected_cards.clear');
+
+
+                 // Student Certificate Institute Wise
+                 Route::get('/student-certificate/institute', 'StudentCertificateController@index')->name('student_certificate.institute.index');
+                 Route::post('/student-certificate/institute/find', 'StudentCertificateController@studentCertificateFind')->name('student_certificate.institute.find');
+                 Route::get('/student-certificate/institute/{iid}/{yr}', 'StudentCertificateController@studentsCertificateInstitute')->name('student_certificate.institute.certificates');
+
+                 // Student Certificate Batch Wise
+                 Route::get('/student-certificate/batch' ,'StudentCertificateController@batchWiseCertificate')->name('student_certificate.batch');
+                 Route::post('/student-certificate/batch/search', 'StudentCertificateController@batchWiseSearch')->name('student_certificate.batch.search');
+                 Route::get('/student-certificate/batch/{ctid}/{cid}/{bid}', 'StudentCertificateController@batchStudentCertificate')->name('student_certificate.batch.view');
 
                 // Job placement report
                 Route::get('/job_placement/report', 'ReportController@jobPlacementReport')->name('job_placement.report');
