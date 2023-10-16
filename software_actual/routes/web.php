@@ -67,8 +67,8 @@ Route::get('/ad', function () {
 
 
 Route::group(['middleware' => 'auth'], function () {
-    
-    
+
+
 
 
 //classrooom
@@ -470,7 +470,12 @@ Route::group(['middleware' => 'auth'], function () {
                 Route::post('/student-card/batch/search', 'StudentCardController@batchWiseSearch')->name('student_card.batch.search');
                 Route::get('/student-card/batch/{ctid}/{cid}/{bid}', 'StudentCardController@batchStudentCard')->name('student_card.batch.view');
 
-                
+                // Student Certificate Institute Wise
+                Route::get('/student-certificate/institute', 'StudentCertificateController@index')->name('student_certificate.institute.index');
+                Route::post('/student-certificate/institute/find', 'StudentCertificateController@studentCertificateFind')->name('student_certificate.institute.find');
+                Route::get('/student-certificate/institute/{iid}/{yr}', 'StudentCertificateController@studentsCertificateInstitute')->name('student_certificate.institute.certificates');
+
+
                 Route::get('/student-card/selected-cards', 'StudentCardController@selectedCards')->name('student_card.selected_cards');
                 Route::get('/selected-cards/clear', 'StudentCardController@selectedCardsClear')->name('selected_cards.clear');
 
@@ -508,11 +513,11 @@ Route::group(['middleware' => 'auth'], function () {
                 Route::get('/student/{sid}/course/{bid}/migration', 'StudentController@student_course_migration')->name('student.course.migration');
                 Route::post('/student/course/migrate', 'StudentController@student_course_migrate')->name('student.course.migrate');
                 Route::get('/student/{sid}/course/{cid}/previous', 'StudentController@migrated_previous_course')->name('student.course.previous');
-                
-                
+
+
                 Route::get('/students/installment-dates/today', 'ReportController@today_installment_dates')->name('installment_dates.today');
                 Route::post('/students/installment/message', 'AccountController@installment_message_send')->name('student.installment.message');
-                
+
                 Route::post('/update-card-print-status', 'StudentController@updateCardPrintStatus')->name('updateCardPrintStatus');
             });
 
