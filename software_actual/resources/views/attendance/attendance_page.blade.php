@@ -115,7 +115,7 @@
                                         <tbody>
                                             @for ($i =($minfo->course->total_class/2) + 1; $i <= $minfo->course->total_class; $i++)
                                                 
-                                                    <tr>
+                                                    <tr class="{{ (isset($minfo->getDate($i)->date) && $minfo->getDate($i)->date) ? 'bg-info text-white' : '' }}">
                                                         <td> {{ 'Class-' . $i }}</td>
                                                         <td>{{ $minfo->getDate($i)->date ?? '' }}</td>
                                                         <td class="text-center">

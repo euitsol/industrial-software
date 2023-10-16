@@ -265,47 +265,47 @@
                                                 @endif
                                                 <script>document.getElementById('institute').value = "{{ old('institute') }}";</script>
 
-                                                <div class="clearfix">
-                                                    <small>If institute not exist then you can add</small>
-                                                    <a href="javascript:void(0)" id="new_institute" class="float-right">
-                                                        + New Institute
-                                                    </a>
-                                                </div>
-                                                <div id="new_institute_form" class="border p-2" style="display:none">
-                                                    <div class="form-group">
-                                                        <label class="form-control-label">Institute Name <span
-                                                                    class="text-danger">*</span> </label>
-                                                        <input type="text" name="institute_name"
-                                                               value="{{ old('institute_name') }}"
-                                                               class="form-control form-control-sm">
+                                                {{-- <div class="clearfix">
+                                                        <small>If institute not exist then you can add</small>
+                                                        <a href="javascript:void(0)" id="new_institute" class="float-right">
+                                                            + New Institute
+                                                        </a>
                                                     </div>
-                                                    <div class="form-group">
-                                                        <label class="form-control-label">Address </label>
-                                                        <input type="text" name="institute_address"
-                                                               value="{{ old('institute_address') }}"
-                                                               class="form-control form-control-sm">
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label class="form-control-label">District <span
-                                                                    class="text-danger">*</span> </label>
-                                                        <input type="text" name="institute_district"
-                                                               value="{{ old('institute_district') }}"
-                                                               class="form-control form-control-sm">
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label class="form-control-label">Division <span
-                                                                    class="text-danger">*</span> </label>
-                                                        <input type="text" name="institute_division"
-                                                               value="{{ old('institute_division') }}"
-                                                               class="form-control form-control-sm">
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label class="form-control-label">Website</label>
-                                                        <input type="text" name="institute_website"
-                                                               value="{{ old('institute_website') }}"
-                                                               class="form-control form-control-sm">
-                                                    </div>
-                                                </div>
+                                                    <div id="new_institute_form" class="border p-2" style="display:none">
+                                                        <div class="form-group">
+                                                            <label class="form-control-label">Institute Name <span
+                                                                        class="text-danger">*</span> </label>
+                                                            <input type="text" name="institute_name"
+                                                                value="{{ old('institute_name') }}"
+                                                                class="form-control form-control-sm">
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label class="form-control-label">Address </label>
+                                                            <input type="text" name="institute_address"
+                                                                value="{{ old('institute_address') }}"
+                                                                class="form-control form-control-sm">
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label class="form-control-label">District <span
+                                                                        class="text-danger">*</span> </label>
+                                                            <input type="text" name="institute_district"
+                                                                value="{{ old('institute_district') }}"
+                                                                class="form-control form-control-sm">
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label class="form-control-label">Division <span
+                                                                        class="text-danger">*</span> </label>
+                                                            <input type="text" name="institute_division"
+                                                                value="{{ old('institute_division') }}"
+                                                                class="form-control form-control-sm">
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label class="form-control-label">Website</label>
+                                                            <input type="text" name="institute_website"
+                                                                value="{{ old('institute_website') }}"
+                                                                class="form-control form-control-sm">
+                                                        </div>
+                                                    </div> --}}
                                             </div>
                                         </div>
                                         <div class="form-group row">
