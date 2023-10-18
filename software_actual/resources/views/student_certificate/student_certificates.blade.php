@@ -106,7 +106,10 @@
                                         <!--*****Certificate Footer Part******-->
                                         <div class="certificate-footer-content">
                                             <div class="left-col">
-                                                <span class="daynamic_date"> {{Carbon\Carbon::now()->format('d-m-Y')}}</span>
+                                                <span class="daynamic_date">
+                                                    {{-- {{Carbon\Carbon::now()->format('d-m-Y')}} --}}
+                                                    06-11-2023
+                                                </span>
                                                 <span class="date">DATE OF ISSUE</span>
                                             </div>
                                             <div class="middle-col">
