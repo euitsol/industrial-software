@@ -107,7 +107,8 @@
                                             <div class="left-col">
                                                 <span class="daynamic_date">
                                                     {{-- {{Carbon\Carbon::now()->format('d-m-Y')}} --}}
-                                                    06-11-2023
+                                                    {{-- 06-11-2023 --}}
+                                                    {{$batch->certificate_issue_date ? date('d-m-Y', strtotime($batch->certificate_issue_date)) : 'N/A'}}
                                                 </span>
                                                 <span class="date">DATE OF ISSUE</span>
                                             </div>

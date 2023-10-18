@@ -73,6 +73,7 @@ class BatchController extends Controller
         $b->month = $request->month;
         $b->start_date = $request->start_date;
         $b->end_date = $request->end_date;
+        $b->certificate_issue_date = $request->certificate_issue_date;
         $b->lab_id = $request->lab;
         $b->user_id = Auth::id();
         $b->save();
@@ -102,7 +103,8 @@ class BatchController extends Controller
         }
         $b->start_date = $request->start_date;
         $b->end_date = $request->end_date;
-        
+        $b->certificate_issue_date = $request->certificate_issue_date;
+
         if($request->lab != 'null'){
             $lab = Lab::findOrFail($request->lab);
             if($b->students->count() <= $lab->capacity){
@@ -112,7 +114,7 @@ class BatchController extends Controller
             }else{
                 $this->message('error', 'Total student over the lab capacity');
             }
-                
+
         }else{
             $b->update();
             $this->message('success', 'Batch info update successfully');
@@ -133,7 +135,7 @@ class BatchController extends Controller
             return redirect()->route('batches');
         }
     }
-    
+
     public function status($bid){
         $batch = Batch::findOrFail($bid);
         // dd($batch->lab);
@@ -142,13 +144,13 @@ class BatchController extends Controller
         }else{
             if($batch->students->count() < $batch->lab->capacity){
                 if($batch->status == 1){
-                    $batch->status = 0; 
-                    $this->message('success', 'Batch closed successfully'); 
+                    $batch->status = 0;
+                    $this->message('success', 'Batch closed successfully');
                 }else{
                     $batch->status = 1;
                     $this->message('success', 'Batch open successfully');
                 }
-                $batch->save();            
+                $batch->save();
             }
             else{
                 $this->message('error', "Batch full can't open");
@@ -156,7 +158,7 @@ class BatchController extends Controller
         }
         return redirect()->route('batches');
     }
-    
+
     public function details($id){
         $batch = Batch::where('id',$id)->first();
         $students = $batch->students;
@@ -194,7 +196,7 @@ class BatchController extends Controller
                 $batch->status = 0;
                 $batch->save();
             }
-            
+
         }
     }
 }

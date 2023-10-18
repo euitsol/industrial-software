@@ -3,7 +3,7 @@
 @section('title', 'Create Batch - European IT Solutions Institute')
 
 @push('css')
-    <link rel="stylesheet" href="{{asset('assets/vendor/jquery-ui/jquery-ui.css')}}">
+    <link rel="stylesheet" href="{{ asset('assets/vendor/jquery-ui/jquery-ui.css') }}">
 @endpush
 
 @section('content')
@@ -12,13 +12,12 @@
             <div class="col-md-10 col-lg-12">
                 <div class="card">
                     <div class="card-header">
-                    <span class="float-left">
-                        <h4>Add Batch</h4>
-                    </span>
+                        <span class="float-left">
+                            <h4>Add Batch</h4>
+                        </span>
                         <span class="float-right">
-                        <a href="{{ route('batches') }}"
-                           class="btn btn-info btn-sm">Back</a>
-                    </span>
+                            <a href="{{ route('batches') }}" class="btn btn-info btn-sm">Back</a>
+                        </span>
                     </div>
 
                     <div class="card-body">
@@ -42,12 +41,14 @@
                                         <label class="col-md-3 form-control-label">Course Name</label>
                                         <div class="col-md-9">
                                             <select name="course" id="course" disabled
-                                                    class="form-control form-control-success">
+                                                class="form-control form-control-success">
                                             </select>
                                             @if ($errors->has('course'))
                                                 <span class="text-danger">{{ $errors->first('course') }}</span>
                                             @endif
-                                            <script>document.getElementById('course').value = "{{ old('course') }}";</script>
+                                            <script>
+                                                document.getElementById('course').value = "{{ old('course') }}";
+                                            </script>
 
                                             {{-- show existing batches --}}
                                             <div id="batches"></div>
@@ -62,22 +63,25 @@
 
                                                     <span class="input-group-text" id="batch_prefix"></span>
 
-                                                    <input type="text" name="course_short_form" id="course_short_form" class="input-group-text">
+                                                    <input type="text" name="course_short_form" id="course_short_form"
+                                                        class="input-group-text">
 
                                                     <select name="year" id="year" class="input-group-text">
-                                                        @foreach (array_reverse(range(2017, (date('Y') + 1))) as $date)
-                                                            <option {{$date == date('Y') ? 'selected' : ''}} value="{{ $date }}">{{ $date }}</option>
+                                                        @foreach (array_reverse(range(2017, date('Y') + 1)) as $date)
+                                                            <option {{ $date == date('Y') ? 'selected' : '' }}
+                                                                value="{{ $date }}">{{ $date }}</option>
                                                         @endforeach
                                                     </select>
 
                                                     <select name="month" id="month" class="input-group-text">
-                                                        @for($i=12; $i >= 1; $i--)
-                                                            <option {{(date('m') == $i) ? 'selected' : ''}} value="{{$i}}">{{$i}}</option>
+                                                        @for ($i = 12; $i >= 1; $i--)
+                                                            <option {{ date('m') == $i ? 'selected' : '' }}
+                                                                value="{{ $i }}">{{ $i }}</option>
                                                         @endfor
                                                     </select>
 
                                                     <input type="number" name="batch_number" id="batch_number"
-                                                           class="input-group-text" readonly>
+                                                        class="input-group-text" readonly>
                                                 </div>
                                             </div>
                                             @if ($errors->has('name'))
@@ -90,26 +94,36 @@
                                         <div class="col-md-9">
                                             <div class="row">
                                                 <div class="col">
-                                                    <input type="text" name="start_date" id="start_date" placeholder="Start"
-                                                           class="form-control" autocomplete="off">
+                                                    <input type="text" name="start_date" id="start_date"
+                                                        placeholder="Start" class="form-control" autocomplete="off">
                                                     @if ($errors->has('start_date'))
                                                         <span class="text-danger">{{ $errors->first('start_date') }}</span>
                                                     @endif
                                                 </div>
                                                 <div class="col">
                                                     <input type="text" name="end_date" id="end_date" placeholder="End"
-                                                           class="form-control" autocomplete="off">
+                                                        class="form-control" autocomplete="off">
                                                 </div>
                                             </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-md-3 form-control-label">Certificate Issue Date</label>
+                                        <div class="col-md-9">
+                                                    <input type="text" name="certificate_issue_date" id="certificate_issue_date"
+                                                        placeholder="Certificate Issue Date" class="form-control" autocomplete="off">
+                                                    @if ($errors->has('certificate_issue_date'))
+                                                        <span class="text-danger">{{ $errors->first('certificate_issue_date') }}</span>
+                                                    @endif
                                         </div>
                                     </div>
                                     <div class="form-group row">
                                         <label class="col-md-3 form-control-label">Select Lab</label>
                                         <div class="col-md-9">
                                             <select name="lab" id="lab" class="form-control form-control-success">
-                                                <option value="0" hidden selected >Select Lab Name</option>
-                                                @foreach($labs as $lab )
-                                                    <option value="{{$lab->id}}">{{$lab->lab_name}}</option>
+                                                <option value="0" hidden selected>Select Lab Name</option>
+                                                @foreach ($labs as $lab)
+                                                    <option value="{{ $lab->id }}">{{ $lab->lab_name }}</option>
                                                 @endforeach
                                             </select>
                                             @if ($errors->has('lab'))
@@ -120,8 +134,8 @@
                                     <div class="form-group row">
                                         <div class="col-md-9 ml-auto">
                                             <input type="submit" value="Submit"
-                                                   onclick="return confirm('Are you sure to create new batch?')"
-                                                   class="btn btn-primary">
+                                                onclick="return confirm('Are you sure to create new batch?')"
+                                                class="btn btn-primary">
                                         </div>
                                     </div>
                                 </form>
@@ -135,23 +149,32 @@
 @endsection
 
 @push('js')
-    <script src="{{asset('assets/vendor/jquery-ui/jquery-ui.js')}}"></script>
+    <script src="{{ asset('assets/vendor/jquery-ui/jquery-ui.js') }}"></script>
     <script>
-        $("#start_date").datepicker({dateFormat: 'yy-mm-dd'});
-        $("#end_date").datepicker({dateFormat: 'yy-mm-dd'});
+        $("#start_date").datepicker({
+            dateFormat: 'yy-mm-dd'
+        });
+        $("#end_date").datepicker({
+            dateFormat: 'yy-mm-dd'
+        });
+        $("#certificate_issue_date").datepicker({
+            dateFormat: 'yy-mm-dd'
+        });
 
-        $(document).on('change', '#batch_for', function () {
+        $(document).on('change', '#batch_for', function() {
             let batch_for = $(this).val();
             if ('' != batch_for) {
-                let url = "{{route('courses.type', ['type'])}}";
+                let url = "{{ route('courses.type', ['type']) }}";
                 let _url = url.replace('type', batch_for);
                 $.ajax({
                     url: _url,
                     method: "GET",
-                    success: function (response) {
+                    success: function(response) {
                         if ('' != response) {
                             $('#course').removeAttr('disabled');
-                            let output = '<option selected disabled hidden value="">Choose...</option>' + response;
+                            let output =
+                                '<option selected disabled hidden value="">Choose...</option>' +
+                                response;
                             $('#course').html(output);
                             batch();
                         } else {
@@ -164,7 +187,7 @@
             }
         });
 
-        $(document).on('change', '#course, #year', function () {
+        $(document).on('change', '#course, #year', function() {
             batch();
         });
 
@@ -185,7 +208,7 @@
                 $.ajax({
                     url: ___url,
                     method: "GET",
-                    success: function (response) {
+                    success: function(response) {
                         $('#batch_prefix').html(response['batch_prefix']);
                         $('#course_short_form').val(response['course_short_form']);
                         $('#batch_number').val(response['last_batch_number']);
@@ -203,7 +226,5 @@
         //     }
         //     console.log(wordFirstCharStr);
         // }
-
     </script>
 @endpush
-
