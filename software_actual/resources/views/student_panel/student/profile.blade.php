@@ -129,7 +129,7 @@
                                                                     @foreach($minfo as $infos)
                                                                         @foreach($infos as $info)
                                                                             @if($course->id == $info->course_id && $batch->id == $info->batch_id)
-                                                                                {{$info->studentTotalAbsentCount($student->id)}}
+                                                                                {{$info->completeClassCount()-$info->studentTotalPresentCount($student->id)}}
                                                                             @endif
                                                                         @endforeach
                                                                     @endforeach

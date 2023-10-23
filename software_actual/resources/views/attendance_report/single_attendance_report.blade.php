@@ -62,7 +62,7 @@
                                         <h5 class="mb-2 text-center">--Single Attendance Report--</h5>
                                         <h4>
                                             {{ $student->name }}
-                                            
+
                                         </h4>
                                     </div>
                                     <div class="p-0 mx-auto d-flex info">
@@ -113,7 +113,7 @@
                                                 @foreach($minfo as $infos)
                                                     @foreach($infos as $info)
                                                         @if($course->id == $info->course_id && $batch->id == $info->batch_id)
-                                                            {{$info->studentTotalAbsentCount($student->id)}}
+                                                            {{$info->completeClassCount()-$info->studentTotalPresentCount($student->id)}}
                                                         @endif
                                                     @endforeach
                                                 @endforeach
@@ -140,7 +140,7 @@
                                                                         @if($course->id == $info->course_id && $batch->id == $info->batch_id)
                                                                             <td class="text-center">{{ $info->getDate($i)->date ?? 'Date' }}</td>
                                                                             <td class="text-center">
-                                                                                <i class="{{optional($info->getAttend($i, $student->id))->attedanceStatus()}}"></i> 
+                                                                                <i class="{{optional($info->getAttend($i, $student->id))->attedanceStatus()}}"></i>
                                                                             </td class="text-center">
                                                                         @endif
                                                                     @endforeach
@@ -152,7 +152,7 @@
                                             @else
                                                 <p class="text-center">Please set your course total class!</p>
                                             @endif
-                                        </table> 
+                                        </table>
                                     </div>
                                 @endforeach
                             @endif
