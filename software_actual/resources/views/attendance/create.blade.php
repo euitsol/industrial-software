@@ -85,7 +85,7 @@
                                         <tr>
                                             <th>SL</th>
                                             <th>Student Name</th>
-                                            <th>Student Phone</th>
+                                            <th>Student Phone  <input class="form-check-input ml-4 s_number_check" type="checkbox"></th>
                                             <th>Attendance</th>
                                             <th>Comment</th>
                                         </tr>
@@ -95,7 +95,7 @@
                                             <tr>
                                                 <td>{{ $key + 1 }}</td>
                                                 <td>{{ $student->student->name }}</td>
-                                                <td>{{ $student->student->phone }}</td>
+                                                <td><span class="s_number d-none">{{ $student->student->phone }}</span></td>
                                                 <input type="hidden" name="student[{{ $key }}][id]"
                                                     value="{{ $student->student->id }}">
                                                 <td>
@@ -144,5 +144,17 @@
 <script src="{{asset('assets/vendor/jquery-ui/jquery-ui.js')}}"></script>
 <script>
     $("#date").datepicker({dateFormat: 'yy-mm-dd'});
+</script>
+<script>
+$(document).ready(function() {
+    // When the checkbox is checked, show the s_number element
+    $(".s_number_check").on("change", function() {
+        if ($(this).is(":checked")) {
+            $(".s_number").removeClass("d-none");
+        } else {
+            $(".s_number").addClass("d-none");
+        }
+    });
+});
 </script>
 @endpush

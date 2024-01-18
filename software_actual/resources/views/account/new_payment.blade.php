@@ -32,10 +32,12 @@
                                     </p>
                                 @endif
 
-                                @if($errors->has('installment_date.*'))
-                                    <p class="alert alert-danger text-center">
-                                        The installment date fields are required
-                                    </p>
+                                @if ($errors->any())
+                                    <div class="alert alert-danger text-center">
+                                        @foreach ($errors->all() as $error)
+                                            <p>{{ $error }}</p>
+                                        @endforeach
+                                    </div>
                                 @endif
 
                                 <form action="{{ route('payment.new.receive') }}" method="POST" class="form-horizontal">
@@ -66,7 +68,7 @@
                                             <div class="input-group" id="discount" style="display: none">
 
                                                 <input type="number" name="discount_percent" id="discount_percent"
-                                                       value="{{ old('discount_percent') }}" min="0"
+                                                       value="" min="0"
                                                        placeholder="Percent"
                                                        class="form-control">
 
@@ -78,7 +80,7 @@
                                                 <span class="ml-2 mr-2 mt-2">OR</span>
 
                                                 <input type="number" name="discount_amount" id="discount_amount"
-                                                       value="{{ old('discount_amount') }}" min="0" placeholder="Amount"
+                                                       value="" min="0" placeholder="Amount"
                                                        class="form-control">
                                             </div>
 
@@ -104,30 +106,67 @@
                                             <label for="method_fullPayment">
                                                 <input type="radio" name="method_radio" id="method_fullPayment"
                                                        value="full_payment" > Full Payment</label>
+                                        </div>
+                                    </div>
 
-                                            <div class="input-group w-50" id="payment_method">
-
-                                                <input type="number" name="installment_quantity"
-                                                       id="installment_quantity"
-                                                       value="{{ old('installment_quantity') }}" min="0"
-                                                       placeholder="How many installment"
-                                                       class="form-control form-control-sm">
-                                            </div>
-
+                                    <div class="form-group row mb-0">
+                                        <label class="col-md-3 form-control-label">Payment Type</label>
+                                        <div class="col-md-9">
+                                            <input type="checkbox" name="payment_type[]" id="type_cash" value="cash">
+                                            <label for="type_cash" class="mr-2">Cash</label>
+                                            <input type="checkbox" name="payment_type[]" id="type_mb" value="mobile_banking" >
+                                            <label for="type_mb">Mobile Banking</label>
+                                            <br>
+                                            @if ($errors->has('payment_type'))
+                                                <span class="text-danger">{{$errors->first('payment_type')}}</span>
+                                            @endif
                                         </div>
                                     </div>
 
                                     <div class="form-group row">
-                                        <label for="" class="col-md-3 form-control-label"> Amount </label>
+                                        <div class="col-md-3"></div>
+                                        <div class="col-md-9" id="payment_inputs">
+                                            <div class="input-group w-50 mt-2" id="cash_container" style="display:none;">
+                                                <input placeholder="Cash payment amount" type="number" name="cash_payment" id="cash_payment" value="" min="0"class="form-control form-control-sm">
+                                            </div>
+                                            <div class="w-50 mt-2" id="mb_container" style="display:none;">
+                                                <select class="form-control form-control-sm" name="mb_type" id="mb_type">
+                                                    <option value="" hidden>Banking Type</option>
+                                                    <option value="1">Bkash</option>
+                                                    <option value="2">Rocket</option>
+                                                    <option value="3">Nagad</option>
+                                                    <option value="4">Nexus Pay</option>
+                                                </select>
+                                                <input placeholder="MB payment amount" type="number" name="mb_payment" id="mb_payment" value="" min="0" class="form-control form-control-sm mt-2">
+                                                <input placeholder="Trxn ID Last 6 digits (Uppercase)" type="text" name="mb_trxn" id="mb_trxn" value="" class="form-control form-control-sm mt-2">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row">
+                                        <label for="" class="col-md-3 form-control-label">Total Amount </label>
                                         <div class="col-md-9">
                                             <input type="text" name="amount" id="today_payable"
-                                                   class="form-control w-50">
+                                                   class="form-control w-50" disabled>
+                                            <input type="hidden" name="amount" id="payable_amount" class="d-none">
                                             @if ($errors->has('amount'))
                                                 <span class="text-danger">{{$errors->first('amount')}}</span>
                                             @endif
                                         </div>
                                     </div>
 
+                                    <div class="form-group row" id="payment_method">
+                                        <label class="col-md-3 form-control-label">Installment quantity</label>
+                                        <div class="col-md-9">
+                                            <div class="input-group w-50">
+                                                <input type="number" name="installment_quantity"
+                                                    id="installment_quantity"
+                                                    value="" min="0"
+                                                    placeholder="How many installment"
+                                                    class="form-control form-control-sm">
+                                            </div>
+                                        </div>
+                                    </div>
                                     <div class="form-group">
                                         {{-- Installment Dates --}}
                                         <div id="installment_dates"></div>
@@ -192,15 +231,6 @@
 @endsection
 
 @push('js')
-
-    @if (old('discount_percent') || old('discount_amount'))
-        <script>$("#discount").show(100);</script>
-    @endif
-
-    @if (old('installment_quantity') || old('installment_next_days'))
-        <script>$("#payment_method").show(100);</script>
-    @endif
-
     <script>
         let $course_fee = ("{{ $course->fee }}" * 1);
 
@@ -233,6 +263,8 @@
         let total = 0;
 
         function payment_calculation() {
+            let given_actual_total =  $('#today_payable').val();
+            let split_total = 0;
             let discount_percent = $("#discount_percent");
             let discount_percent_val = $("#discount_percent").val();
             let discount_amount = $("#discount_amount");
@@ -267,10 +299,14 @@
                 total = total - discount_amount_val;
                 total_fee = total_fee - discount_amount_val;
             }
+            if((parseInt($('#cash_payment').val()) || 0) > 0 || (parseInt($('#mb_payment').val()) || 0) > 0){
+                total = given_actual_total;
+            }
             if ((installment_quantity_val * 1) > 0) {
-                total = total / (installment_quantity_val * 1);
+                split_total = total / (installment_quantity_val * 1);
             }
             $('#today_payable').val(Math.ceil(total));
+            $('#payable_amount').val(Math.ceil(total));
             $('#total_fee').html(total_fee.toFixed(2));
             $('#_total_fee').val(total_fee.toFixed(2));
             installmentDatesGenerate(total_fee, total);
@@ -278,11 +314,11 @@
 
         payment_calculation();
 
-        $(document).on('keyup change focusout', "#discount_percent, #discount_amount, #installment_quantity", function () {
+        $(document).on('keyup change focusout input', "#discount_percent, #discount_amount, #installment_quantity", function () {
             payment_calculation();
         });
 
-        $(document).on('keyup change focusout', '#today_payable', function () {
+        $(document).on('keyup change focusout input', '#today_payable', function () {
             installmentDatesGenerate($('#total_fee').text(), ($(this).val() * 1));
         });
 
@@ -294,7 +330,7 @@
                 output += '<tr><td rowspan="' + (parseInt(installment_quantity_val) + 1) + '" class="gray">Installment Dates</td></tr>';
                 let installment_fee = installment_fee_total / parseInt(installment_quantity_val);
                 for (let i = 0; i < parseInt(installment_quantity_val); i++) {
-                    output += '<tr><td><input type="date" name="installment_date[]" class="form-control form-control-sm" value="2023-09-25"></td>';
+                    output += '<tr><td><input type="date" name="installment_date[]" class="form-control form-control-sm" value=""></td>';
                     output += '<td>' + Math.ceil(installment_fee) + '</td></tr>';
                 }
                 output += '</table>';
@@ -319,5 +355,35 @@
             return array[array.length - 1];
         }
 
+    </script>
+    <script>
+        $(document).ready(function() {
+            $('#type_cash').change(function() {
+                if ($(this).is(':checked')) {
+                    $('#cash_container').show();
+                } else {
+                    $('#cash_payment').val('');
+                    $('#cash_container').hide();
+                }
+            });
+
+            $('#type_mb').change(function() {
+                if ($(this).is(':checked')) {
+                    $('#mb_container').show();
+                } else {
+                    $('#mb_payment').val('');
+                    $('#mb_type').prop('selectedIndex', 0);
+                    $('#mb_container').hide();
+                }
+            });
+
+            $(document).on('change input', '#cash_payment, #mb_payment', function() {
+                let cash = parseInt($('#cash_payment').val()) || 0;
+                let mb_payment = parseInt($('#mb_payment').val()) || 0;
+                $('#today_payable').val(Math.ceil(cash + mb_payment));
+                payment_calculation();
+            });
+        });
+    
     </script>
 @endpush

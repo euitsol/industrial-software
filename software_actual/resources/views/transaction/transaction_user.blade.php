@@ -12,7 +12,7 @@
             <div class="col-md-10 col-lg-12">
                 <div class="card">
                     <div class="card-header">
-                        <h4> Transaction Report </h4>
+                        <h4> Transaction Report - Industrial</h4>
                     </div>
 
                     <div class="card-body">
@@ -47,42 +47,78 @@
                         @if (!empty($payments))
 
                             @php($total = 0)
+                            @php($mb = 0)
+                            @php($cash = 0)
 
                             <div class="table-responsive">
                                 <table class="table table-bordered">
                                     <thead>
                                     <tr>
-                                        <th>SL</th>
-                                        <th>Name</th>
-                                        <th>Phone</th>
-                                        <th>Institute</th>
-                                        <th>Batch</th>
-                                        <th>Student As</th>
-                                        <th>Amount</th>
+                                        <th class="text-center align-middle" rowspan="2">SL</th>
+                                        <th class="text-center align-middle" rowspan="2">Name</th>
+                                        <th class="text-center align-middle" rowspan="2">Phone</th>
+                                        <th class="text-center align-middle" rowspan="2">Institute</th>
+                                        <th class="text-center align-middle" rowspan="2">Batch</th>
+                                        <th class="text-center align-middle" colspan="3">Amount</th>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="1" class="text-center align-middle">Cash</td>
+                                        <td colspan="1" class="text-center align-middle">Mobile Banking</td>
+                                        <td colspan="1" class="text-center align-middle">Total</td>
                                     </tr>
                                     </thead>
                                     <tbody>
                                     @foreach ($payments as $pk => $payment)
 
                                         @php($total += $payment->amount)
+                                        @php($mb += $payment->mb_payment)
+                                        @php($cash += $payment->cash_payment)
 
                                         <tr>
-                                            <td>{{ ++$pk }}</td>
-                                            <td>{{ $payment->student_name }}</td>
-                                            <td>{{ $payment->student_phone }}</td>
-                                            <td>{{ $payment->institute }}</td>
-                                            <td>{{ $payment->batch }}</td>
-                                            <td>{{ $payment->student_as }}</td>
-                                            <td>{{ $payment->amount }}</td>
+                                            <td class="text-center align-middle" >{{ ++$pk }}</td>
+                                            <td class="text-center align-middle" >{{ $payment->student_name }}</td>
+                                            <td class="text-center align-middle" >{{ $payment->student_phone }}</td>
+                                            <td class="text-center align-middle" >{{ $payment->institute }}</td>
+                                            <td class="text-center align-middle" >{{ $payment->batch }}</td>
+                                            <td class="text-center align-middle" >
+                                                {{ number_format($payment->cash_payment ?? 0) }}
+                                            </td>
+                                            <td class="text-center align-middle" >
+                                                @if(isset($payment->mb_payment) && !empty($payment->mb_payment))
+                                                    {{ number_format($payment->mb_payment ?? 0) }}
+                                                    @if(isset($payment->mb_payment_type) && !empty($payment->mb_payment_type))
+                                                        ({{ $payment->mb_type() }})
+                                                    @endif
+                                                    @if(isset($payment->mb_trxn_id) && !empty($payment->mb_trxn_id))
+                                                        <br> <p class="m-0" style="font-size:12px"><b>Trxn ID: </b> {{ $payment->mb_trxn_id }} </p>
+                                                    @endif
+                                                @else
+                                                    0
+                                                @endif
+                                            </td>
+                                            <td class="text-center align-middle" >
+                                                {{ number_format($payment->amount) }}
+                                            </td>
                                         </tr>
                                     @endforeach
                                     </tbody>
                                 </table>
                             </div>
 
-                            <p class="text-center" style="font-size: 20px;">
-                                <b>Total Transaction :</b> {{ number_format($total, 2) }} Taka
-                            </p>
+                            <div class="d-flex align-item-center justify-content-center">
+                                <div class="">
+                                    <p class="text-left" style="font-size: 15px;">
+                                        <b>Total Transaction :</b> {{ number_format($total, 2) }} Taka
+                                    </p>      
+                                    <p class="text-left" style="font-size: 15px;">
+                                        <b>Total Cash Transaction:</b> {{ number_format($cash, 2) }} Taka <br>
+                                    </p>
+                                    <p class="text-left" style="font-size: 15px;">
+                                        <b>Total Mobile Banking Transaction:</b> {{ number_format($mb, 2) }} Taka <br>
+                                    </p>
+                                </div>
+                            </div>
+                            
                         @endif
 
                     </div>

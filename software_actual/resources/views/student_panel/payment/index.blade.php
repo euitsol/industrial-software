@@ -64,15 +64,17 @@
                                             $paid = 0;
                                         @endphp
                                         @endforeach
+                                        @if(isset($payments) && !empty($payments))
                                         @foreach ($payments as $payment)
                                             @php
                                                 $paid += $payment->amount;
                                             @endphp
                                         @endforeach
+                                        @endif
                                         <td class="align-middle"> {{ $paid ?? '0' }} </td>
-                                        <td class="align-middle text-center"> {{ $account->get_due($payment->id) }} </td>
+                                        <td class="align-middle text-center"> {{ $course->account->get_due($payment->id) }} </td>
                                         <td class="align-middle text-center">
-                                                @if($account->get_due($payment->id) == 0)
+                                                @if($course->account->get_due($payment->id) == 0)
                                                     <a href="javascript:void(0)"class="btn btn-sm btn-outline-secondary disabled">Paid</a>
                                                 @else
                                                     <a href="{{route('student.payment.checkout',encrypt($course->id))}}"class="btn btn-sm btn-outline-success">Payment</a>

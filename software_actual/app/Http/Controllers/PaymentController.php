@@ -38,39 +38,48 @@ class PaymentController extends Controller
     {
         $request->validate([
             'amount' => 'required',
-            'total_fee' => 'required'
+            'total_fee' => 'required',
+            'payment_type' =>'required|array|min:1',
         ]);
+
+        // dd($request->all());
 
         if (($request->amount > $request->total_fee)) {
             $this->message('error', 'Amount can not be greater than payable fee.');
-            return redirect()->back()->withInput();
+            return redirect()->back();
         }
         if (Auth::id() == 7){
             if ($request->amount < 0) {
                 $this->message('error', 'Amount can not be minus.');
-                return redirect()->back()->withInput();
+                return redirect()->back();
             }
         } else {
             if ($request->amount <= 0) {
                 $this->message('error', 'Amount can not be minus or zero.');
-                return redirect()->back()->withInput();
+                return redirect()->back();
             }
         }
         if ($this->containsDecimal($request->amount)) {
             $this->message('error', 'Amount cannot be fraction.');
-            return redirect()->back()->withInput();
+            return redirect()->back();
         }
         $discount_percent = 0;
         $discount_amount = 0;
         $installment_quantity = 0;
+        $amount = 0;
+        $cash_payment = 0;
+        $mb_type = null;
+        $mb_payment = 0;
+        $mb_trxn = null;
+
         if (isset($request->discount_radio) && $request->discount_radio == 'yes') {
             if (empty($request->discount_percent) && empty($request->discount_amount)) {
                 $this->message('error', 'Please fill out discount required fields.');
-                return redirect()->back()->withInput();
+                return redirect()->back();
             }
             if (!empty($request->discount_percent) && !empty($request->discount_amount)) {
                 $this->message('error', 'Please fill out only one discount field.');
-                return redirect()->back()->withInput();
+                return redirect()->back();
             }
             if (!empty($request->discount_percent)) {
                 $discount_percent = $request->discount_percent;
@@ -82,7 +91,7 @@ class PaymentController extends Controller
         if (isset($request->method_radio) && $request->method_radio == 'installment') {
             if (empty($request->installment_quantity)) {
                 $this->message('error', 'The installment quantity field is required.');
-                return redirect()->back()->withInput();
+                return redirect()->back();
             } else {
                 $installment_quantity = $request->installment_quantity;
             }
@@ -92,8 +101,33 @@ class PaymentController extends Controller
                 'installment_date.*' => 'required'
             ]);
         }
-         $exist = Account::where('student_id', $request->student_id)
-             ->where('course_id', $request->course_id)->first();
+
+        foreach($request->payment_type as $pt){
+            if($pt == 'cash'){
+                $request->validate([
+                    'cash_payment' => 'required'
+                ]);
+                $cash_payment = $request->cash_payment;
+            }elseif($pt == 'mobile_banking'){
+                $request->validate([
+                    'mb_type' => 'required',
+                    'mb_payment' => 'required',
+                    'mb_trxn' => 'required|regex:/^[A-Z0-9]{6}$/|unique:payments,mb_trxn_id',
+                ]);
+
+                $mb_type = $request->mb_type;
+                $mb_payment = $request->mb_payment;
+                $mb_trxn = $request->mb_trxn;
+            }
+        }
+        $amount = $cash_payment + $mb_payment;
+
+        if($amount != $request->amount){
+            $this->message('error', 'Something went wrong, Please try again.');
+            return redirect()->back(); 
+        }
+
+        $exist = Account::where('student_id', $request->student_id)->where('course_id', $request->course_id)->first();
 
         if (!$exist) {
             $account = new Account;
@@ -107,7 +141,13 @@ class PaymentController extends Controller
 
             $payment = new Payment;
             $payment->account_id = $account->id;
-            $payment->amount = $request->amount;
+            $payment->amount = $amount;
+
+            $payment->cash_payment = $cash_payment;
+            $payment->mb_payment = $mb_payment;
+            $payment->mb_payment_type = $mb_type;
+            $payment->mb_trxn_id = $mb_trxn;
+
             $payment->user_id = Auth::id();
             $payment->save();
 
@@ -119,7 +159,8 @@ class PaymentController extends Controller
                     $i_date->save();
                 }
             }
-// mesage for admin after student 1st payment
+
+            // mesage for admin after student 1st payment
             $student = Student::findorFail($request->student_id);
             $admin = "01717221398";
             $message = "";            
@@ -245,30 +286,36 @@ class PaymentController extends Controller
     {
         $request->validate([
             'account_id' => 'required',
-            'amount' => 'required'
+            'amount' => 'required',
+            'payment_type' =>'required|array|min:1',
         ]);
 
         $account = Account::find($request->account_id);
+        $amount = 0;
+        $cash_payment = 0;
+        $mb_type = null;
+        $mb_payment = 0;
+        $mb_trxn = null;
 
         if ($this->containsDecimal($request->amount)) {
             $this->message('error', 'Amount cannot be fraction.');
-            return redirect()->back()->withInput();
+            return redirect()->back();
         }
 
         if ($request->amount > $request->_due) {
             $this->message('error', 'Installment payment can not be greater than due.');
-            return redirect()->back()->withInput();
+            return redirect()->back();
         }
 
         if ($request->amount <= 0) {
             $this->message('error', 'Amount can not be minus or zero.');
-            return redirect()->back()->withInput();
+            return redirect()->back();
         }
 
         if (isset($request->installment_quantity) && $request->installment_quantity > 0) {
             if ($request->installment_quantity != count(array_filter($request->installment_date))) {
                 $this->message('error', 'Installment quantity and installment total date not matched.');
-                return redirect()->back()->withInput();
+                return redirect()->back();
             } else {
                 $account->installment_quantity += $request->installment_quantity;
                 $account->save();
@@ -280,10 +327,41 @@ class PaymentController extends Controller
                 }
             }
         }
+        
+        foreach($request->payment_type as $pt){
+            if($pt == 'cash'){
+                $request->validate([
+                    'cash_payment' => 'required'
+                ]);
+                $cash_payment = $request->cash_payment;
+            }elseif($pt == 'mobile_banking'){
+                $request->validate([
+                    'mb_type' => 'required',
+                    'mb_payment' => 'required',
+                    'mb_trxn' => 'required|regex:/^[A-Z0-9]{6}$/|unique:payments,mb_trxn_id',
+                ]);
+
+                $mb_type = $request->mb_type;
+                $mb_payment = $request->mb_payment;
+                $mb_trxn = $request->mb_trxn;
+            }
+        }
+        $amount = $cash_payment + $mb_payment;
+
+        if($amount != $request->amount){
+            $this->message('error', 'Something went wrong, Please try again.');
+            return redirect()->back(); 
+        }
 
         $p = new Payment;
         $p->account_id = $account->id;
-        $p->amount = $request->amount;
+        $p->amount = $amount;
+
+        $p->cash_payment = $cash_payment;
+        $p->mb_payment = $mb_payment;
+        $p->mb_payment_type = $mb_type;
+        $p->mb_trxn_id = $mb_trxn;
+
         $p->user_id = Auth::id();
         $p->save();
 

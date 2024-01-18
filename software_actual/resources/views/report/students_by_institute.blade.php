@@ -85,8 +85,8 @@
                                                 <tr>
                                                     <td>{{++$sk}}</td>
                                                     <td>{{$student->name}}</td>
-                                                    <td>{{$student->board_roll ?? '---'}}</td>  
-                                                    <td>{{$student->board_reg ?? '---'}}</td>  
+                                                    <td>{{$student->board_roll ?? '---'}}</td>
+                                                    <td>{{$student->board_reg ?? '---'}}</td>
                                                     <td>{{$student->phone}}</td>
                                                     <td>
                                                         @if ($student->courses->count() > 0)
