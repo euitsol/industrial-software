@@ -15,35 +15,36 @@ class PreRegistration extends Model
     {
         return $this->belongsTo(Institute::class);
     }
-
-    public function accounts()
-    {
-        return $this->hasMany(Account::class);
-    }
-
-    public function courses()
-    {
-        return $this->belongsToMany(Course::class)->withTimestamps();
-    }
-
-    public function batches()
-    {
-        return $this->belongsToMany(Batch::class)->withTimestamps();
-    }
-    
     public function shift()
     {
-        if($this->shift == null || $this->shift == ""){
+        if ($this->shift == null || $this->shift == "") {
             return "Others";
-        }elseif($this->shift == "2"){
+        } elseif ($this->shift == 2) {
             return "2nd shift";
-        }else{
+        } else {
             return "1st shift";
         }
     }
-    public function sessions(){
-        return $this->belongsTo(Session::class,'session_id','id');
+    public function sessions()
+    {
+        return $this->belongsTo(Session::class, 'session_id', 'id');
     }
-    
-
+    public function statusBg()
+    {
+        switch ($this->status) {
+            case 1:
+                return 'badge badge-success';
+            default:
+                return 'badge badge-warning';
+        }
+    }
+    public function statusTitle()
+    {
+        switch ($this->status) {
+            case 1:
+                return 'Admitted';
+            default:
+                return 'Not Admitted';
+        }
+    }
 }

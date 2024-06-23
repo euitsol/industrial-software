@@ -1,32 +1,33 @@
 <?php
+
 use Illuminate\Support\Facades\Route;
 
 
 
-    // Payment Routes for bKash
-    Route::post('bkash/get-token', 'BkashController@getToken')->name('bkash-get-token');
-    Route::post('bkash/create-payment', 'BkashController@createPayment')->name('bkash-create-payment');
-    Route::post('bkash/execute-payment', 'BkashController@executePayment')->name('bkash-execute-payment');
-    Route::get('bkash/query-payment', 'BkashController@queryPayment')->name('bkash-query-payment');
-    Route::post('bkash/success', 'BkashController@bkashSuccess')->name('bkash-success');
+// Payment Routes for bKash
+Route::post('bkash/get-token', 'BkashController@getToken')->name('bkash-get-token');
+Route::post('bkash/create-payment', 'BkashController@createPayment')->name('bkash-create-payment');
+Route::post('bkash/execute-payment', 'BkashController@executePayment')->name('bkash-execute-payment');
+Route::get('bkash/query-payment', 'BkashController@queryPayment')->name('bkash-query-payment');
+Route::post('bkash/success', 'BkashController@bkashSuccess')->name('bkash-success');
 
-    // Refund Routes for bKash
-    Route::get('bkash/refund', 'BkashRefundController@index')->name('bkash-refund');
-    Route::post('bkash/refund', 'BkashRefundController@refund')->name('bkash-refund');
+// Refund Routes for bKash
+Route::get('bkash/refund', 'BkashRefundController@index')->name('bkash-refund');
+Route::post('bkash/refund', 'BkashRefundController@refund')->name('bkash-refund');
 
-    // SSLCOMMERZ Start
-    Route::get('/online-payment/example1', 'SslCommerzPaymentController@exampleEasyCheckout');
-    Route::get('/online-payment/example2', 'SslCommerzPaymentController@exampleHostedCheckout');
+// SSLCOMMERZ Start
+Route::get('/online-payment/example1', 'SslCommerzPaymentController@exampleEasyCheckout');
+Route::get('/online-payment/example2', 'SslCommerzPaymentController@exampleHostedCheckout');
 
-    Route::post('/online-payment/pay', 'SslCommerzPaymentController@index');
-    Route::post('/online-payment/pay-via-ajax', 'SslCommerzPaymentController@payViaAjax');
+Route::post('/online-payment/pay', 'SslCommerzPaymentController@index');
+Route::post('/online-payment/pay-via-ajax', 'SslCommerzPaymentController@payViaAjax');
 
-    Route::post('/online-payment/success', 'SslCommerzPaymentController@success');
-    Route::post('/online-payment/fail', 'SslCommerzPaymentController@fail');
-    Route::post('/online-payment/cancel', 'SslCommerzPaymentController@cancel');
+Route::post('/online-payment/success', 'SslCommerzPaymentController@success');
+Route::post('/online-payment/fail', 'SslCommerzPaymentController@fail');
+Route::post('/online-payment/cancel', 'SslCommerzPaymentController@cancel');
 
-    Route::post('/online-payment/ipn', 'SslCommerzPaymentController@ipn');
-    //SSLCOMMERZ END
+Route::post('/online-payment/ipn', 'SslCommerzPaymentController@ipn');
+//SSLCOMMERZ END
 
 
 //online registration
@@ -59,8 +60,8 @@ Route::post('/admin/login', 'Auth\LoginController@login');
 Route::post('/admin/logout', 'Auth\LoginController@logout')->name('logout');
 
 Route::get('/pdf', function () {
-    $pdf = PDF::loadView('utility.cv2');
-    return $pdf->stream('utility.cv2');
+        $pdf = PDF::loadView('utility.cv2');
+        return $pdf->stream('utility.cv2');
 });
 
 // Route::get('/ad', function () {
@@ -72,35 +73,40 @@ Route::get('/pdf', function () {
 Route::group(['middleware' => 'auth'], function () {
 
 
-//pre registration 
+        //pre registration 
 
         Route::get('pre-registration/list', 'PreRegistrationController@list')->name('pr.list');
+        Route::get('pre-registration/show/{id}', 'PreRegistrationController@show')->name('pr.show');
+        Route::get('pre-registration/edit/{id}', 'PreRegistrationController@edit')->name('pr.edit');
+        Route::get('pre-registration/destroy/{id}', 'PreRegistrationController@destroy')->name('pr.destroy');
+        Route::post('pre-registration/update', 'PreRegistrationController@update')->name('pr.update');
+        Route::get('pre-registration/admit/{id}', 'PreRegistrationController@admit')->name('pr.admit');
 
-//classrooom
+        //classrooom
 
-        Route::get('/classroom' ,'ClassroomController@index')->name('classroom');
-        Route::get('/classroom/exam' ,'ClassroomController@exam')->name('classroom.exam');
-        Route::post('/classroom/exam/store' ,'ClassroomController@exam_store')->name('classroom.exam.store');
-        Route::get('/classroom/exam/{exam_id}/question_paper' ,'ClassroomController@exam_question_paper')->name('classroom.question_paper');
-        Route::post('/classroom/exam/store' ,'ClassroomController@exam_question_paper_store')->name('classroom.question_paper.store');
+        Route::get('/classroom', 'ClassroomController@index')->name('classroom');
+        Route::get('/classroom/exam', 'ClassroomController@exam')->name('classroom.exam');
+        Route::post('/classroom/exam/store', 'ClassroomController@exam_store')->name('classroom.exam.store');
+        Route::get('/classroom/exam/{exam_id}/question_paper', 'ClassroomController@exam_question_paper')->name('classroom.question_paper');
+        Route::post('/classroom/exam/store', 'ClassroomController@exam_question_paper_store')->name('classroom.question_paper.store');
 
-//Lab-management
+        //Lab-management
 
-        Route::get('/lab-management' ,'LabController@index')->name('lab-management');
+        Route::get('/lab-management', 'LabController@index')->name('lab-management');
         Route::get('/lab-management/create', 'LabController@create')->name('lab-management.create');
-        Route::post('/lab-management/store' ,'LabController@store')->name('lab-management.store');
+        Route::post('/lab-management/store', 'LabController@store')->name('lab-management.store');
         Route::get('/lab-management/{labid}/edit', 'LabController@edit')->name('lab-management.edit');
         Route::post('/lab-management/update', 'LabController@update')->name('lab-management.update');
         Route::get('/lab-management/delete/{labid}', 'LabController@destroy')->name('lab-management.delete');
         Route::get('/lab-management/show/{labid}', 'LabController@show')->name('lab-management.show');
-// Running Closed
-        Route::get('/lab-running/{labid}' ,'LabController@lab_runnig')->name('lab.running');
-        Route::get('/lab-closed/{labid}' ,'LabController@lab_closed')->name('lab.closed');
+        // Running Closed
+        Route::get('/lab-running/{labid}', 'LabController@lab_runnig')->name('lab.running');
+        Route::get('/lab-closed/{labid}', 'LabController@lab_closed')->name('lab.closed');
 
-// Linkage With Industry Information
-        Route::get('/linkage-industry-info' ,'LinkageIndustryInfosController@index')->name('linkage_industry.info');
+        // Linkage With Industry Information
+        Route::get('/linkage-industry-info', 'LinkageIndustryInfosController@index')->name('linkage_industry.info');
         Route::get('/linkage-industry-info/create', 'LinkageIndustryInfosController@create')->name('linkage_industry.info.create');
-        Route::post('/linkage-industry-info/store' ,'LinkageIndustryInfosController@store')->name('linkage_industry.info.store');
+        Route::post('/linkage-industry-info/store', 'LinkageIndustryInfosController@store')->name('linkage_industry.info.store');
         Route::get('/linkage-industry-info/show/{id}', 'LinkageIndustryInfosController@show')->name('linkage_industry.info.show');
         Route::get('/linkage-industry-info/{id}/edit', 'LinkageIndustryInfosController@edit')->name('linkage_industry.info.edit');
         Route::post('/linkage-industry-info/update', 'LinkageIndustryInfosController@update')->name('linkage_industry.info.update');
@@ -108,10 +114,10 @@ Route::group(['middleware' => 'auth'], function () {
 
 
 
-// Session
+        // Session
 
-        Route::get('/session' ,'SessionController@index')->name('session');
-        Route::get('/session/create','SessionController@create')->name('session.create');
+        Route::get('/session', 'SessionController@index')->name('session');
+        Route::get('/session/create', 'SessionController@create')->name('session.create');
         Route::post('/session/store', 'SessionController@store')->name('session.store');
         Route::get('/session/edit/{id}', 'SessionController@edit')->name('session.edit');
         Route::post('/session/update', 'SessionController@update')->name('session.update');
@@ -119,107 +125,107 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/session/show/{id}', 'SessionController@show')->name('session.show');
         Route::get('/session/status/{id}', 'SessionController@statusChange')->name('session.status');
 
-//Student Analytics
+        //Student Analytics
 
-        Route::get('/student-analytics/show/{session_id?}' ,'AnalyticsController@index')->name('analytics');
+        Route::get('/student-analytics/show/{session_id?}', 'AnalyticsController@index')->name('analytics');
 
         //source
 
-        Route::get('/student-analytics/add-source' ,'AnalyticsController@addSource')->name('analytics.source.add');
-        Route::post('/student-analytics/add-source/store' ,'AnalyticsController@addSourceStore')->name('analytics.source.store');
-        Route::get('/student-analytics/edit-source/{id}' ,'AnalyticsController@editSource')->name('analytics.source.edit');
-        Route::post('/student-analytics/update-source' ,'AnalyticsController@updateSource')->name('analytics.source.update');
-        Route::get('/student-analytics/delete-source/{id}' ,'AnalyticsController@deleteSource')->name('analytics.source.delete');
-        Route::get('/student-analytics/source-status/{id}' ,'AnalyticsController@sourceStatus')->name('analytics.source.status');
+        Route::get('/student-analytics/add-source', 'AnalyticsController@addSource')->name('analytics.source.add');
+        Route::post('/student-analytics/add-source/store', 'AnalyticsController@addSourceStore')->name('analytics.source.store');
+        Route::get('/student-analytics/edit-source/{id}', 'AnalyticsController@editSource')->name('analytics.source.edit');
+        Route::post('/student-analytics/update-source', 'AnalyticsController@updateSource')->name('analytics.source.update');
+        Route::get('/student-analytics/delete-source/{id}', 'AnalyticsController@deleteSource')->name('analytics.source.delete');
+        Route::get('/student-analytics/source-status/{id}', 'AnalyticsController@sourceStatus')->name('analytics.source.status');
 
         //referral
 
-        Route::get('/student-analytics/add-referral' ,'AnalyticsController@addReferral')->name('analytics.referral.add');
-        Route::post('/student-analytics/add-referral/store' ,'AnalyticsController@addReferralStore')->name('analytics.referral.store');
-        Route::get('/student-analytics/edit-referral/{id}' ,'AnalyticsController@editReferral')->name('analytics.referral.edit');
-        Route::post('/student-analytics/update-referral' ,'AnalyticsController@updateReferral')->name('analytics.referral.update');
-        Route::get('/student-analytics/delete-referral/{id}' ,'AnalyticsController@deleteReferral')->name('analytics.referral.delete');
-        Route::get('/student-analytics/referral-status/{id}' ,'AnalyticsController@referralStatus')->name('analytics.referral.status');
+        Route::get('/student-analytics/add-referral', 'AnalyticsController@addReferral')->name('analytics.referral.add');
+        Route::post('/student-analytics/add-referral/store', 'AnalyticsController@addReferralStore')->name('analytics.referral.store');
+        Route::get('/student-analytics/edit-referral/{id}', 'AnalyticsController@editReferral')->name('analytics.referral.edit');
+        Route::post('/student-analytics/update-referral', 'AnalyticsController@updateReferral')->name('analytics.referral.update');
+        Route::get('/student-analytics/delete-referral/{id}', 'AnalyticsController@deleteReferral')->name('analytics.referral.delete');
+        Route::get('/student-analytics/referral-status/{id}', 'AnalyticsController@referralStatus')->name('analytics.referral.status');
 
 
-//industrial marketing
+        //industrial marketing
 
-    Route::get('/industrial/student' ,'IndustrialMarketingController@student')->name('marketing.industrial.student');
-    Route::post('/industrial/student/add' ,'IndustrialMarketingController@add_student')->name('marketing.industrial.student.add');
+        Route::get('/industrial/student', 'IndustrialMarketingController@student')->name('marketing.industrial.student');
+        Route::post('/industrial/student/add', 'IndustrialMarketingController@add_student')->name('marketing.industrial.student.add');
 
-    Route::get('/industrial/message' ,'IndustrialMarketingController@message_index')->name('marketing.industrial.message');
-    Route::post('/industrial/message/search' ,'IndustrialMarketingController@message_search')->name('marketing.industrial.message.search');
-    Route::post('/industrial/message/view' ,'IndustrialMarketingController@view')->name('marketing.industrial.message.view');
-    Route::post('/industrial/message/send' ,'IndustrialMarketingController@message_send')->name('marketing.industrial.message.send');
+        Route::get('/industrial/message', 'IndustrialMarketingController@message_index')->name('marketing.industrial.message');
+        Route::post('/industrial/message/search', 'IndustrialMarketingController@message_search')->name('marketing.industrial.message.search');
+        Route::post('/industrial/message/view', 'IndustrialMarketingController@view')->name('marketing.industrial.message.view');
+        Route::post('/industrial/message/send', 'IndustrialMarketingController@message_send')->name('marketing.industrial.message.send');
 
-//     All Student
-    Route::get('industrial/marketing/students','IndustrialMarketingController@marketingStudents')->name('industrial.marketing.student');
-    Route::get('industrial/marketing/student/view/{id}','IndustrialMarketingController@marketingStudentView')->name('industrial.marketing.student.view');
-    Route::get('industrial/marketing/student/edit/{id}','IndustrialMarketingController@marketingStudentEdit')->name('industrial.marketing.student.edit');
-    Route::post('industrial/marketing/student/update/{id}','IndustrialMarketingController@marketingStudentUpdate')->name('industrial.marketing.student.update');
-
-
-//Institute visit
-    Route::get('/institute-visit' ,'InstituteVisitController@index')->name('iv');
-    Route::get('/institute-visit/add' ,'InstituteVisitController@add')->name('iv.add');
-    Route::post('/institute-visit/create' ,'InstituteVisitController@store')->name('iv.store');
-    Route::get('/institute-visit/show/{id}' ,'InstituteVisitController@show')->name('iv.show');
-    Route::get('/institute-visit/edit/{id}' ,'InstituteVisitController@edit')->name('iv.edit');
+        //     All Student
+        Route::get('industrial/marketing/students', 'IndustrialMarketingController@marketingStudents')->name('industrial.marketing.student');
+        Route::get('industrial/marketing/student/view/{id}', 'IndustrialMarketingController@marketingStudentView')->name('industrial.marketing.student.view');
+        Route::get('industrial/marketing/student/edit/{id}', 'IndustrialMarketingController@marketingStudentEdit')->name('industrial.marketing.student.edit');
+        Route::post('industrial/marketing/student/update/{id}', 'IndustrialMarketingController@marketingStudentUpdate')->name('industrial.marketing.student.update');
 
 
+        //Institute visit
+        Route::get('/institute-visit', 'InstituteVisitController@index')->name('iv');
+        Route::get('/institute-visit/add', 'InstituteVisitController@add')->name('iv.add');
+        Route::post('/institute-visit/create', 'InstituteVisitController@store')->name('iv.store');
+        Route::get('/institute-visit/show/{id}', 'InstituteVisitController@show')->name('iv.show');
+        Route::get('/institute-visit/edit/{id}', 'InstituteVisitController@edit')->name('iv.edit');
 
-//online operatiion
-        Route::get('/online_operation' ,'Online_opController@index')->name('online_op');
-        Route::get('/online_operation/course-discount' ,'Online_opController@course_dis')->name('online_op.course_dis');
-        Route::get('/online_operation/course-discount-history' ,'Online_opController@course_dis_history')->name('online_op.course_dis_history');
-        Route::get('/online_operation/course-discount/create' ,'Online_opController@course_dis_create')->name('online_op.course_dis_create');
-        Route::post('/online_operation/course-discount/store' ,'Online_opController@course_dis_store')->name('online_op.course_dis_store');
-        Route::get('/online_operation/course-discount/{cid}/update' ,'Online_opController@course_dis_update')->name('online_op.course_dis_update');
-        Route::post('/online_operation/course-discount/{cid}/update/store' ,'Online_opController@course_dis_update_store')->name('online_op.course_dis_update_store');
+
+
+        //online operatiion
+        Route::get('/online_operation', 'Online_opController@index')->name('online_op');
+        Route::get('/online_operation/course-discount', 'Online_opController@course_dis')->name('online_op.course_dis');
+        Route::get('/online_operation/course-discount-history', 'Online_opController@course_dis_history')->name('online_op.course_dis_history');
+        Route::get('/online_operation/course-discount/create', 'Online_opController@course_dis_create')->name('online_op.course_dis_create');
+        Route::post('/online_operation/course-discount/store', 'Online_opController@course_dis_store')->name('online_op.course_dis_store');
+        Route::get('/online_operation/course-discount/{cid}/update', 'Online_opController@course_dis_update')->name('online_op.course_dis_update');
+        Route::post('/online_operation/course-discount/{cid}/update/store', 'Online_opController@course_dis_update_store')->name('online_op.course_dis_update_store');
         //online registration
-        Route::get('/online_reg' ,'Online_opController@online_reg')->name('online_reg');
+        Route::get('/online_reg', 'Online_opController@online_reg')->name('online_reg');
         //course status
-        Route::get('/course_status' ,'Online_opController@course_status')->name('course_status');
-        Route::post('/course_status/store' ,'Online_opController@course_status_store')->name('course_status.store');
+        Route::get('/course_status', 'Online_opController@course_status')->name('course_status');
+        Route::post('/course_status/store', 'Online_opController@course_status_store')->name('course_status.store');
 
 
-        Route::get('/online-operation/admit/{id}' ,'Online_opController@admit')->name('online_op.admit');
+        Route::get('/online-operation/admit/{id}', 'Online_opController@admit')->name('online_op.admit');
 
-//summary report
-        Route::get('/summary_report' ,'summary_reportController@index')->name('summary_report');
+        //summary report
+        Route::get('/summary_report', 'summary_reportController@index')->name('summary_report');
         Route::post('/summary_report/search', 'summary_reportController@summaryReport')->name('summary_report.search');
         Route::get('/summary_report/batch/{bid}/report', 'summary_reportController@reportsByBatch')->name('summary_report.report.batch');
         Route::get('/summary_report/course/{cid}/report', 'summary_reportController@reportsByCourse')->name('summary_report.report.course');
         Route::get('/summary_report/type/{ct}/report', 'summary_reportController@reportsByCourseType')->name('summary_report.report.course_type');
         Route::get('/summary_report/all', 'summary_reportController@all_reports')->name('summary_report.all');
 
-//Attendance
-        Route::get('/attendance' ,'AttendanceController@index')->name('attendance');
+        //Attendance
+        Route::get('/attendance', 'AttendanceController@index')->name('attendance');
         Route::post('/attendance/search', 'AttendanceController@attendanceClass')->name('attendance.search');
         Route::get('/attendance/page/{id}', 'AttendanceController@attendancePage')->name('attendance.page');
         Route::get('/attendance/create/{id}/{class}', 'AttendanceController@create')->name('attendance.create');
         Route::post('/attendance/store', 'AttendanceController@store')->name('attendance.store');
         Route::get('/attendance/report/{id}', 'AttendanceController@attendanceReport')->name('attendance.report');
 
-//Attendance Report(Batch Wise)
-        Route::get('/attendance_batch' ,'AttendanceReportController@batchWise')->name('attendance.batch');
+        //Attendance Report(Batch Wise)
+        Route::get('/attendance_batch', 'AttendanceReportController@batchWise')->name('attendance.batch');
         Route::post('/attendance_batch/search', 'AttendanceReportController@batchWiseSearch')->name('attendance_batch.search');
         Route::get('/attendance_report/batch/{id}', 'AttendanceReportController@batchAttendanceReport')->name('attendance_report.batch');
 
-// Attendance Report(Institute Wise)
+        // Attendance Report(Institute Wise)
         Route::get('/attendance/institute', 'AttendanceReportController@institute_index')->name('attendance.institute.index');
         Route::post('/attendance/session/institute/find', 'AttendanceReportController@sessionInstituteStudents')->name('attendance.session.institute.find');
         Route::get('/attendance_report/institute/{session_id}/{institute_id}/{shift}', 'AttendanceReportController@instituteAttendanceReport')->name('attendance_report.institute');
         Route::get('/attendance_report/single_student/view/{stid}/{baid}', 'AttendanceReportController@StudentSingleAttendanceView')->name('attendance_report.single_student.view');
 
 
-// Discount Report
-        Route::get('/discount-report' ,'ReportController@discount_report')->name('discount.report');
+        // Discount Report
+        Route::get('/discount-report', 'ReportController@discount_report')->name('discount.report');
 
 
 
-//indivisual report
-        Route::get('/indivisual_report' ,'Indivisual_reportController@index')->name('indivisual_report');
+        //indivisual report
+        Route::get('/indivisual_report', 'Indivisual_reportController@index')->name('indivisual_report');
 
         Route::post('/indivisual_report/search', 'Indivisual_reportController@indivisual_report')->name('indivisual_report.search');
 
@@ -231,8 +237,8 @@ Route::group(['middleware' => 'auth'], function () {
 
         Route::get('/indivisual_report/all', 'Indivisual_reportController@all_reports')->name('indivisual_report.all');
 
-//nav assign
-        Route::get('/nav_assign','NavController@index')->name('nav_assign');
+        //nav assign
+        Route::get('/nav_assign', 'NavController@index')->name('nav_assign');
         //AJAX Request
         Route::get('/nav_assign/user/{type}', 'NavController@userByType')->name('user.type');
         Route::get('/nav_assign/user/{user_name}', 'NavController@userById')->name('user.id');
@@ -245,14 +251,14 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('/nav_assign/save', 'NavController@save')->name('nav_assign.save');
 
 
-//dynamic menu
-        Route::get('/dynamic_menu','Dynamic_sidebar_controller@sideber')->name('dynamic_menu');
-        Route::get('/ds','SideberController@index')->name('ds');
-        Route::get('/f','SideberController@view')->name('f');
-        Route::get('/s','SideberController@view2')->name('s');
+        //dynamic menu
+        Route::get('/dynamic_menu', 'Dynamic_sidebar_controller@sideber')->name('dynamic_menu');
+        Route::get('/ds', 'SideberController@index')->name('ds');
+        Route::get('/f', 'SideberController@view')->name('f');
+        Route::get('/s', 'SideberController@view2')->name('s');
 
 
-//test
+        //test
 
         Route::get('/attach_file', 'ImportController@getImport')->name('import');
         Route::post('/import_parse', 'ImportController@parseImport')->name('import_parse');
@@ -273,7 +279,7 @@ Route::group(['middleware' => 'auth'], function () {
 
 
 
-//sms controller
+        //sms controller
         Route::get('/promotion_type/sms/index', 'SmsController@promotional_sms_index')->name('promotion_type.sms.index');
         Route::post('/promotion_type/sms/search', 'SmsController@promotional_sms_search')->name('promotion_type.sms.search');
         Route::get('/promotion_type/{id}/sms', 'ImportController@csv_view')->name('promotion_type.sms');
@@ -282,24 +288,24 @@ Route::group(['middleware' => 'auth'], function () {
 
 
 
-//sms students
+        //sms students
         Route::get('/sms/sms_students', 'SmsController@sms_students')->name('sms.sms_students');
         Route::post('/sms/sms_students/search', 'SmsController@sms_students_search')->name('sms.sms_students.search');
         Route::post('/sms/sms_students/send', 'SmsController@sms_students_send')->name('sms.sms_students.send');
 
-//sms history
+        //sms history
         Route::get('/sms/history', 'SmsController@sms_history')->name('sms.history');
         Route::get('/sms/history/{id}/view', 'SmsController@sms_history_show')->name('sms.history.view');
-//sms indivisual
+        //sms indivisual
         Route::get('/sms/indivisual', 'SmsController@sms_indivisual')->name('sms.indivisual');
         Route::post('/sms/indivisual/send', 'SmsController@sms_indivisual_send')->name('sms.indivisual.send');
-//sms to teacher
+        //sms to teacher
         Route::get('/sms/teacher/{year?}', 'SmsController@sms_teacher')->name('sms.teacher');
         Route::post('/sms/teacher/send', 'SmsController@sms_teacher_send')->name('sms.teacher.send');
 
 
 
-//Cash to Bank
+        //Cash to Bank
         Route::get('/cash-to-bank', 'CashToBankController@index')->name('ctb');
         Route::post('/cash-to-bank/search', 'CashToBankController@search')->name('ctb.search');
         Route::get('/cash-to-bank/{date}/{user}/{type}', 'CashToBankController@ctb_all')->name('ctb.all');
@@ -316,11 +322,11 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/additional-fee', 'AccountController@additional_fee')->name('add_fee');
 
 
-            Route::get('/', 'HomeController@index')->name('home');
+        Route::get('/', 'HomeController@index')->name('home');
 
         //     Route::get('/logout', 'Auth\LoginController@logout')->name('logout');
 
-            Route::group(['middleware' => 'admin'], function () {
+        Route::group(['middleware' => 'admin'], function () {
                 Route::get('/users', 'UserController@index')->name('users');
                 Route::post('/user/store', 'UserController@store')->name('user.store');
                 Route::get('/user/{uid}/edit', 'UserController@edit')->name('user.edit');
@@ -471,7 +477,7 @@ Route::group(['middleware' => 'auth'], function () {
                 Route::get('/student-card/institute/{iid}/{yr}', 'StudentCardController@studentsCardInstitute')->name('student_card.institute.cards');
 
                 // Student Card Batch Wise
-                Route::get('/student-card/batch' ,'StudentCardController@batchWiseCard')->name('student_card.batch');
+                Route::get('/student-card/batch', 'StudentCardController@batchWiseCard')->name('student_card.batch');
                 Route::post('/student-card/batch/search', 'StudentCardController@batchWiseSearch')->name('student_card.batch.search');
                 Route::get('/student-card/batch/{ctid}/{cid}/{bid}', 'StudentCardController@batchStudentCard')->name('student_card.batch.view');
 
@@ -479,15 +485,15 @@ Route::group(['middleware' => 'auth'], function () {
                 Route::get('/selected-cards/clear', 'StudentCardController@selectedCardsClear')->name('selected_cards.clear');
 
 
-                 // Student Certificate Institute Wise
-                 Route::get('/student-certificate/institute', 'StudentCertificateController@index')->name('student_certificate.institute.index');
-                 Route::post('/student-certificate/institute/find', 'StudentCertificateController@studentCertificateFind')->name('student_certificate.institute.find');
-                 Route::get('/student-certificate/institute/{iid}/{yr}', 'StudentCertificateController@studentsCertificateInstitute')->name('student_certificate.institute.certificates');
+                // Student Certificate Institute Wise
+                Route::get('/student-certificate/institute', 'StudentCertificateController@index')->name('student_certificate.institute.index');
+                Route::post('/student-certificate/institute/find', 'StudentCertificateController@studentCertificateFind')->name('student_certificate.institute.find');
+                Route::get('/student-certificate/institute/{iid}/{yr}', 'StudentCertificateController@studentsCertificateInstitute')->name('student_certificate.institute.certificates');
 
-                 // Student Certificate Batch Wise
-                 Route::get('/student-certificate/batch' ,'StudentCertificateController@batchWiseCertificate')->name('student_certificate.batch');
-                 Route::post('/student-certificate/batch/search', 'StudentCertificateController@batchWiseSearch')->name('student_certificate.batch.search');
-                 Route::get('/student-certificate/batch/{ctid}/{cid}/{bid}', 'StudentCertificateController@batchStudentCertificate')->name('student_certificate.batch.view');
+                // Student Certificate Batch Wise
+                Route::get('/student-certificate/batch', 'StudentCertificateController@batchWiseCertificate')->name('student_certificate.batch');
+                Route::post('/student-certificate/batch/search', 'StudentCertificateController@batchWiseSearch')->name('student_certificate.batch.search');
+                Route::get('/student-certificate/batch/{ctid}/{cid}/{bid}', 'StudentCertificateController@batchStudentCertificate')->name('student_certificate.batch.view');
 
                 // Job placement report
                 Route::get('/job_placement/report', 'ReportController@jobPlacementReport')->name('job_placement.report');
@@ -506,15 +512,15 @@ Route::group(['middleware' => 'auth'], function () {
 
                 Route::get('/transaction', 'ReportController@transaction')->name('transaction');
                 Route::post('/transaction/find', 'ReportController@transaction_find')->name('transaction.find');
-        //        Route::get('/transaction/{from_date}/{to_date}/found', 'ReportController@transaction_show')->name('transaction.show');
+                //        Route::get('/transaction/{from_date}/{to_date}/found', 'ReportController@transaction_show')->name('transaction.show');
                 Route::get('/transaction/{uid}/{from_date}/{to_date}/{type}/show', 'ReportController@user_transaction_show')->name('transaction.user.show');
 
-        // Transaction Report Session Wise
+                // Transaction Report Session Wise
                 Route::get('/transaction_session_wise', 'ReportController@transaction_session_wise')->name('transaction_session_wise');
                 Route::post('/transaction_session_wise/find', 'ReportController@transaction_session_wise_find')->name('transaction_session_wise.find');
                 Route::get('/transaction_session_wise/{uid}/{session_id}/show', 'ReportController@session_wise_user_transaction_show')->name('transaction_session_wise.user.show');
 
-        //Reference Wise Admission Report
+                //Reference Wise Admission Report
                 Route::get('/reference_wise_admission_report', 'ReportController@reference_wise_report')->name('reference_wise_report');
                 Route::post('/reference_wise_admission_report/find', 'ReportController@reference_wise_report_find')->name('reference_wise_report.find');
                 Route::get('/reference_wise_admission_report/show/{source_id?}/{referral_id?}/{from_date}/{to_date}', 'ReportController@reference_wise_report_show')->name('reference_wise_report.show');
@@ -529,15 +535,15 @@ Route::group(['middleware' => 'auth'], function () {
                 Route::post('/students/installment/message', 'AccountController@installment_message_send')->name('student.installment.message');
 
                 Route::post('/update-card-print-status', 'StudentController@updateCardPrintStatus')->name('updateCardPrintStatus');
-            });
+        });
 
         //     Route::get('/students/{students_type}/{year?}', 'StudentController@index')->name('students.professional',['students_type'=>'Professional']);
         //     Route::get('/students/{students_type}/{year?}', 'StudentController@index')->name('students.industrial',['students_type'=>'Professional']);
-            Route::get('/students/professional/{year?}', 'StudentController@index')->name('students.professional');
-            Route::get('/students/industrial/{year?}', 'StudentController@index_2')->name('students.industrial');
+        Route::get('/students/professional/{year?}', 'StudentController@index')->name('students.professional');
+        Route::get('/students/industrial/{year?}', 'StudentController@index_2')->name('students.industrial');
 
 
-            Route::prefix('student')->name('student.')->group(function () {
+        Route::prefix('student')->name('student.')->group(function () {
 
 
                 Route::get('/create', 'StudentController@create')->name('create');
@@ -563,8 +569,7 @@ Route::group(['middleware' => 'auth'], function () {
                 Route::get('/existing_students/{phone}/assign_new_type', 'StudentController@assign_new_type')->name('existing.assign_new_type');
                 Route::post('/existing_students/save', 'StudentController@existing_save')->name('existing.save');
                 Route::get('/existing_students/{id}/assign_new_course', 'StudentController@existing_new_course')->name('existing.assign_new_course');
-
-            });
+        });
 
         //Student Job Placement
         Route::prefix('job_placement')->name('job_placement.')->group(function () {
@@ -581,89 +586,88 @@ Route::group(['middleware' => 'auth'], function () {
                 // Route::get('/course/{cid}/delete', 'CourseController@destroy')->name('course.delete');
         });
 
-            Route::get('/account', 'AccountController@index')->name('account');
-            Route::post('/account/search', 'AccountController@accountSearch')->name('account.search');
-            Route::get('/account/student/{sid}/courses', 'AccountController@studentCourses')->name('account.student.courses');
-            Route::get('/account/student/{sid}/{cid}/payment', 'PaymentController@payment')->name('account.payment');
-            Route::get('/account/{sid}/{cid}/payment/new', 'PaymentController@newPaymentForm')->name('account.payment.new');
-            Route::get('/account/{sid}/{cid}/payment/exist', 'PaymentController@existPaymentForm')->name('account.payment.exist');
-            Route::post('/account/payment/new/receive', 'PaymentController@newPaymentReceive')->name('payment.new.receive');
-            Route::post('/account/payment/installment', 'PaymentController@installmentReceive')->name('payment.installment');
+        Route::get('/account', 'AccountController@index')->name('account');
+        Route::post('/account/search', 'AccountController@accountSearch')->name('account.search');
+        Route::get('/account/student/{sid}/courses', 'AccountController@studentCourses')->name('account.student.courses');
+        Route::get('/account/student/{sid}/{cid}/payment', 'PaymentController@payment')->name('account.payment');
+        Route::get('/account/{sid}/{cid}/payment/new', 'PaymentController@newPaymentForm')->name('account.payment.new');
+        Route::get('/account/{sid}/{cid}/payment/exist', 'PaymentController@existPaymentForm')->name('account.payment.exist');
+        Route::post('/account/payment/new/receive', 'PaymentController@newPaymentReceive')->name('payment.new.receive');
+        Route::post('/account/payment/installment', 'PaymentController@installmentReceive')->name('payment.installment');
 
-//indivisual payment money receipt
-            Route::get('/account/payment/{aid}/{pid?}/receipt', 'PaymentController@paymentReceipt')->name('payment.receipt');
+        //indivisual payment money receipt
+        Route::get('/account/payment/{aid}/{pid?}/receipt', 'PaymentController@paymentReceipt')->name('payment.receipt');
 
-            Route::get('/student/{sid}/payment/history', 'PaymentController@studentPaymentHistory')->name('student.payment.history');
-            Route::post('/account/payment/anytime-discount/{aid}', 'PaymentController@anytimeDiscount')->name('anytime.discount');
+        Route::get('/student/{sid}/payment/history', 'PaymentController@studentPaymentHistory')->name('student.payment.history');
+        Route::post('/account/payment/anytime-discount/{aid}', 'PaymentController@anytimeDiscount')->name('anytime.discount');
 
-            Route::get('/daily-report', 'DailyreportController@index')->name('daily.report');
-            Route::get('/daily-report/ajax', 'DailyreportController@drajax');
+        Route::get('/daily-report', 'DailyreportController@index')->name('daily.report');
+        Route::get('/daily-report/ajax', 'DailyreportController@drajax');
 
-            Route::get('/change-course-batch/{sid}/{cid}/{bid}', 'ChangecoursebatchController@index')->name('change.course.view');
-            Route::get('/ajax/change/course', 'ChangecoursebatchController@ajaxCall');
-            Route::post('/change-course-batch/{sid}/{cid}/{bid}', 'ChangecoursebatchController@change')->name('change.course');
+        Route::get('/change-course-batch/{sid}/{cid}/{bid}', 'ChangecoursebatchController@index')->name('change.course.view');
+        Route::get('/ajax/change/course', 'ChangecoursebatchController@ajaxCall');
+        Route::post('/change-course-batch/{sid}/{cid}/{bid}', 'ChangecoursebatchController@change')->name('change.course');
 
-            Route::get('/birthday', 'DailyreportController@birthday')->name('birthday');
-            Route::post('/sms-student-birthday', 'DailyreportController@birthdaySms')->name('sms.student.birthday');
+        Route::get('/birthday', 'DailyreportController@birthday')->name('birthday');
+        Route::post('/sms-student-birthday', 'DailyreportController@birthdaySms')->name('sms.student.birthday');
 
 
-            Route::post('/sms-student-batch/{bid}', 'ReportController@smsStudentBatch')->name('sms.student.batch');
+        Route::post('/sms-student-batch/{bid}', 'ReportController@smsStudentBatch')->name('sms.student.batch');
 
-            Route::get('/marketing/default-list', 'MarketingController@index')->name('marketing.list');
-            Route::get('/marketing/admitted-list', 'MarketingController@admittedList')->name('marketing.admitted.list');
-            Route::get('/marketing/not-interested-list', 'MarketingController@notInterestedList')->name('marketing.not.interested.list');
-            Route::get('/marketing/add', 'MarketingController@create')->name('marketing.add');
-            Route::get('/marketing/delete/{mid}', 'MarketingController@destroy')->name('marketing.delete');
-            Route::get('/marketing/admitted/{mid}', 'MarketingController@admitted')->name('marketing.admitted');
-            Route::get('/marketing/not-interested/{mid}', 'MarketingController@notInterested')->name('marketing.notInterested');
-            Route::get('/marketing/interested/{mid}', 'MarketingController@interested')->name('marketing.interested');
-            Route::post('/marketing/add', 'MarketingController@store')->name('marketing.store');
-            Route::post('/marketing-comment/add/{mid}', 'MarketingController@storeComment')->name('marketing.comment.store');
-            Route::post('/marketing-default/search', 'MarketingController@defaultSearch')->name('marketing.default.search');
-            Route::post('/marketing-not-interested/search', 'MarketingController@notInterestedSearch')->name('marketing.notInterested.search');
-            Route::post('/marketing-admitted/search', 'MarketingController@admittedSearch')->name('marketing.admitted.search');
-            Route::get('/marketing/today-conversation-list', 'MarketingController@today')->name('marketing.list.today');
+        Route::get('/marketing/default-list', 'MarketingController@index')->name('marketing.list');
+        Route::get('/marketing/admitted-list', 'MarketingController@admittedList')->name('marketing.admitted.list');
+        Route::get('/marketing/not-interested-list', 'MarketingController@notInterestedList')->name('marketing.not.interested.list');
+        Route::get('/marketing/add', 'MarketingController@create')->name('marketing.add');
+        Route::get('/marketing/delete/{mid}', 'MarketingController@destroy')->name('marketing.delete');
+        Route::get('/marketing/admitted/{mid}', 'MarketingController@admitted')->name('marketing.admitted');
+        Route::get('/marketing/not-interested/{mid}', 'MarketingController@notInterested')->name('marketing.notInterested');
+        Route::get('/marketing/interested/{mid}', 'MarketingController@interested')->name('marketing.interested');
+        Route::post('/marketing/add', 'MarketingController@store')->name('marketing.store');
+        Route::post('/marketing-comment/add/{mid}', 'MarketingController@storeComment')->name('marketing.comment.store');
+        Route::post('/marketing-default/search', 'MarketingController@defaultSearch')->name('marketing.default.search');
+        Route::post('/marketing-not-interested/search', 'MarketingController@notInterestedSearch')->name('marketing.notInterested.search');
+        Route::post('/marketing-admitted/search', 'MarketingController@admittedSearch')->name('marketing.admitted.search');
+        Route::get('/marketing/today-conversation-list', 'MarketingController@today')->name('marketing.list.today');
 
-            Route::post('/sms-student-institute/{iid}/{yr}', 'ReportController@instituteSms')->name('sms.student.institute');
-            Route::post('/sms-student-institute/{iid}/{yr}/due', 'ReportController@instituteSmsDue')->name('sms.student.institute.due');
-        });
+        Route::post('/sms-student-institute/{iid}/{yr}', 'ReportController@instituteSms')->name('sms.student.institute');
+        Route::post('/sms-student-institute/{iid}/{yr}/due', 'ReportController@instituteSmsDue')->name('sms.student.institute.due');
+});
 
 //Student Pannel Routes Start
 
-        //Login Log Out Routes
-        Route::get('/student/login', 'AuthStudent\Auth\StudentAuthController@showLoginForm')->name('student.login');
-        Route::post('/student/login', 'AuthStudent\Auth\StudentAuthController@studentLogin')->name('student.login.submit');
-        Route::post('/student/logout', 'AuthStudent\Auth\StudentAuthController@studentLogout')->name('student.logout');
+//Login Log Out Routes
+Route::get('/student/login', 'AuthStudent\Auth\StudentAuthController@showLoginForm')->name('student.login');
+Route::post('/student/login', 'AuthStudent\Auth\StudentAuthController@studentLogin')->name('student.login.submit');
+Route::post('/student/logout', 'AuthStudent\Auth\StudentAuthController@studentLogout')->name('student.logout');
 
 
-        Route::group(['middleware' => 'student'], function () {
-                Route::get('/student/profile/{id?}', 'AuthStudent\StudentController@studentProfile')->name('student.profile');
-                Route::post('/student/profile/photo/update', 'AuthStudent\StudentController@studentProfileImgUpdate')->name('student.profile.photo.update');
-                // Registration Card
-                Route::get('/student/registration-card', 'AuthStudent\StudentController@registrationCard')->name('student.registration_card');
-                // ID Card
-                Route::get('/student/ID-card', 'AuthStudent\StudentController@idCard')->name('student.id_card');
-                // Certificate
-                Route::get('/student/certificate', 'AuthStudent\StudentController@certificate')->name('student.certificate');
-                // Attendance Report
-                Route::get('/student/attendance-report', 'AuthStudent\StudentController@studentAttendance')->name('student.studentAttendance');
+Route::group(['middleware' => 'student'], function () {
+        Route::get('/student/profile/{id?}', 'AuthStudent\StudentController@studentProfile')->name('student.profile');
+        Route::post('/student/profile/photo/update', 'AuthStudent\StudentController@studentProfileImgUpdate')->name('student.profile.photo.update');
+        // Registration Card
+        Route::get('/student/registration-card', 'AuthStudent\StudentController@registrationCard')->name('student.registration_card');
+        // ID Card
+        Route::get('/student/ID-card', 'AuthStudent\StudentController@idCard')->name('student.id_card');
+        // Certificate
+        Route::get('/student/certificate', 'AuthStudent\StudentController@certificate')->name('student.certificate');
+        // Attendance Report
+        Route::get('/student/attendance-report', 'AuthStudent\StudentController@studentAttendance')->name('student.studentAttendance');
 
-                // Job Placement
-                Route::prefix('student/job_placement')->name('student.job_placement.')->group(function () {
-                        Route::get('/student', 'AuthStudent\StudentController@studentJobPlace')->name('info');
-                        Route::get('/create/{id}', 'AuthStudent\StudentController@JPcreate')->name('create');
-                        Route::post('/store', 'AuthStudent\StudentController@JPstore')->name('store');
-                        Route::get('/show/{jp_id}', 'AuthStudent\StudentController@JPshow')->name('show');
-                        Route::get('/edit/{jp_id}', 'AuthStudent\StudentController@JPedit')->name('edit');
-                        Route::post('/update', 'AuthStudent\StudentController@JPupdate')->name('update');
-                });
-
-                // Student Payment
-                Route::get('student/courses/paymeny','AuthStudent\StudentController@studentCourse')->name('student.courses');
-                Route::get('student/payment/checkout/{id}','AuthStudent\StudentController@paymentCheckout')->name('student.payment.checkout');
-                Route::get('student/payment/details/{sid}/{cid}','AuthStudent\StudentController@paymentDetails')->name('student.payment.details');
-                Route::get('student/payment/{aid}/{pid?}/receipt', 'AuthStudent\StudentController@paymentReceipt')->name('student.payment.receipt');
+        // Job Placement
+        Route::prefix('student/job_placement')->name('student.job_placement.')->group(function () {
+                Route::get('/student', 'AuthStudent\StudentController@studentJobPlace')->name('info');
+                Route::get('/create/{id}', 'AuthStudent\StudentController@JPcreate')->name('create');
+                Route::post('/store', 'AuthStudent\StudentController@JPstore')->name('store');
+                Route::get('/show/{jp_id}', 'AuthStudent\StudentController@JPshow')->name('show');
+                Route::get('/edit/{jp_id}', 'AuthStudent\StudentController@JPedit')->name('edit');
+                Route::post('/update', 'AuthStudent\StudentController@JPupdate')->name('update');
         });
 
-//Student Pannel Routes End
+        // Student Payment
+        Route::get('student/courses/paymeny', 'AuthStudent\StudentController@studentCourse')->name('student.courses');
+        Route::get('student/payment/checkout/{id}', 'AuthStudent\StudentController@paymentCheckout')->name('student.payment.checkout');
+        Route::get('student/payment/details/{sid}/{cid}', 'AuthStudent\StudentController@paymentDetails')->name('student.payment.details');
+        Route::get('student/payment/{aid}/{pid?}/receipt', 'AuthStudent\StudentController@paymentReceipt')->name('student.payment.receipt');
+});
 
+//Student Pannel Routes End
