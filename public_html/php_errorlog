@@ -102,3 +102,5 @@ Stack trace:
 #9 /home/customer/www/sandeepc4.sg-host.com/software_actual/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php(116): Illuminate\Foundation\Http\Kernel->sendRequestThroughRouter(Object(Illuminate\Http\Request))
 #10 /home/customer/www/sandeepc4.sg-host.com/public_html/index.php(57): Illuminate\Foundation\Http\Kernel->handle(Object(Illuminate\Http\Request))
 #11 {main} in /home/customer/www/sandeepc4.sg-host.com/software_actual/vendor/laravel/framework/src/Illuminate/Support/Collection.php on line 40
+[24-Jan-2024 01:35:13 Asia/Dhaka] PHP Fatal error:  Allowed memory size of 536870912 bytes exhausted (tried to allocate 211982504 bytes) in /home/customer/www/sandeepc4.sg-host.com/software_actual/vendor/laravel/framework/src/Illuminate/View/Engines/PhpEngine.php on line 50
+[24-Jan-2024 02:15:39 Asia/Dhaka] PHP Fatal error:  Allowed memory size of 536870912 bytes exhausted (tried to allocate 211982504 bytes) in /home/customer/www/sandeepc4.sg-host.com/software_actual/vendor/laravel/framework/src/Illuminate/View/Engines/PhpEngine.php on line 50

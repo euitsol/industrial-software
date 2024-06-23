@@ -15,10 +15,10 @@ class BatchController extends Controller
     {
         // $batches = Batch::with(['students','user','course','lab'])->where('end_date','>=',Carbon::now())->get();
         $batches = Batch::with(['students', 'user', 'course', 'lab'])
-                            ->where(function ($query) {
-                                $query->whereNull('end_date')
-                                    ->orWhere('end_date', '>=', Carbon::now()->format('Y-m-d'));
-                            })
+                            // ->where(function ($query) {
+                            //     $query->whereNull('end_date')
+                            //         ->orWhere('end_date', '>=', Carbon::now()->format('Y-m-d'));
+                            // })
                             ->get();
         $in_batches = [];
         $pro_batches = [];

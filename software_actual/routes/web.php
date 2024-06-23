@@ -47,7 +47,10 @@ Route::get('/online-payment/successfull-payments', 'OnlinePaymentController@succ
 Route::post('/token', 'BkashController@token')->name('token');
 
 
-
+//Pre Registration
+Route::get('pre/registration', 'PreRegistrationController@registration')->name('pre.reg');
+Route::post('pre/registration', 'PreRegistrationController@store')->name('pre.reg.store');
+Route::get('pre/registration/success', 'PreRegistrationController@success')->name('pre.reg.success');
 
 // Auth::routes();
 
@@ -60,16 +63,18 @@ Route::get('/pdf', function () {
     return $pdf->stream('utility.cv2');
 });
 
-Route::get('/ad', function () {
-    \App\Models\Account::query()->delete();
-});
+// Route::get('/ad', function () {
+//     \App\Models\Account::query()->delete();
+// });
 
 
 
 Route::group(['middleware' => 'auth'], function () {
 
 
+//pre registration 
 
+        Route::get('pre-registration/list', 'PreRegistrationController@list')->name('pr.list');
 
 //classrooom
 
