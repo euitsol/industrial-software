@@ -75,4 +75,4 @@ jobs:
             git fetch --all
             git reset --hard origin/main
             git pull
-            /usr/local/php73/bin/php-cli artisan optimize:clear
+            # /usr/local/php73/bin/php-cli artisan optimize:clear
