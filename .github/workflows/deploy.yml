@@ -74,6 +74,7 @@ jobs:
             set -x  # Enable debugging
             cd www || exit 1
             cd sandeepc4.sg-host.com || exit 1
+            ls -la
             git fetch --all || exit 1
             git reset --hard origin/main || exit 1
             git pull || exit 1
