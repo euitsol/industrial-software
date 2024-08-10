@@ -574,6 +574,11 @@ Route::group(['middleware' => 'auth'], function () {
                 Route::get('/existing_students/{id}/assign_new_course', 'StudentController@existing_new_course')->name('existing.assign_new_course');
         });
 
+        Route::prefix('additional-fee')->name('fee.')->group(function () {
+                Route::get('/index', 'FeesController@index')->name('index');
+                Route::post('/update', 'FeesController@update')->name('update');
+        });
+
         //Student Job Placement
         Route::prefix('job_placement')->name('job_placement.')->group(function () {
 
