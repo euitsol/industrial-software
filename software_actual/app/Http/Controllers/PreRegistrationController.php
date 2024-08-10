@@ -122,7 +122,7 @@ class PreRegistrationController extends Controller
 
         $students = PreRegistration::with('institute')->with('user')
             ->where('student_as', 'Industrial')
-            ->where('year', $year)->latest()->get();
+            ->where('year', $year)->latest()->limit(100)->get();
 
         $student_as = 'Industrial';
         $totalStudents = PreRegistration::where('student_as', 'Industrial')->get();

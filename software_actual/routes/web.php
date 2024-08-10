@@ -73,6 +73,9 @@ Route::get('/pdf', function () {
 Route::group(['middleware' => 'auth'], function () {
 
 
+        //student-list
+        Route::get('temp/student-list', 'Controller@temp_list')->name('st.c.list');
+
         //pre registration 
 
         Route::get('pre-registration/list', 'PreRegistrationController@list')->name('pr.list');

@@ -2,12 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use App\Models\Session as Sessions;
+use Carbon\Carbon;
+
+use App\Models\CourseStudent;
 
 class Controller extends BaseController
 {
@@ -557,6 +561,31 @@ class Controller extends BaseController
         return $session;
     }
 
-         
+    public function temp_list(Request $request){
+        $gender = null;
+        $year = null;
+        $model = CourseStudent::query();
+        if ($request->input('year')) {
+            $year = $request->input('year');
+            $startOfYear = Carbon::createFromFormat('Y', $year)->startOfYear();
+            $endOfYear = Carbon::createFromFormat('Y', $year)->endOfYear();
+            $model = $model->whereBetween('created_at', [$startOfYear, $endOfYear]);
+        }
+
+        if ($request->input('gender')) {
+            $gender = $request->input('gender');
+            if($gender != 'all'){
+                $model->whereHas('student', function($query) use ($gender) {
+                    $query->where('gender', $gender);
+                });
+            }
+           
+        }
+
+        $count = $model->get()->count();
+
+        $c_students = $model->get()->groupBy('course_id');
+        return view('temp', compact('c_students', 'gender', 'year', 'count'));
+    }
 
 }
