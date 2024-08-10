@@ -94,7 +94,7 @@
                                             <th> Class </th>
                                             <th> Date </th>
                                             @foreach ($students as $key => $student)
-                                                <th> {{ $student->student->name }}</th>
+                                                <th> {{ $student->student->name }}<br>{{ $student->student->phone }}</th>
                                             @endforeach  
                                         </tr>
                                     </thead>

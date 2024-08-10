@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Models\Student;
 use App\Models\Institute;
+use App\Models\BatchStudent;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -32,34 +33,45 @@ class StudentCardController extends Controller
     }
     public function studentsCardInstitute($iid, $year)
     {
-        // $data['institute'] = Institute::find($iid);
         $data['students'] = Student::where('institute_id', $iid)->where('year', '=', $year)->latest()->get();
-        // if (isset($students)) {
-        //     foreach ($students as $student) {
-        //         $courses = $student->courses;
-        //         $accounts = $student->accounts;
-        //         if (isset($courses)) {
-        //             foreach ($courses as $key => $course) {
-        //                 if (isset($accounts)) {
-        //                     $_account = $accounts->where('student_id', $student->id)->where('course_id', $course->id)->first();
-        //                     $_payments = isset($_account->payments) ? $_account->payments->sum('amount') : 0;
-        //                     $total_fee = $this->courseFeeCalculate($_account, $course->fee);
-        //                     $course['total_fee'] = $total_fee;
-        //                     $course['payments'] = $_payments;
-        //                 }
-        //             }
-        //         }
-        //         if (isset($courses)) {
-        //             foreach ($courses as $_k => $course) {
-        //                 $student['total_amount'] = $course->fee;
-        //                 // $student['total_amount'] = $course->total_fee;
-        //                 $student['paid_amount'] = $course->payments;
-        //                 $student['due_amount'] = $course->total_fee - $course->payments;
-        //             }
-        //         }
-        //     }
-        // }
-        // dd($students);
         return view('student_card.student_cards', $data);
+    }
+    public function batchWiseCard(){
+        return view('student_card.student_card_batch');
+    }
+    public function batchWiseSearch(Request $request)
+    {
+        if (empty($request->course_type)) {
+            session()->flash('error', 'Please select course type first.');
+            return redirect()->back();
+        }
+        else{
+            $course_type = $request->course_type;
+            $course_id = $request->course;
+            $batch_id = $request->batch;
+            return redirect()->route('student_card.batch.view', compact('course_type','course_id','batch_id'));
+        }
+    }
+    public function batchStudentCard($ctid, $cid, $bid){
+        $s['students'] = BatchStudent::with('student')
+                        ->where('batch_id', $bid)
+                        ->get();
+        return view('student_card.batch_student_cards', $s);
+    }
+
+    public function selectedCards()
+    {
+        $s['students'] = Student::where('card_print_status', 0)->latest()->get();
+        return view('student_card.selected_cards', $s);
+    }
+    public function selectedCardsClear()
+    {
+        $students = Student::where('card_print_status', 0)->latest()->get();
+        foreach($students as $student){
+            $student->card_print_status = 1;
+            $student->save();
+        }
+        $this->message('success', 'Selected card cleared successfully');
+        return redirect()->back();
     }
 }

@@ -63,7 +63,8 @@ class UserController extends Controller
     {
         $user = User::find($uid);
         $users = User::select('role')->latest()->get();
-        return view('user.edit', compact('user','users'));
+        $mentors = Mentor::latest()->get();
+        return view('user.edit', compact('user','users','mentors'));
     }
 
     public function update(Request $request)
@@ -73,6 +74,7 @@ class UserController extends Controller
             'name' => 'required|string|max:170',
             'password' => 'confirmed|max:32',
             'new_role' => 'unique:users,role|nullable|string|max:30',
+            'mentor_id' => 'nullable',
         ]);
 
         $user = User::find($request->id);
@@ -89,6 +91,7 @@ class UserController extends Controller
         if (!empty($request->password)) {
             $user->password = bcrypt($request->password);
         }
+        $user->mentor_id = $request->mentor_id;
         $user->save();
 
         $this->message('success', 'User updated successfully');

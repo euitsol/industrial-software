@@ -62,6 +62,7 @@
                                     <th>Name</th>
                                     <th>Phone</th>
                                     <th>Institute</th>
+                                    <th>Image</th>
                                     @if($student_as != null && $student_as == "Industrial")
                                     <th>Shift</th>
                                     @endif
@@ -73,9 +74,13 @@
                                 @foreach ($students as $key => $student)
                                     <tr>
                                         <td> {{ $student->year.$student->reg_no }} </td>
-                                        <td> {{ $student->name }} </td>
+                                        <td class="pl-4"> 
+                                            <input type="checkbox" class="card-print-checkbox" data-student-id="{{ $student->id }}" data-card-print-status="{{ $student->card_print_status }}" title="Check it for print card from selected cards" {{ $student->card_print_status == 0 ? 'checked' : '' }}>
+                                            {{ $student->name }} 
+                                        </td>
                                         <td> {{ $student->phone }} </td>
                                         <td> {{ optional($student->institute)->name }} </td>
+                                        <td><img style="width:50px" src="{{$student->photo ? (asset($student->photo)) : (asset('assets/img/no_img.jpg'))}}"></td>
                                         @if($student_as != null && $student_as == "Industrial")
                                         <td> {{ $student->shift() }} </td>
                                         @endif
@@ -95,6 +100,11 @@
                                                    class="btn btn-sm btn-danger">
                                                     <i class="fa fa-trash"></i>
                                                 </a>
+                                                <a href="{{ route('student.profile',$student->id) }}"
+                                                   class="btn btn-sm btn-dark">
+                                                    <i class="fa fa-user"></i>
+                                                </a>
+                                                
                                             </div>
                                         </td>
                                     </tr>
@@ -106,6 +116,7 @@
                                     <th>Name</th>
                                     <th>Phone</th>
                                     <th>Institute</th>
+                                    <th>Image</th>
                                     @if($student_as != null && $student_as == "Industrial")
                                     <th>Shift</th>
                                     @endif
@@ -130,7 +141,40 @@
     <script src="{{ asset('assets/vendor/data-table/js/vfs_fonts.js') }}"></script>
     <script src="{{ asset('assets/vendor/data-table/js/buttons.html5.min.js') }}"></script>
     <script src="{{ asset('assets/vendor/data-table/js/buttons.print.min.js') }}"></script>
-
+    <script>
+        $(document).ready(function() {
+        $('.card-print-checkbox').change(function() {
+            var studentId = $(this).data('student-id');
+            var cardPrintStatus = $(this).data('card-print-status');
+            
+            // Toggle the card print status
+            var newCardPrintStatus = cardPrintStatus === 0 ? 1 : 0;
+            let _url = "{{route('updateCardPrintStatus')}}";
+            let token = '{{ csrf_token() }}'
+            console.log(cardPrintStatus);
+            
+            $.ajax({
+                type: 'POST',
+                url: _url,
+                data: {
+                    _token: token,
+                    student_id: studentId,
+                    card_print_status: newCardPrintStatus
+                },
+                success: function(response) {
+                    // Update the data-card-print-status attribute
+                    $('.card-print-checkbox[data-student-id="' + studentId + '"]').data('card-print-status', newCardPrintStatus);
+                    
+                    // Show the success message
+                    $('#success-message').fadeIn().delay(2000).fadeOut();
+                },
+                error: function(xhr, status, error) {
+                    console.error(error);
+                    }
+                });
+            });
+        });
+    </script>
     <script>
         $(document).ready(function () {
             let type  = $('#studentType').val();

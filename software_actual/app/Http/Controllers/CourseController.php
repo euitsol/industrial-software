@@ -7,6 +7,7 @@ use App\Models\Course;
 use App\Models\CourseType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
 use DB;
 
 class CourseController extends Controller
@@ -14,7 +15,7 @@ class CourseController extends Controller
     public function index()
     {
         $in_courses = Course::with('course_type')->with('user')
-            ->where('type', 'Industrial')->latest()->get();
+            ->where('type', 'Industrial')->whereYear('created_at', '>','2021')->latest()->get();
         $pro_courses = Course::with('course_type')->with('user')
             ->where('type', 'Professional')->latest()->get();
         return view('course.index', compact('in_courses', 'pro_courses'));

@@ -5,25 +5,25 @@
 @push('css')
 <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
 <style>
-    
+
 .main_column{
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     background: #f4f4fb;
-    row-gap: 29.5px;
+    row-gap: 69.5px;
 }
 .main_card{
-    width: 300px;
-    height: 484px;
+    width: 290px;
+    height: 454px;
     position: relative;
-    
+
 }
 .card_header{
-    background: #303140;
-    height:6%;
+    background: #18182B;
+    height:4.5%;
 }
 .card_footer {
-    background-color: #0097d5;
+    background-color: #00a9ff;
     height: 4%;
     position: absolute;
     width: 100%;
@@ -32,15 +32,17 @@
 
 .logo_area{
     height: 30%;
+    text-align: center;
 }
 
 .logo_area img{
     margin-top: 23px;
+    width: 90% !impotant;
 }
 
 .body_area {
-    height: 60%;
-    background: #303140;
+    height: 61.5%;
+    background: #18182B;
     padding-top: 77px;
     padding-left: 10px;
     padding-right: 10px;
@@ -53,7 +55,7 @@
 .id_logo {
     width: 248px;
     margin: 0 auto;
-  
+
 }
 
 
@@ -71,7 +73,7 @@
     border: 5px solid;
     border-radius: 50%;
     position: absolute;
-    top: 125px;
+    top: 100px;
     left: 50%;
     transform: translateX(-50%);
 }
@@ -89,10 +91,11 @@
 .logo_area::after {
     content: '';
     width: 100%;
-    height: 32px;
-    background: #4ebff8;
+    height: 25px;
+    background: #00a9ff;
     position: absolute;
-    bottom: -32px;
+    bottom: 0px;
+    left: 0;
 }
 .student_details {
     display: flex;
@@ -142,7 +145,7 @@
                 </button>
             </div>
             @foreach($students->chunk(9) as $students)
-            <div class="main_column">
+            <div class="main_column mb-4">
                 @forelse ($students as $student)
                     <div class="main_card mx-auto">
                         <div class="card_header"></div>
@@ -150,10 +153,10 @@
                         <div class="id_logo">
                                 <img class="img-fluid" src="{{asset('images/EUITSols Institute New.png')}}" alt="logo">
                         </div>
-                        
+
                         </div>
                         @if(isset($student->photo))
-                            <img src="{{asset($student->photo)}}" alt="" class="profile-pic">                    
+                            <img src="{{asset($student->photo)}}" alt="" class="profile-pic">
                             @else
                                 @if( $student->gender == 'male')
                                 <img src="{{asset('images/avatar-male.jpg')}}" alt="" class="profile-pic">
@@ -162,10 +165,10 @@
                                 @endif
                             @endif
                         <div class="body_area">
-                        
+
                         <div class="body_content">
                                 <div class="student_name">
-                                    <h2>{{$student->name}}</h2>
+                                    <h2 class="mt-1 text-capitalize">{{strtolower($student->name)}}</h2>
                                     @foreach($student->batches as $batch)
                                         <p>{{$batch->course->title}}</p>
                                     @endforeach
@@ -176,7 +179,7 @@
                                             <li>ID NO</li>
                                             <li>Batch No</li>
                                             <li>Phone</li>
-                                            <li>Blood</li>
+                                            <li>Blood Group</li>
                                             <li>Email</li>
                                         </ul>
                                     </div>
@@ -187,11 +190,11 @@
                                                 <li><span>:</span>{{batch_name($batch->course->title_short_form, $batch->year, $batch->month, $batch->batch_number)}}</li>
                                             @endforeach
                                             <li><span>:</span>+88{{$student->phone}}</li>
-                                            <li><span>:</span>{{$student->blood ?? 'N/A'}}</li>
+                                            <li><span>:</span>{{$student->blood_group ?? 'N/A'}}</li>
                                             <li><span>:</span>{{$student->email ?? 'N/A'}}</li>
                                         </ul>
                                     </div>
-                                    
+
                                 </div>
                         </div>
                         </div>
@@ -201,12 +204,12 @@
                 @endforelse
             </div>
             @endforeach
-        
+
         </div>
         @else
         <h4 class="text-center mx-auto text-danger">Empty</h4>
         @endif
-      </div>  
+      </div>
 </div>
 @endsection
 

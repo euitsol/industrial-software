@@ -1,0 +1,79 @@
+name: Deploy Application to Server
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+
+jobs:
+  laravel-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: executing remote ssh commands using password
+        uses: appleboy/ssh-action@master
+        with:
+          host: ssh.sandeepc4.sg-host.com
+          username: u1471-vgljsoqbpbvx
+          key: |
+            -----BEGIN OPENSSH PRIVATE KEY-----
+            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
+            8vUQB0y+BJLlDU3UMu0GgChMs=
+            -----END OPENSSH PRIVATE KEY-----
+          port: 18765
+          passphrase: bo$g($2_qn4x
+          script: |
+            cd www
+            cd sandeepc4.sg-host.com
+            git fetch --all
+            git reset --hard origin/main
+            git pull
+            cd public_html
+            /usr/local/php73/bin/php-cli artisan optimize:clear

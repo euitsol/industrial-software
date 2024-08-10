@@ -72,6 +72,7 @@
                                                 <th>SL</th>
                                                 <th>Name</th>
                                                 <th>Board Roll</th>
+                                                <th>Board Reg</th>
                                                 <th>Phone</th>
                                                 <th>Courses</th>
                                                 <th class="payment">Course Fee</th>
@@ -85,6 +86,7 @@
                                                     <td>{{++$sk}}</td>
                                                     <td>{{$student->name}}</td>
                                                     <td>{{$student->board_roll ?? '---'}}</td>
+                                                    <td>{{$student->board_reg ?? '---'}}</td>
                                                     <td>{{$student->phone}}</td>
                                                     <td>
                                                         @if ($student->courses->count() > 0)

@@ -18,53 +18,69 @@ use Illuminate\Support\Facades\Storage;
 
 class StudentController extends Controller
 {
-    public function studentProfile(){
-        $data['student'] = Student::with(['courses', 'batches'])->find(Auth::guard('student')->user()->id);
+    public function studentProfile($id = false)
+    {
+        if ($id == false) {
+            $id = Auth::guard('student')->user()->id;
+        }
+        $data['student'] = Student::with(['courses', 'batches'])->find($id);
         $data['minfo'] = array();
-        foreach($data['student']->courses as $ck => $course){
-            foreach($data['student']->batches as $bk => $batch){
-                $data['minfo'][] = BatchAttendance::where('course_id',$course->id)->where('batch_id',$batch->id)->get();
+        foreach ($data['student']->courses as $ck => $course) {
+            foreach ($data['student']->batches as $bk => $batch) {
+                $data['minfo'][] = BatchAttendance::where('course_id', $course->id)->where('batch_id', $batch->id)->get();
             }
         }
 
-        return view('student_panel.student.profile',$data);
+        return view('student_panel.student.profile', $data);
     }
-    public function studentProfileImgUpdate(Request $request){
+    public function studentProfileImgUpdate(Request $request)
+    {
         $request->validate([
             'photo' => 'image|mimes:jpg,jpeg,png,JPG,JPEG,PNG|max:5120',
         ]);
-
-        $s = Student::findOrFail($request->id);
-        if ($request->base64image || $request->base64image != '0') {
-            $folderPath = 'uploads/images/';
-            $image_parts = explode(";base64,", $request->base64image);
-            $image_type_aux = explode("image/", $image_parts[0]);
-            $image_type = $image_type_aux[1];
-            $image_base64 = base64_decode($image_parts[1]);
-            $filename = time() . '.'.$image_type;
-            $file =$folderPath.$filename;
-            file_put_contents($file, $image_base64);
-            $s->photo = $file;
-            $s->save();
+        if ($request->base64image && preg_match('/^data:image\/(\w+);base64,/', $request->base64image, $matches)) {
+            $image_type = $matches[1];
+            $s = Student::findOrFail($request->id);
+            if ($request->base64image || $request->base64image != '0') {
+                $folderPath = 'uploads/images/';
+                $image_parts = explode(";base64,", $request->base64image);
+                $image_type_aux = explode("image/", $image_parts[0]);
+                $image_type = $image_type_aux[1];
+                $image_base64 = base64_decode($image_parts[1]);
+                $filename = time() . '.' . $image_type;
+                $file = $folderPath . $filename;
+                file_put_contents($file, $image_base64);
+                $s->photo = $file;
+                $s->save();
+            }
         }
+
         $this->message('success', 'Profile photo update successfully');
         return redirect()->back();
     }
 
-    public function registrationCard(){
+    public function registrationCard()
+    {
         $data['student'] = Student::with(['courses', 'batches'])->find(Auth::guard('student')->user()->id);
         return view('student_panel.student.registration_card', $data);
     }
-    public function idCard(){
-        $data['student']= Student::findOrFail(Auth::guard('student')->user()->id);
-        return view('student_panel.student.id_card',$data);
+    public function idCard()
+    {
+        $data['student'] = Student::findOrFail(Auth::guard('student')->user()->id);
+        return view('student_panel.student.id_card', $data);
     }
-    public function studentAttendance(){
+    public function certificate()
+    {
+        $data['student'] = Student::findOrFail(Auth::guard('student')->user()->id);
+        return view('student_panel.student.certificate', $data);
+    }
+    public function studentAttendance()
+    {
         $data['student'] = Student::findOrFail(Auth::guard('student')->user()->id);
         $data['minfo'] = array();
-        foreach($data['student']->courses as $ck => $course){
-            foreach($data['student']->batches as $bk => $batch){
-                $data['minfo'][] = BatchAttendance::where('course_id',$course->id)->where('batch_id',$batch->id)->get();
+        foreach ($data['student']->courses as $ck => $course) {
+            foreach ($data['student']->batches as $bk => $batch) {
+                $data['minfo'][] = BatchAttendance::where('course_id', $course->id)->where('batch_id', $batch->id)->get();
             }
         }
         return view('student_panel.student.attendance_report', $data);
@@ -72,9 +88,10 @@ class StudentController extends Controller
 
 
 
-    public function studentJobPlace(){
-        $data['student'] = Student::with(['courses','batches'])->findOrFail(Auth::guard('student')->user()->id);
-        $data['job_placement'] = JobPlacement::with('linkageIndustry')->where('student_id',Auth::guard('student')->user()->id)->first();
+    public function studentJobPlace()
+    {
+        $data['student'] = Student::with(['courses', 'batches'])->findOrFail(Auth::guard('student')->user()->id);
+        $data['job_placement'] = JobPlacement::with('linkageIndustry')->where('student_id', Auth::guard('student')->user()->id)->first();
 
         if (isset($data['student']->courses)) {
             $data['courses'] = $data['student']->courses;
@@ -86,7 +103,7 @@ class StudentController extends Controller
     {
         $data['student_id'] = $id;
         $data['linkage_industries'] = LinkageIndustryInfo::latest()->get();
-        return view('student_panel.job_placement.create',$data);
+        return view('student_panel.job_placement.create', $data);
     }
     public function JPstore(Request $request)
     {
@@ -94,7 +111,7 @@ class StudentController extends Controller
             'designation' => 'required|max:255',
             'joining_date' => 'required|date',
         ]);
-        if (!isset($request->company_name)){
+        if (!isset($request->company_name)) {
             $request->validate([
                 'linkage_industry_info_id' => 'required',
             ]);
@@ -125,61 +142,61 @@ class StudentController extends Controller
             }
         }
 
-            $m = new JobPlacement;
-            $m->student_id = $request->student_id;
+        $m = new JobPlacement;
+        $m->student_id = $request->student_id;
 
-            if (empty($request->linkage_industry_info_id) && !empty($request->company_name)) {
-                $data = new LinkageIndustryInfo;
-                $data->company_name = $request->company_name;
+        if (empty($request->linkage_industry_info_id) && !empty($request->company_name)) {
+            $data = new LinkageIndustryInfo;
+            $data->company_name = $request->company_name;
 
-                if ($request->hasFile('company_logo')) {
-                    $logo = $request->company_logo;
-                    $img_name = time() . '_' . $logo->getClientOriginalName();
-                    $logo->move('uploads/images/', $img_name);
-                    $data->company_logo = 'uploads/images/' . $img_name;
-
-                }
-
-                $data->company_website = $request->company_website;
-                $data->company_address = $request->company_address;
-                $data->contact_person_name = $request->contact_person_name;
-                $data->contact_number = $request->contact_number;
-                $data->contact_email = $request->contact_email;
-                $data->description = $request->description;
-                $data->created_by = 35;
-                $data->created_at = Carbon::now();
-                $data->save();
-
-                $id = LinkageIndustryInfo::latest()->first();
-                $m->linkage_industry_info_id = $id->id;
-            } else {
-                $m->linkage_industry_info_id = $request->linkage_industry_info_id;
+            if ($request->hasFile('company_logo')) {
+                $logo = $request->company_logo;
+                $img_name = time() . '_' . $logo->getClientOriginalName();
+                $logo->move('uploads/images/', $img_name);
+                $data->company_logo = 'uploads/images/' . $img_name;
             }
-            $m->designation = $request->designation;
-            if (isset($request->department))
-            {
-                $m->department = $request->department;
-            }
-            $m->joining_date = $request->joining_date;
-            $m->created_by = 35;
-            $m->created_at = Carbon::now();
-            $m->save();
 
-            $this->message('success', 'Job placement add successfully');
-            return redirect()->route('student.job_placement.info',$request->student_id);
+            $data->company_website = $request->company_website;
+            $data->company_address = $request->company_address;
+            $data->contact_person_name = $request->contact_person_name;
+            $data->contact_number = $request->contact_number;
+            $data->contact_email = $request->contact_email;
+            $data->description = $request->description;
+            $data->created_by = 35;
+            $data->created_at = Carbon::now();
+            $data->save();
+
+            $id = LinkageIndustryInfo::latest()->first();
+            $m->linkage_industry_info_id = $id->id;
+        } else {
+            $m->linkage_industry_info_id = $request->linkage_industry_info_id;
+        }
+        $m->designation = $request->designation;
+        if (isset($request->department)) {
+            $m->department = $request->department;
+        }
+        $m->joining_date = $request->joining_date;
+        $m->created_by = 35;
+        $m->created_at = Carbon::now();
+        $m->save();
+
+        $this->message('success', 'Job placement add successfully');
+        return redirect()->route('student.job_placement.info', $request->student_id);
     }
     public function JPshow($jp_id)
     {
         $data['jp'] = JobPlacement::findOrFail($jp_id);
-        $data['linkage_industry'] = LinkageIndustryInfo::where('id',$data['jp']->linkage_industry_info_id)->first();
+        $data['linkage_industry'] = LinkageIndustryInfo::where('id', $data['jp']->linkage_industry_info_id)->first();
         return view('student_panel.job_placement.show', $data);
     }
-    public function JPedit($id){
+    public function JPedit($id)
+    {
         $data['jp'] = JobPlacement::findOrFail($id);
         $data['linkage_industries'] = LinkageIndustryInfo::latest()->get();
-        return  view('student_panel.job_placement.edit',$data);
+        return  view('student_panel.job_placement.edit', $data);
     }
-    public function JPupdate(Request $request){
+    public function JPupdate(Request $request)
+    {
 
         $request->validate([
             'linkage_industry_info_id' => 'required',
@@ -187,49 +204,49 @@ class StudentController extends Controller
             'joining_date' => 'required|date',
         ]);
 
-            $m = JobPlacement::find($request->id);
-            $m->linkage_industry_info_id = $request->linkage_industry_info_id;
-            $m->designation = $request->designation;
-            if (isset($request->department))
-            {
-                $m->department = $request->department;
-            }
-            $m->joining_date = $request->joining_date;
-            $m->updated_by = 35;
-            $m->updated_at = Carbon::now();
-            $m->update();
+        $m = JobPlacement::find($request->id);
+        $m->linkage_industry_info_id = $request->linkage_industry_info_id;
+        $m->designation = $request->designation;
+        if (isset($request->department)) {
+            $m->department = $request->department;
+        }
+        $m->joining_date = $request->joining_date;
+        $m->updated_by = 35;
+        $m->updated_at = Carbon::now();
+        $m->update();
 
-            $this->message('success', 'Job placement update successfully');
-            return redirect()->route('student.job_placement.info',$m->student_id);
-
+        $this->message('success', 'Job placement update successfully');
+        return redirect()->route('student.job_placement.info', $m->student_id);
     }
 
 
-    public function studentCourse(){
-        $data['student'] = Student::with(['courses','batches'])->where('id',Auth::guard('student')->user()->id)->first();
-        return view('student_panel.payment.index',$data);
+    public function studentCourse()
+    {
+        $data['student'] = Student::with(['courses', 'batches'])->where('id', Auth::guard('student')->user()->id)->first();
+        return view('student_panel.payment.index', $data);
     }
-    public function paymentCheckout($id){
-            $id = Crypt::decrypt($id);
-            $data['student'] = Student::findOrFail(Auth::guard('student')->user()->id);
-            $data['course'] = Course::findOrFail($id);
+    public function paymentCheckout($id)
+    {
+        $id = Crypt::decrypt($id);
+        $data['student'] = Student::findOrFail(Auth::guard('student')->user()->id);
+        $data['course'] = Course::findOrFail($id);
 
-            return view('student_panel.payment.checkout', $data);
+        return view('student_panel.payment.checkout', $data);
     }
-    public function paymentDetails($sid, $cid){
+    public function paymentDetails($sid, $cid)
+    {
         $sid = Crypt::decrypt($sid);
         $cid = Crypt::decrypt($cid);
         $data['student'] = Student::findOrFail($sid);
         $data['course'] = Course::findOrFail($cid);
-        $data['account'] = Account::where('student_id',$sid)->where('course_id',$cid)->first();
-        $data['payments'] = Payment::where('account_id',$data['account']->id)->get();
-        return view('student_panel.payment.details',$data);
+        $data['account'] = Account::where('student_id', $sid)->where('course_id', $cid)->first();
+        $data['payments'] = Payment::where('account_id', $data['account']->id)->get();
+        return view('student_panel.payment.details', $data);
     }
 
-    public function paymentReceipt($aid ,$pid)
+    public function paymentReceipt($aid, $pid)
     {
-        if ($pid == 'null')
-        {
+        if ($pid == 'null') {
             $account = Account::with('student')->with('student.batches')->with('course')->find($aid);
             $student = $account->student;
             $course = $account->course;
@@ -276,10 +293,8 @@ class StudentController extends Controller
                 '_installment_dates' => $_installment_dates,
                 'receipt_no' => $payments->max('id') ?? 1
             ]);
-
-        }
-        else
-        {   $total_payments = 0;
+        } else {
+            $total_payments = 0;
             $account = Account::with('student')->with('student.batches')->with('course')->find($aid);
             $student = $account->student;
             $course = $account->course;
@@ -298,10 +313,8 @@ class StudentController extends Controller
             $payments_2 = $account->payments;
 
 
-            foreach ($payments_2 as $p2)
-            {
-                if( $p2->id <= $pid )
-                {
+            foreach ($payments_2 as $p2) {
+                if ($p2->id <= $pid) {
                     $total_payments += $p2->amount;
                 }
             }
@@ -335,11 +348,6 @@ class StudentController extends Controller
                 '_installment_dates' => $_installment_dates,
                 'receipt_no' => $payments->max('id') ?? 1
             ]);
-
-
-
-
         }
-
     }
 }

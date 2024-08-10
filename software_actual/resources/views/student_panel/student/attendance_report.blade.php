@@ -17,7 +17,7 @@
 @endpush
 
 @section('content')
-    <div class="container">
+    <div class="container-fluid">
         <div class="row justify-content-center">
             <div class="col-md-12 col-lg-12">
 
@@ -63,7 +63,7 @@
                                     <div class="p-0 mb-4 text-center">
                                         <h4>
                                             {{ $student->name }}
-                                            
+
                                         </h4>
                                     </div>
                                     <div class="p-0 mx-auto d-flex justify-content-between info">
@@ -94,7 +94,7 @@
                                                 @endforeach
                                             @endforeach
                                         </p>
-                                        
+
                                         <p ><i class="fa fa-check-circle"></i> <span> Complete Class: </span>
                                             @foreach($student->batches as $bk => $batch)
                                                 @foreach($minfo as $infos)
@@ -137,6 +137,7 @@
                                                         <th class="text-center"> Class </th>
                                                         <th class="text-center"> Date</th>
                                                         <th class="text-center"> Attendance</th>
+                                                        <th class="text-center"> Student Status</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -149,8 +150,11 @@
                                                                         @if($course->id == $info->course_id && $batch->id == $info->batch_id)
                                                                             <td class="text-center">{{ $info->getDate($i)->date ?? 'Date' }}</td>
                                                                             <td class="text-center">
-                                                                                <i class="{{optional($info->getAttend($i, $student->id))->attedanceStatus()}}"></i> 
-                                                                            </td class="text-center">
+                                                                                <i class="{{optional($info->getAttend($i, $student->id))->attedanceStatus()}}"></i>
+                                                                            </td>
+                                                                                {{$info->comment($student->id,$i)}}
+                                                                            <td class="text-center">
+                                                                            </td>
                                                                         @endif
                                                                     @endforeach
                                                                 @endforeach
@@ -161,7 +165,7 @@
                                             @else
                                                 <p class="text-center">Your course total class not set yet!</p>
                                             @endif
-                                        </table> 
+                                        </table>
                                     </div>
                         </div>
                     </div>

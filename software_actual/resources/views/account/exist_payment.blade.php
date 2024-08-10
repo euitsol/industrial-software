@@ -39,6 +39,13 @@
                                         {{ session('error') }}
                                     </p>
                                 @endif
+                                @if ($errors->any())
+                                    <div class="alert alert-danger text-center">
+                                        @foreach ($errors->all() as $error)
+                                            <p>{{ $error }}</p>
+                                        @endforeach
+                                    </div>
+                                @endif
 
                                 <table class="table table-borderless">
                                     <tr>
@@ -102,9 +109,59 @@
                                         <input type="hidden" name="_due" value="{{ $due }}">
                                         <input type="hidden" name="batch_name" value="{{batch_name($course->title_short_form, $batch->year, $batch->month, $batch->batch_number)}}">
                                         <div class="row">
-                                            <div class="col-md-8 offset-md-2">
+                                            <div class="col-md-12 offset-md-2">
+                                                <div class="form-group row mb-0">
+                                                    <label class="col-md-3 form-control-label">Payment Type</label>
+                                                    <div class="col-md-9">
+                                                        <input type="checkbox" name="payment_type[]" id="type_cash" value="cash">
+                                                        <label for="type_cash" class="mr-2">Cash</label>
+                                                        <input type="checkbox" name="payment_type[]" id="type_mb" value="mobile_banking" >
+                                                        <label for="type_mb">Mobile Banking</label>
+                                                        <br>
+                                                        @if ($errors->has('payment_type'))
+                                                            <span class="text-danger">{{$errors->first('payment_type')}}</span>
+                                                        @endif
+                                                    </div>
+                                                </div>
 
                                                 <div class="form-group row">
+                                                    <div class="col-md-3"></div>
+                                                    <div class="col-md-9" id="payment_inputs">
+                                                        <div class="input-group w-50 mt-2" id="cash_container" style="display:none;">
+                                                            <input placeholder="Cash payment amount" type="number" name="cash_payment" id="cash_payment" value="" min="0"class="form-control form-control-sm">
+                                                        </div>
+                                                        <div class="w-50 mt-2" id="mb_container" style="display:none;">
+                                                            <select class="form-control form-control-sm" name="mb_type" id="mb_type">
+                                                                <option value="" hidden>Banking Type</option>
+                                                                <option value="1">Bkash</option>
+                                                                <option value="2">Rocket</option>
+                                                                <option value="3">Nagad</option>
+                                                                <option value="4">Nexus Pay</option>
+                                                            </select>
+                                                            <input placeholder="MB payment amount" type="number" name="mb_payment" id="mb_payment" value="" min="0" class="form-control form-control-sm mt-2">
+                                                            <input placeholder="Trxn ID Last 6 digits (Uppercase)" type="text" name="mb_trxn" id="mb_trxn" value="" class="form-control form-control-sm mt-2">
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group row">
+                                                    <label for="" class="col-md-3 form-control-label">Total Amount </label>
+                                                    <div class="col-md-9">
+                                                        <input type="text" id="today_payable"
+                                                            class="form-control w-50" disabled>
+                                                        <input type="hidden" name="amount" id="payable_amount" class="d-none">
+                                                        @if ($errors->has('amount'))
+                                                            <span class="text-danger">{{$errors->first('amount')}}</span>
+                                                        @endif
+                                                        <div class="mt-2">
+                                                            <a href="javascript:void(0)" id="new_installment_button">
+                                                                <i class="fa fa-plus-circle"></i> New Installment
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <!-- <div class="form-group row">
                                                     <label for="" class="col-md-5">Installment Amount</label>
                                                     <div class="col-md-7">
                                                         <input type="number" name="amount" id="installment_amount" min="0"
@@ -118,12 +175,12 @@
                                                             </a>
                                                         </div>
                                                     </div>
-                                                </div>
+                                                </div> -->
 
                                                 <div class="form-group row" id="installment_quantity_wrapper" style="display: none;">
-                                                    <label for="installment_quantity" class="col-md-5">Installment Quantity</label>
-                                                    <div class="col-md-7">
-                                                        <input type="number" name="installment_quantity" value="{{ old('installment_quantity') }}" id="installment_quantity" min="0" class="form-control form-control-sm">
+                                                    <label for="installment_quantity" class="col-md-3">Installment Quantity</label>
+                                                    <div class="col-md-9">
+                                                        <input type="number" name="installment_quantity" value="{{ old('installment_quantity') }}" id="installment_quantity" min="0" class="form-control w-50">
                                                     </div>
                                                 </div>
 
@@ -265,9 +322,9 @@
 @push('js')
     <script>
         let due = $('#due');
-        if (due.text() > 0 && '' !== due.text()) {
-            $('#installment_amount').val(Math.ceil($('#due').text()));
-        }
+        // if (due.text() > 0 && '' !== due.text()) {
+        //     $('#installment_amount').val(Math.ceil($('#due').text()));
+        // }
 
         $(document).on('click', '#new_installment_button', function () {
             $('#installment_quantity').val('');
@@ -280,11 +337,11 @@
             if (this_val !== '' && this_val > 0) {
                 let output = `
                     <div class="form-group row">
-                        <label class="col-md-5">Installment Dates</label>
-                        <div class="col-md-7">
+                        <label class="col-md-3">Installment Dates</label>
+                        <div class="col-md-9">
                 `;
                 for (let i = 0; i < this_val; i++) {
-                    output += '<input type="date" name="installment_date[]" class="form-control form-control-sm mb-1">';
+                    output += '<input type="date" name="installment_date[]" class="form-control w-50 mb-1">';
                 }
                 output += '</div></div>';
                 $('#installment_dates').html(output);
@@ -292,5 +349,35 @@
                 $('#installment_dates').html('');
             }
         });
+    </script>
+     <script>
+        $(document).ready(function() {
+            $('#type_cash').change(function() {
+                if ($(this).is(':checked')) {
+                    $('#cash_container').show();
+                } else {
+                    $('#cash_payment').val('');
+                    $('#cash_container').hide();
+                }
+            });
+
+            $('#type_mb').change(function() {
+                if ($(this).is(':checked')) {
+                    $('#mb_container').show();
+                } else {
+                    $('#mb_payment').val('');
+                    $('#mb_type').prop('selectedIndex', 0);
+                    $('#mb_container').hide();
+                }
+            });
+
+            $(document).on('change input', '#cash_payment, #mb_payment', function() {
+                let cash = parseInt($('#cash_payment').val()) || 0;
+                let mb_payment = parseInt($('#mb_payment').val()) || 0;
+                $('#today_payable').val(Math.ceil(cash + mb_payment));
+                $('#payable_amount').val(Math.ceil(cash + mb_payment));
+            });
+        });
+    
     </script>
 @endpush

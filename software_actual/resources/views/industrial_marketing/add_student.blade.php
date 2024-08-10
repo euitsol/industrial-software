@@ -76,7 +76,7 @@
                                                     <span class="text-danger">{{ $errors->first('institute') }}</span>
                                                 @endif
 
-                                                <div class="clearfix">
+                                                {{--<div class="clearfix">
                                                     <small>If institute not exist then you can add</small>
                                                     <a href="javascript:void(0)" id="new_institute" class="float-right">
                                                         + New Institute
@@ -117,6 +117,7 @@
                                                                class="form-control form-control-sm">
                                                     </div>
                                                 </div>
+                                                --}}
                                             </div>
                                         </div>
                                     </div>

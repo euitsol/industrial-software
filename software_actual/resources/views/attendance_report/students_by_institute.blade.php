@@ -33,7 +33,7 @@
                                     <i class="fa fa-print"></i>
                                 </button>
                             </div>
-                            
+
                             <div class="float-right">
                                 <h4 class="font-weight-normal">
                                     @if ($students->count() > 0)
@@ -101,9 +101,9 @@
                                                                     @endforeach
                                                                 @endforeach
                                                             @endif
-                                                            
+
                                                         </td>
-                                                        
+
                                                         <td class="text-center">
                                                             @if ($student->courses->count() > 0)
                                                                 @foreach($student->courses as $ck => $course)
@@ -116,9 +116,9 @@
                                                                     @endforeach
                                                                 @endforeach
                                                             @endif
-                                                            
+
                                                         </td>
-                                                        <td class="text-center"> 
+                                                        <td class="text-center">
                                                             @if ($student->courses->count() > 0)
                                                                 @foreach($student->courses as $ck => $course)
                                                                     @foreach($student->batches as $bk => $batch)
@@ -131,13 +131,13 @@
                                                                 @endforeach
                                                             @endif
                                                         </td>
-                                                        <td class="text-center"> 
+                                                        <td class="text-center">
                                                             @if ($student->courses->count() > 0)
                                                                 @foreach($student->courses as $ck => $course)
                                                                     @foreach($student->batches as $bk => $batch)
                                                                         @foreach($minfo as $info)
                                                                             @if($course->id == $info->course_id && $batch->id == $info->batch_id)
-                                                                                {{$info->studentTotalAbsentCount($student->id)}}
+                                                                                {{$info->completeClassCount()-$info->studentTotalPresentCount($student->id)}}
                                                                             @endif
                                                                         @endforeach
                                                                     @endforeach
@@ -148,7 +148,7 @@
                                                             <a href="{{route('attendance_report.single_student.view',[$student->id, $info->id])}}" class="btn btn-sm btn-dark">
                                                                 <i class="fa fa-eye"></i>
                                                             </a>
-                                                        </td>                                                    
+                                                        </td>
                                                     </tr>
                                             @endforeach
                                         </table>

@@ -60,6 +60,20 @@
                                             <span class="text-danger">{{ $errors->first('name') }}</span>
                                         @endif
                                     </div>
+                                    <div class="form-group">                                       
+                                        <label class="form-control-label">Select as a mentor
+                                        </label>
+                                        
+                                        <select name="mentor_id" class="form-control form-control-success">
+                                            <option value="" selected hidden>Select Mentor</option>
+                                            @foreach($mentors as $mentor)
+                                                <option value="{{$mentor->id}}" @if($user->mentor_id == $mentor->id) selected @endif>{{$mentor->name}}</option>     
+                                            @endforeach
+                                        </select>
+                                        @if ($errors->has('mentor_id'))
+                                            <span class="text-danger">{{ $errors->first('mentor_id') }}</span>
+                                        @endif
+                                    </div>
                                     @if(Auth::user()->role == 'admin' || Auth::user()->role == 'superadmin')
                                     <div class="form-group">                                       
                                             <label class="form-control-label">Update User Role <span class="text-danger">*</span>

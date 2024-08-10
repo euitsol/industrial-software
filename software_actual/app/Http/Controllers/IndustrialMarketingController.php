@@ -36,7 +36,7 @@ class IndustrialMarketingController extends Controller
     public function student()
     {
         $institutes = Institute::latest()->get();
-        $courses = Course::where('type','Industrial')->get();
+        $courses = Course::where('type','Industrial')->latest()->get();
         return view('industrial_marketing.add_student', compact('institutes', 'courses'));
     }
 

@@ -108,5 +108,11 @@ class BatchAttendance extends Model
         $mentor = Mentor::where('id',$batch_mentors->mentor_id)->first()->name;
         return $mentor;
     }
+    public function comment($sid,$class){
+        $attendance = StudentAttendance::where('student_id',$sid)->where('class',$class)->first();
+        if($attendance){
+            return $attendance->comment;
+        }
+    }
 
 }

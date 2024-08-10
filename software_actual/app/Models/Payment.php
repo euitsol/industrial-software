@@ -21,4 +21,19 @@ class Payment extends Model
     {
         return $this->belongsTo(CashToBank::class);
     }
+
+    public function mb_type()
+    {
+        if($this->mb_payment_type == 1){
+            return 'Bkash';
+        }elseif($this->mb_payment_type == 2){
+            return 'Rocket';
+        }elseif($this->mb_payment_type == 3){
+            return 'Nagad';
+        }elseif($this->mb_payment_type == 4){
+            return 'Nexus Pay';
+        }else{
+            return 'Not found';
+        }
+    }
 }

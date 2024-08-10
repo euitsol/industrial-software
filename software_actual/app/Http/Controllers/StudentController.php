@@ -10,18 +10,20 @@ use App\Models\Student;
 use App\Models\Institute;
 use App\Models\CourseType;
 use App\Models\Payment;
+use App\Models\PreRegistration;
 use App\Models\Sms_history;
 use App\Models\Referral;
 use App\Models\Source;
+use Illuminate\Support\Str;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class StudentController extends Controller
 {
-    public function index( $year = '')
+    public function index($year = '')
     {
-        $students_type = 'professional' ;
+        $students_type = 'professional';
         $_students_type = ucfirst($students_type);
 
         if ($_students_type == 'Professional') {
@@ -36,13 +38,12 @@ class StudentController extends Controller
             $student_as = 'Professional';
             $totalStudents = Student::where('student_as', 'Professional')->get();
             return view('student.index', compact('students', 'student_as', 'years', 'year', 'totalStudents'));
-
         } else {
             abort(403);
         }
     }
 
-    
+
 
 
 
@@ -54,7 +55,7 @@ class StudentController extends Controller
 
     public function index_2($year = '')
     {
-        $students_type = 'industrial' ;
+        $students_type = 'industrial';
         $_students_type = ucfirst($students_type);
 
         if ($_students_type == 'Industrial') {
@@ -69,7 +70,6 @@ class StudentController extends Controller
             $student_as = 'Industrial';
             $totalStudents = Student::where('student_as', 'Industrial')->get();
             return view('student.index', compact('students', 'student_as', 'years', 'year', 'totalStudents'));
-
         } else {
             abort(403);
         }
@@ -93,7 +93,7 @@ class StudentController extends Controller
             $s = Student::select('reg_no')->where('student_as', $student_as)->where('year', $year)->get()->max();
             if (isset($s->reg_no)) {
                 if ($s->reg_no <= 8) {
-                    return '0'.($s->reg_no + 1);
+                    return '0' . ($s->reg_no + 1);
                 }
                 return ($s->reg_no + 1);
             }
@@ -128,7 +128,8 @@ class StudentController extends Controller
             'name' => 'required|max:170',
             'fathers_name' => 'required|max:170',
             'mothers_name' => 'required|max:170',
-            'photo' => 'image|mimes:jpg,jpeg,png,JPG,JPEG,PNG|max:5000',
+            'photo' => 'nullable|image|mimes:jpg,jpeg,png,JPG,JPEG,PNG|max:5000',
+            'pre_photo' => 'nullable|image|mimes:jpg,jpeg,png,JPG,JPEG,PNG|max:5000',
             'present_address' => 'required|max:170',
             'permanent_address' => 'required|max:170',
             'dob' => 'required',
@@ -178,16 +179,15 @@ class StudentController extends Controller
                     'board_reg' => 'unique:students'
                 ]);
             }
-            if(!empty($request->source) && empty($request->referral)){
+            if (!empty($request->source) && empty($request->referral)) {
                 $request->validate([
                     'referral' => 'nullable'
                 ]);
-            }
-            elseif(empty($request->source) && !empty($request->referral)){
+            } elseif (empty($request->source) && !empty($request->referral)) {
                 $request->validate([
                     'source' => 'nullable'
                 ]);
-            }else{
+            } else {
                 $request->validate([
                     'source' => 'required',
                     'referral' => 'required'
@@ -209,7 +209,12 @@ class StudentController extends Controller
             $photo->move('uploads/images/', $img_name);
             $s->photo = 'uploads/images/' . $img_name;
         }
-
+        if (isset($request->pre_sid)) {
+            $s->photo = $request->pre_photo;
+            $pre_s = PreRegistration::findOrFail($request->pre_sid);
+            $pre_s->status = 1;
+            $pre_s->update();
+        }
         $s->present_address = $request->present_address;
         $s->permanent_address = $request->permanent_address;
         $s->dob = $request->dob;
@@ -232,9 +237,8 @@ class StudentController extends Controller
         $s->board_roll = $request->board_roll;
         $s->shift = $request->shift;
         $s->board_reg = $request->board_reg;
-
         $s->phone = $request->phone;
-        $password = uniqid();
+        $password = 'EUIT/' . Str::random(3);
         $s->password = bcrypt($password);
         $s->parents_phone = $request->parents_phone;
         $s->email = $request->email;
@@ -257,40 +261,31 @@ class StudentController extends Controller
         $s->referral_id = $request->referral;
         $s->user_id = Auth::id();
         $s->save();
-        
-        if($s->id > 0){
-            
-            //reg successfull
-            
-                    $message = "প্রিয় শিক্ষার্থী, \n";
-                    $message .= "আপনার নিবন্ধন সম্পন্ন হয়েছে। \n \n";
-                    $message .= "Your Login Information \n";
-                    $message .= "Phone:".$s->phone." \n";
-                    $message .= "Password:".$password." \n";
-                    $message .= "Website: https://industrial-software.ict-skills.com/student/login \n \n";
-                    $message .= "ইউরোপিয়ান আইটি ইনস্টিটিউট। \n";
-                    
-                    
-                    // $message  = "Dear ".$s->name.",\n";
-                    // $message .= "Your registration is completed.\n";
-                    // $message .= "Please collect your gift from our institute. \n";
-                    // $message .= "Sincerely,\n";
-                    // $message .= "European IT Institute\n";
-                    // $message .= "Contact Us: 01889977951\n";
-                    
-                    $result = $this->sendSms($s->phone, $message);
-                    
+
+        if ($s->id > 0) {
+            //Student login credential create successfull
+
+            $message = "প্রিয় শিক্ষার্থী, \n";
+            $message .= "আপনার নিবন্ধন সম্পন্ন হয়েছে। \n \n";
+            $message .= "আপনার লগইন তথ্য \n";
+            $message .= "ফোন: $s->phone  \n";
+            $message .= "পাসওয়ার্ড: $password  \n";
+            $message .= "লগইন ইউআরএল: https://sandeepc4.sg-host.com/student/login ";
+            $message .= "ইউরোপিয়ান আইটি ইনস্টিটিউট। \n";
+
+            $result = $this->sendNonMaskingSms($s->phone, $message);
+
             //sms history
-                    $type = "Registration Successful";
-                    $save = new Sms_history;
-                    $save->user_id = Auth::id();
-                    $save->message = $message;
-                    $save->type = $type;         
-                    $save->status = $result;
-                    $save->receiver_no = $s->phone;
-                    $save->save(); 
+            $type = "Student Login Credential create successfull";
+            $save = new Sms_history;
+            $save->user_id = Auth::id();
+            $save->message = $message;
+            $save->type = $type;
+            $save->status = $result;
+            $save->receiver_no = $s->phone;
+            $save->save();
         }
-        
+
 
         $this->message('success', 'Student info save successfully');
         return redirect()->route('student.course.assign', $s->id);
@@ -324,7 +319,8 @@ class StudentController extends Controller
             'dob' => 'required',
             'gender' => 'required',
             'phone' => 'required|max:11|min:11',
-            'student_as' => 'required'
+            'student_as' => 'required',
+            'password' => 'nullable|min:6'
         ]);
 
         $s = Student::findOrFail($request->id);
@@ -366,9 +362,35 @@ class StudentController extends Controller
         $s->emergency_contact_address = $request->emergency_contact_address;
         $s->emergency_contact_relation = $request->emergency_contact_relation;
         $s->emergency_contact_phone = $request->emergency_contact_phone;
+        if(!empty($s->password)){
+            $s->password = bcrypt($request->password);
+        }
 
         $s->user_id = Auth::id();
         $s->save();
+        if ($request->password != null) {
+            //Student login credential create successfull
+
+            $message = "প্রিয় শিক্ষার্থী, \n";
+            $message .= "আপনার পাসওয়ার্ড আপডেট করা হয়েছে। \n \n";
+            $message .= "আপনার লগইন তথ্য \n";
+            $message .= "ফোন: $s->phone  \n";
+            $message .= "পাসওয়ার্ড: $request->password  \n";
+            $message .= "লগইন ইউআরএল: https://sandeepc4.sg-host.com/student/login ";
+            $message .= "ইউরোপিয়ান আইটি ইনস্টিটিউট। \n";
+
+            $result = $this->sendNonMaskingSms($s->phone, $message);
+
+            //sms history
+            $type = "Student Login Credential update successfull";
+            $save = new Sms_history;
+            $save->user_id = Auth::id();
+            $save->message = $message;
+            $save->type = $type;
+            $save->status = $result;
+            $save->receiver_no = $s->phone;
+            $save->save();
+        }
 
         $this->message('success', 'Student info update successfully');
 
@@ -468,7 +490,7 @@ class StudentController extends Controller
         $student->courses()->attach($request->course);
         $student->batches()->attach($request->batch);
 
-//        $this->message('success', 'Student courses added successfully');
+        //        $this->message('success', 'Student courses added successfully');
         return redirect()->route('student.registration-form', $request->student_id);
     }
 
@@ -504,7 +526,7 @@ class StudentController extends Controller
             $due = $total_fee;
         }
 
-        
+
 
         $course_types = CourseType::with(['courses' => function ($query) use ($student) {
             $query->where('type', $student->student_as);
@@ -520,9 +542,19 @@ class StudentController extends Controller
             $student_batch_ids[] = $sb->id;
         }
 
-        return view('course_migration.index',
-            compact('student', 'batch', 'course_types', 'student_course_exist',
-                'student_batch_ids', 'total_fee', 'payments', 'due'));
+        return view(
+            'course_migration.index',
+            compact(
+                'student',
+                'batch',
+                'course_types',
+                'student_course_exist',
+                'student_batch_ids',
+                'total_fee',
+                'payments',
+                'due'
+            )
+        );
     }
 
     public function student_course_migrate(Request $request)
@@ -537,17 +569,17 @@ class StudentController extends Controller
             $this->message('error', 'Please select proper course and batch.');
             return redirect()->back();
         }
-        
+
         $student = Student::findOrFail($request->student_id);
         $batch = Batch::findOrFail($request->old_batch_id);
         $old_course = $student->courses()->where('course_id', $batch->course->id)->first();
         $old_batch = $student->batches()->where('batch_id', $batch->id)->first();
-        
+
         if ($old_course->count() > 0 && $old_batch->count() > 0) {
 
             $student->courses()->attach($request->course);
             $student->batches()->attach($request->batch);
-            
+
             $account = $student->accounts()->where('student_id', $request->student_id)->where('course_id', $batch->course->id)->first();
 
             // if (isset($account) && $account->count() > 0) {
@@ -583,7 +615,7 @@ class StudentController extends Controller
             //     }
 
             // }
-            
+
             $cm = new CourseMigration();
             $cm->student_id = $student->id;
             $cm->new_course_id = $request->course;
@@ -607,14 +639,14 @@ class StudentController extends Controller
         }
 
 
-        
-        
+
+
 
         $this->message('success', 'Course successfully migrated.');
         return redirect()->route('student.registration-form', [$request->student_id, $cm->id]);
     }
-    
-    
+
+
 
     public function migrated_previous_course($sid, $cid)
     {
@@ -636,38 +668,33 @@ class StudentController extends Controller
         $students = Student::orderBy('phone', 'ASC')->latest()->get();
         return view('student.existing_create', compact('students'));
         // return $students;
-        
+
     }
     public function existing_search(Request $request)
     {
-        
+
         $student = Student::with('courses')->with('batches')->findOrFail($request->student_id);
-        $check = Student::select('student_as')->where('phone',$student->phone)->get();
-        if(count($check) > 1)
-        {
+        $check = Student::select('student_as')->where('phone', $student->phone)->get();
+        if (count($check) > 1) {
             $check = "hidden";
-        }
-        else
-        {
+        } else {
             $check = "visible";
         }
-        return view('student.existing_show', compact('student','check'));
+        return view('student.existing_show', compact('student', 'check'));
         // return $request;
-    } 
+    }
     public function assign_new_type($phone)
     {
-        
-        $data = Student::where('phone',$phone)->get();
-        foreach ($data as $id)
-        {
+
+        $data = Student::where('phone', $phone)->get();
+        foreach ($data as $id) {
             $s_id = $id->id;
         }
         $student = Student::findOrFail($s_id);
         $institutes = Institute::latest()->get();
-        $courses = Course::latest()->get();       
+        $courses = Course::latest()->get();
         $student_2 = Student::with('courses')->with('batches')->findOrFail($s_id);
-        return view('student.assign_edit',compact('student', 'institutes', 'courses'));
-        
+        return view('student.assign_edit', compact('student', 'institutes', 'courses'));
     }
     public function existing_save(Request $request)
     {
@@ -719,16 +746,15 @@ class StudentController extends Controller
                     'board_reg' => 'unique:students'
                 ]);
             }
-            if(!empty($request->source) && empty($request->referral)){
+            if (!empty($request->source) && empty($request->referral)) {
                 $request->validate([
                     'referral' => 'nullable'
                 ]);
-            }
-            elseif(empty($request->source) && !empty($request->referral)){
+            } elseif (empty($request->source) && !empty($request->referral)) {
                 $request->validate([
                     'source' => 'nullable'
                 ]);
-            }else{
+            } else {
                 $request->validate([
                     'source' => 'required',
                     'referral' => 'required'
@@ -793,5 +819,16 @@ class StudentController extends Controller
     public function existing_new_course($id)
     {
         return redirect()->route('student.course.assign', $id);
+    }
+
+    public function updateCardPrintStatus(Request $request)
+    {
+        $studentId = $request->input('student_id');
+        $newCardPrintStatus = $request->input('card_print_status');
+
+        $student = Student::findOrFail($studentId);
+        $student->card_print_status = $newCardPrintStatus;
+        $student->save();
+        return response($student)->json();
     }
 }

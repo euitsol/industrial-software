@@ -16,6 +16,7 @@
     <link rel="stylesheet" href="{{ asset('assets') }}/css/style.default.css" id="theme-stylesheet">
     <!-- Custom stylesheet - for your changes-->
     <link rel="stylesheet" href="{{ asset('assets') }}/css/custom.css">
+    <link rel="stylesheet" href="{{ asset('assets') }}/css/student_profile.css">
 
     <!-- Favicon-->
     <link rel="icon" href="{{asset('/')}}images/icon.png" type="image/png">

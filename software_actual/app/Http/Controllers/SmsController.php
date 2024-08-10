@@ -225,7 +225,7 @@ class SmsController extends Controller
     public function sms_history()
     {
         $user_data = User::get();
-        $data = Sms_history::latest()->take(500)->get();
+        $data = Sms_history::latest()->limit(500)->get();
         return view('sms.history_index',compact('data','user_data'));
     }
     public function sms_history_show($id)

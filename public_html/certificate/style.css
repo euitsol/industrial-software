@@ -1,0 +1,198 @@
+@font-face {
+    font-family: bookmanoldstyle;
+    src: url(fonts/bookmanoldstyle.ttf);
+  }
+@font-face {
+    font-family: DancingScript;
+    src: url(fonts/DancingScript-Regular.otf);
+  }
+@font-face {
+    font-family: Italianno;
+    src: url(fonts/Italianno-Regular.ttf);
+  }
+@font-face {
+    font-family: Monotype-Corsiva;
+    src: url(fonts/Monotype-Corsiva.ttf);
+  }
+@font-face {
+    font-family: MYRIADPRO-REGULAR;
+    src: url(fonts/MYRIADPRO-REGULAR.OTF);
+  }
+  @font-face {
+    font-family: OLD;
+    src: url(fonts/OLD.ttf);
+  }
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.certificater-main-content {
+    width: 297mm;
+    height: 209.5mm;
+    margin: 0 auto;
+    background-image: url("img/frame.svg");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    padding: 70px 110px;
+    background-color: #FEFCF7;
+}
+
+.certificate-head-content {
+	display: flex;
+	flex-wrap: wrap;
+	text-align: center;
+	align-items: center;
+    padding: 30px 0 30px 0;
+}
+.certificate-head-content .left-col {
+	width: 20%;
+} 
+.certificate-head-content .left-col .sl-no {
+	border: 1px solid;
+	width: 150px;
+	padding: 5px;
+}
+.certificate-head-content .middle-col {
+	width: 60%;
+    font-family: MYRIADPRO-REGULAR;
+}
+.certificate-head-content .middle-col img {
+    width: 370px;
+    margin-bottom: 25px;
+    margin-left: 25px;
+}
+.certificate-head-content .middle-col h2 {
+    font-size: 48px;
+    margin-bottom: 10px;
+    font-weight: 500;
+    color: #69544A;
+}
+.certificate-head-content .middle-col h3 {
+    font-size: 29px;
+    font-weight: 400;
+    margin-bottom: 8px;
+    width: 241px;
+    margin: 0 auto;
+    position: relative;
+    color: #69544A;
+}
+.certificate-head-content .middle-col h3::after{
+    content: "";
+    position: absolute;
+    background-image: url("img/after.png");
+    background-repeat: no-repeat;
+    width: 96px;
+    height: 16px;
+    right: -103px;
+    bottom: 5px;
+}
+.certificate-head-content .middle-col h3::before{
+    content: "";
+    position: absolute;
+    background-image: url("img/before.png");
+    background-repeat: no-repeat;
+    width: 96px;
+    height: 16px;
+    left: -103px;
+    bottom: 5px;
+}
+.certificate-head-content .middle-col h4 {
+    font-size: 19px;
+    font-weight: 300;
+    color: #685349;
+    margin-top: 12px;
+}
+.certificate-head-content .right-col {
+	width: 20%;
+    display: flex;
+    justify-content: end;
+}
+.certificate-head-content .right-col .qr-code{
+    width: 82px;
+}
+.certificate-head-content .right-col .qr-code img{
+    width: 100%;
+}
+.certificate-body-content .certificate-name{
+    text-align: center;
+}
+.certificate-body-content .certificate-name h2 {
+    font-family: Monotype-Corsiva;
+    font-size: 44px;
+    text-align: center;
+    position: relative;
+    margin: 0 auto;
+    padding-bottom: 35px;
+    color: #69544A;
+    display: inline-block;
+}
+.certificate-body-content .certificate-name h2::after {
+	content: "";
+	position: absolute;
+	width: 100%;
+	height: 1px;
+	background: #000;
+	bottom: 35px;
+	left: 50%;
+	transform: translateX(-50%);
+}
+.certificate-body-content .certificate-details{
+    margin-bottom: 30px;
+    text-align: justify;
+}
+.certificate-body-content .certificate-details p{
+    font-family: OLD;
+    font-size: 22px;
+    color: #6B5349;
+}
+.certificate-body-content .certificate-details p .roll, .Reg {
+    font-family: "Poppins";
+    font-size: 22px;
+    font-weight: 600;
+    padding: 0px 20px 0px 20px;
+    font-style: italic;
+    letter-spacing: 2px;
+}
+.certificate-body-content .certificate-details p .institute, .course{
+    font-family: DancingScript;
+    font-size: 25px;
+    padding: 0px 20px 0px 20px;
+}
+.certificate-body-content .certificate-details p span{
+    border-bottom: 1px dotted;
+}
+.certificate-footer-content {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 75px;
+}
+.certificate-footer-content .left-col, .right-col{
+    width: 24%;
+    text-align: center;
+}
+.certificate-footer-content .left-col{
+    position: relative;
+}
+.certificate-footer-content .left-col .daynamic_date{
+    position: absolute;
+    top: -18px;
+    left: 66px;
+}
+.certificate-footer-content .left-col .date, .country-d, .coordinator{
+    border-top: 1px solid #000;
+    margin-top: 5px;
+    display: inline-block;
+}
+.certificater-main-content .company p{
+    margin-bottom: 0;
+
+}
+.certificater-main-content .company a {
+    text-decoration: none;
+    color: #000;
+}
