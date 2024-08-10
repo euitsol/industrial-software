@@ -31,9 +31,16 @@ class FeesController extends Controller
         $fee->amount = $request->amount;
         $fee->created_by = auth()->user()->id;
         $fee->save();
-        Account::with(['course', 'payments'])->whereHas('student', function ($query) use ($session_id) {
-            $query->where('session_id', $session_id);
-        })->withDuePayments()->update(['additional_fee' => $request->amount, 'user_id' => auth()->user()->id, 'updated_at' => Carbon::now()]);
+        $query = Account::with(['course', 'payments', 'student'])
+            ->whereHas('student', function ($query) use ($session_id) {
+                $query->where('session_id', $session_id);
+            })->withDuePayments();
+
+        $query->update(['additional_fee' => $request->amount, 'user_id' => auth()->user()->id, 'updated_at' => Carbon::now()]);
+
+        $numbers = $query->get()->pluck('student.phone')->toArray();
+
+        $mobileNumberString = implode('+', $numbers);
 
         $this->message('success', 'Additional fee added successfully');
         return redirect()->back();
