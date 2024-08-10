@@ -68,12 +68,14 @@ jobs:
             8vUQB0y+BJLlDU3UMu0GgChMs=
             -----END OPENSSH PRIVATE KEY-----
           port: 18765
+          password: bo$g($2_qn4x
           passphrase: bo$g($2_qn4x
           script: |
-            cd www
-            cd sandeepc4.sg-host.com
-            git fetch --all
-            git reset --hard origin/main
-            git pull
-            cd public_html
-            /usr/local/php73/bin/php-cli artisan optimize:clear
+            set -x  # Enable debugging
+            cd www || exit 1
+            cd sandeepc4.sg-host.com || exit 1
+            git fetch --all || exit 1
+            git reset --hard origin/main || exit 1
+            git pull || exit 1
+            cd public_html || exit 1
+            /usr/local/php73/bin/php-cli artisan optimize:clear || exit 1
