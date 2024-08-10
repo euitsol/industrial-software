@@ -74,7 +74,9 @@ jobs:
             set -x  # Enable debugging
             cd www || exit 1
             cd sandeepc4.sg-host.com || exit 1
-            ls -la
+            pwd  # Print the current directory
+            ls -la  # List files and directories
+            git status || exit 1
             git fetch --all || exit 1
             git reset --hard origin/main || exit 1
             git pull || exit 1
