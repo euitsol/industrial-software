@@ -16,7 +16,8 @@ jobs:
         with:
           host: ssh.sandeepc4.sg-host.com
           username: u1471-vgljsoqbpbvx
-          key: -----BEGIN OPENSSH PRIVATE KEY-----
+          key: |
+            -----BEGIN OPENSSH PRIVATE KEY-----
             b3BlbnNzaC1rZXktdjEAAAAACmFlczI1Ni1jdHIAAAAGYmNyeXB0AAAAGAAAABCpPe9ZL0
             0mqoCjLlhYowvjAAAAGAAAAAEAAAIXAAAAB3NzaC1yc2EAAAADAQABAAACAQCfYUIC4isW
             EqOfLEFE/e7z0vQ8Tx0NMAiAvIYKlkIKpR2hlmS15hQMX/TYC+2fk4FumoKAu1kekyGkP6
