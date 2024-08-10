@@ -16,7 +16,7 @@ jobs:
         with:
           host: ssh.sandeepc4.sg-host.com
           username: u1471-vgljsoqbpbvx
-          key:
+          key: -----BEGIN OPENSSH PRIVATE KEY-----
             b3BlbnNzaC1rZXktdjEAAAAACmFlczI1Ni1jdHIAAAAGYmNyeXB0AAAAGAAAABCpPe9ZL0
             0mqoCjLlhYowvjAAAAGAAAAAEAAAIXAAAAB3NzaC1yc2EAAAADAQABAAACAQCfYUIC4isW
             EqOfLEFE/e7z0vQ8Tx0NMAiAvIYKlkIKpR2hlmS15hQMX/TYC+2fk4FumoKAu1kekyGkP6
@@ -65,6 +65,7 @@ jobs:
             /lOcUHL3Mh9gpy6YvS/X720L323VFhvWkO4dkhEsCv4kF7xk6k/ZV0Es4EpxxKfImn1O9o
             A56GzjYbO+Ih/Au/pcDF6C+YVTJ+wXv6kvZVvOqe9sFoM+IeuGGAaGBpHGd7ZkJMY/4sPo
             8vUQB0y+BJLlDU3UMu0GgChMs=
+            -----END OPENSSH PRIVATE KEY-----
 
           port: 18765
           passphrase: bo$g($2_qn4x
