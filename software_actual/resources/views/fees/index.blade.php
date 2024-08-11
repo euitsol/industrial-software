@@ -23,7 +23,8 @@
                             <p class="alert alert-success text-center">
                                 {{ session('success') }}
                             </p>
-                        @elseif(session('error'))
+                        @endif
+                        @if (session('error'))
                             <p class="alert alert-danger text-center">
                                 {{ session('error') }}
                             </p>

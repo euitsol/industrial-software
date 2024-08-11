@@ -12,7 +12,9 @@ use Illuminate\Database\Eloquent\Model;
 class Account extends Model
 {
     protected $fillable = [
-        'additional_fee', 'user_id', 'updated_at'
+        'additional_fee',
+        'user_id',
+        'updated_at'
     ];
     public function student()
     {
@@ -38,31 +40,28 @@ class Account extends Model
     {
         return $this->hasMany(InstallmentDate::class);
     }
-    public function get_due($pm_id)
+    public function get_due($pm_id = false)
     {
         $payments = Payment::where('account_id', $this->id)->get();
-        $count = $payments->count();
-        $due = 0;
-        $paid = 0;
+        // $paid = 0;
+        $paid = $payments->sum('amount');
         $course_fee = $this->course->fee;
 
         if (isset($this->discount_percent) && $this->discount_percent > 0) {
-            $total_fee = $course_fee - (($course_fee * $this->discount_percent) / 100);
+            $course_fee = $course_fee - (($course_fee * $this->discount_percent) / 100);
         } elseif (isset($this->discount_amount) && $this->discount_amount > 0) {
-            $total_fee = $course_fee - $this->discount_amount;
-        } else {
-            $total_fee = $course_fee;
+            $course_fee = $course_fee - $this->discount_amount;
         }
 
-        $payment = Payment::findOrFail($pm_id);
-        $current = $payment->created_at;
-        foreach ($payments as $p) {
-            if ($current >= $p->created_at) {
-                $paid += $p->amount;
-            }
-        }
+        // $payment = Payment::findOrFail($pm_id);
+        // $current = $payment->created_at;
+        // foreach ($payments as $p) {
+        //     if ($current >= $p->created_at) {
+        //         $paid += $p->amount;
+        //     }
+        // }
 
-        return $total_fee - $paid;
+        return $course_fee - $paid;
     }
 
     public function get_student_type($stu_id)
