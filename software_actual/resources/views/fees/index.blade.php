@@ -1,9 +1,10 @@
 @extends('layouts.master')
 
-@section('title', 'Fees - European IT Solutions Institute')
+@section('title', 'Additional Fee - European IT Solutions Institute')
 
 @push('css')
-    <link rel="stylesheet" href="{{ asset('assets/vendor/select2/select2.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/vendor/data-table/css/jquery.dataTables.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/vendor/data-table/css/buttons.dataTables.min.css') }}">
 @endpush
 
 @section('content')
@@ -13,7 +14,10 @@
                 <div class="card">
                     <div class="card-header">
                         <span class="float-left">
-                            <h4>Add Additional Fees</h4>
+                            <h4>Additional Fees</h4>
+                        </span>
+                        <span class="float-right">
+                            <a href="{{ route('fee.create') }}" class="btn btn-primary btn-sm">Add Additional Fee</a>
                         </span>
                     </div>
 
@@ -23,62 +27,34 @@
                             <p class="alert alert-success text-center">
                                 {{ session('success') }}
                             </p>
-                        @endif
-                        @if (session('error'))
+                        @elseif(session('error'))
                             <p class="alert alert-danger text-center">
                                 {{ session('error') }}
                             </p>
                         @endif
 
-                        <div class="row">
-                            <div class="col-md-8 offset-md-2">
-                                <form action="{{ route('fee.update') }}" method="POST" class="form-horizontal"
-                                    id="feeForm">
-                                    @csrf
-
-                                    <div class="form-group row">
-                                        <label class="col-md-3 form-control-label">Session</label>
-                                        <div class="col-md-9">
-                                            <select name="session" id="session" class="form-control form-control-success"
-                                                required>
-                                                <option value="">Choose...</option>
-                                                @foreach ($sessions as $session)
-                                                    <option value="{{ $session->id }}">{{ $session->name }}</option>
-                                                @endforeach
-                                            </select>
-                                            @if ($errors->has('session'))
-                                                <span class="text-danger">{{ $errors->first('session') }}</span>
-                                            @endif
-                                            <script>
-                                                document.getElementById('session').value = "{{ old('session') }}";
-                                            </script>
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group row">
-                                        <label class="col-md-3 form-control-label">Amount</label>
-                                        <div class="col-md-9">
-                                            <input type="text" value="{{ old('amount') }}"
-                                                placeholder="Enter additional fee" name="amount"
-                                                class="form-control form-control-success" required>
-                                            <small>* This additional fee will be added to the students who have due.</small>
-                                            <br>
-                                            @if ($errors->has('amount'))
-                                                <span class="text-danger">{{ $errors->first('amount') }}</span>
-                                            @endif
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group row">
-                                        <div class="col-md-9 ml-auto">
-                                            <input type="submit" value="Add Additional Fee" class="btn btn-primary"
-                                                id="submitFee">
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
+                        <div class="table-responsive">
+                            <table id="table" class="display nowrap text-center">
+                                <thead>
+                                    <tr>
+                                        <th class="align-middle">SL</th>
+                                        <th class="align-middle">Session Name</th>
+                                        <th class="align-middle">Fee</th>
+                                        <th class="align-middle">Added By</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($fees as $key => $fee)
+                                        <tr>
+                                            <td class="align-middle"> {{ $key + 1 }} </td>
+                                            <td class="align-middle"> {{ $fee->session->name }} </td>
+                                            <td class="align-middle"> {{ $fee->amount }} </td>
+                                            <td class="align-middle"> {{ $fee->created_user->name }} </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
                         </div>
-
                     </div>
                 </div>
             </div>
@@ -87,26 +63,28 @@
 @endsection
 
 @push('js')
-    <script src="{{ asset('assets/vendor/select2/select2.min.js') }}"></script>
-    <script type="text/javascript">
-        $("#session").select2();
-    </script>
-
+    <script src="{{ asset('assets/vendor/data-table/js/jquery-3.3.1.js') }}"></script>
+    <script src="{{ asset('assets/vendor/data-table/js/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset('assets/vendor/data-table/js/dataTables.buttons.min.js') }}"></script>
+    <script src="{{ asset('assets/vendor/data-table/js/pdfmake.min.js') }}"></script>
+    <script src="{{ asset('assets/vendor/data-table/js/vfs_fonts.js') }}"></script>
+    <script src="{{ asset('assets/vendor/data-table/js/buttons.html5.min.js') }}"></script>
+    <script src="{{ asset('assets/vendor/data-table/js/buttons.print.min.js') }}"></script>
     <script>
         $(document).ready(function() {
-            $('#submitFee').click(function(e) {
-                e.preventDefault(); // Prevent the default form submission
-                // Show a confirmation dialog
-                var confirmation = confirm(
-                    "This additional fee will be added to the students who have due. Any additional fees added earlier will be deleted and these additional fees will be added for students who have dues for this session. Are you sure you want to add this additional fee?"
-                );
-                if (confirmation) {
-                    // If the user clicks "Yes", submit the form
-                    $('#feeForm').submit();
-                } else {
-                    // If the user clicks "No", do nothing
-                    return false;
-                }
+            $('#table').DataTable({
+                dom: 'Bfrtip',
+                buttons: [{
+                        extend: 'pdfHtml5',
+                        title: 'Session Info'
+                    },
+                    {
+                        extend: 'print',
+                        exportOptions: {
+                            columns: [0, 1, 2, 3]
+                        }
+                    }, 'pageLength'
+                ]
             });
         });
     </script>

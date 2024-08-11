@@ -17,8 +17,22 @@ class FeesController extends Controller
 
     public function index()
     {
+        $fees = Fees::with(['session', 'created_user'])->latest()->get()
+            ->each(function ($fee) {
+                $fee->total_student = Account::with('student')
+                    ->whereHas('student', function ($query) use ($fee) {
+                        $query->where('session_id', $fee->session_id);
+                    })->withDuePayments()->count();
+                return $fee;
+            });
+
+        return view('fees.index', compact('fees'));
+    }
+
+    public function create()
+    {
         $sessions = SessionModel::latest()->get();
-        return view('fees.index', compact('sessions'));
+        return view('fees.create', compact('sessions'));
     }
 
     public function update(Request $request)
@@ -85,6 +99,6 @@ class FeesController extends Controller
             $this->message('error', " $fail message sent unseccessful out of $total .");
         }
         $this->message('success', 'Additional fee added successfully');
-        return redirect()->back();
+        return redirect()->route('fee.index');
     }
 }
