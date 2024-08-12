@@ -34,30 +34,30 @@ class ReportController extends Controller
 
         $result = Student::select(DB::raw('YEAR(created_at) as year'))->distinct()->orderBy('created_at')->get();
         $years = $result->pluck('year');
-        
+
         return view('report.transaction_report_course_type', compact('years'));
-        
+
         // return view('report.index', compact('institutes', 'divisions'));
     }
-    
+
     public function institute_index()
     {
         $institutes = Institute::all();
         $divisions = Institute::select('division')->groupBy('division')->get();
-        
+
         $result = Student::select(DB::raw('YEAR(created_at) as year'))->distinct()->orderBy('created_at')->get();
         $years = $result->pluck('year');
-        
+
         return view('report.transaction_report_institute', compact('institutes', 'divisions', 'years'));
     }
-    
+
     public function division_index()
     {
         $divisions = Institute::select('division')->groupBy('division')->get();
-                
+
         $result = Student::select(DB::raw('YEAR(created_at) as year'))->distinct()->orderBy('created_at')->get();
         $years = $result->pluck('year');
-        
+
         return view('report.student_report_division', compact('divisions', 'years'));
     }
 
@@ -110,12 +110,12 @@ class ReportController extends Controller
             'course_type' => 'required',
             'year' => 'required'
         ]);
-        if (isset($request->course_type) && isset($request->year) ) {
+        if (isset($request->course_type) && isset($request->year)) {
             // if ('Paid' == $request->btn) {
             //     return redirect()->route('report.paid.students', $request->course_type);
             // }
             // if ('Due' == $request->btn) {
-                return redirect()->route('report.due.students', [$request->course_type, $request->year]);
+            return redirect()->route('report.due.students', [$request->course_type, $request->year]);
             // }
         }
         return redirect()->back();
@@ -196,13 +196,15 @@ class ReportController extends Controller
                     foreach ($courses as $_k => $course) {
                         if ($course->total_fee > $course->payments) {
                             $b = $student->batches()->where('course_id', $course->id)->first();
-                            if(!empty($b)){
-                            $batch_name = batch_name($course->title_short_form, $b->year, $b->month, $b->batch_number);
-                            $student['courses'][$_k]['batch'] = $batch_name;
-                            $student['courses'][$_k]['due_status'] = true;
-                            $student['courses'][$_k]['due_amount'] = $course->total_fee - $course->payments;
-                            $student['courses'][$_k]['paid_amount'] = $course->payments;
-                            $student['due_count'] += 1;
+                            $ac = $student->accounts()->where('course_id', $course->id)->first();
+                            if (!empty($b)) {
+                                $batch_name = batch_name($course->title_short_form, $b->year, $b->month, $b->batch_number);
+                                $student['courses'][$_k]['batch'] = $batch_name;
+                                $student['courses'][$_k]['due_status'] = true;
+                                $student['courses'][$_k]['due_amount'] = $course->total_fee - $course->payments;
+                                $student['courses'][$_k]['paid_amount'] = $course->payments;
+                                $student['courses'][$_k]['additional_fee'] = !empty($ac->additional_fee) ? $ac->additional_fee : 0;
+                                $student['due_count'] += 1;
                             }
                         }
                     }
@@ -234,9 +236,9 @@ class ReportController extends Controller
     public function studentsByInstitute($iid, $year, $shift = null)
     {
         $institute = Institute::find($iid);
-        if($shift == 'all')
+        if ($shift == 'all')
             $students = Student::where('institute_id', $iid)->where('year', '=', $year)->latest()->get();
-        else{
+        else {
             $students = Student::where('institute_id', $iid)->where('year', '=', $year)->where('shift', '=', $shift)->latest()->get();
         }
         if (isset($students)) {
@@ -274,12 +276,12 @@ class ReportController extends Controller
     {
         $institute = Institute::find($iid);
         $students = [];
-        if($shift == 'all')
+        if ($shift == 'all')
             $ss = Student::where('institute_id', $iid)->where('year', '=', $year)->latest()->get();
-        else{
+        else {
             $ss = Student::where('institute_id', $iid)->where('year', '=', $year)->where('shift', '=', $shift)->latest()->get();
         }
-        
+
         if (isset($ss)) {
             foreach ($ss as $student) {
                 $courses = $student->courses;
@@ -302,7 +304,7 @@ class ReportController extends Controller
                         $student['due_amount'] = $course->total_fee - $course->payments;
                     }
                 }
-                if ($student->due_amount > 0){
+                if ($student->due_amount > 0) {
                     $students[] = $student;
                 }
             }
@@ -326,7 +328,7 @@ class ReportController extends Controller
         return view('report.students_by_division', compact('division', 'institutes', 'total_students', 'year'));
     }
 
-// Job Placement Report
+    // Job Placement Report
     public function jobPlacementReport()
     {
         return view('job_placement_report.index');
@@ -342,18 +344,19 @@ class ReportController extends Controller
             'to_date' => $request->to_date,
         ]);
     }
-    public function jobPlacementReportShow($from_date, $to_date){
+    public function jobPlacementReportShow($from_date, $to_date)
+    {
 
         if (empty($from_date) || empty($to_date)) {
             return redirect()->route('job_placement.report');
         }
-        $job_placements = JobPlacement::with(['student','linkageIndustry'])->whereDate('joining_date', '>=', date('Y-m-d', strtotime($from_date)))
-                ->whereDate('joining_date', '<=', date('Y-m-d', strtotime($to_date)))->get();
-        return view('job_placement_report.report', compact('from_date', 'to_date','job_placements'));
-
+        $job_placements = JobPlacement::with(['student', 'linkageIndustry'])->whereDate('joining_date', '>=', date('Y-m-d', strtotime($from_date)))
+            ->whereDate('joining_date', '<=', date('Y-m-d', strtotime($to_date)))->get();
+        return view('job_placement_report.report', compact('from_date', 'to_date', 'job_placements'));
     }
 
-    public function studentJobPlacementReportView($jp_id){
+    public function studentJobPlacementReportView($jp_id)
+    {
         $jp = JobPlacement::with('linkageIndustry')->where('id', $jp_id)->first();
         return view('job_placement_report.single_view', compact('jp'));
     }
@@ -377,19 +380,20 @@ class ReportController extends Controller
             'to_date' => $request->to_date,
         ]);
     }
-    public function linkageIndustryInfosReportShow($from_date, $to_date){
+    public function linkageIndustryInfosReportShow($from_date, $to_date)
+    {
 
         if (empty($from_date) || empty($to_date)) {
             return redirect()->route('linkage_industry_infos.report');
         }
         $datas = LinkageIndustryInfo::with('created_user')->whereDate('created_at', '>=', date('Y-m-d', strtotime($from_date)))
-                ->whereDate('created_at', '<=', date('Y-m-d', strtotime($to_date)))->latest()->get();
-        return view('linkage_industry_infos_report.report', compact('from_date', 'to_date','datas'));
-
+            ->whereDate('created_at', '<=', date('Y-m-d', strtotime($to_date)))->latest()->get();
+        return view('linkage_industry_infos_report.report', compact('from_date', 'to_date', 'datas'));
     }
 
-    public function linkageIndustryInfosReportView($id){
-        $data = LinkageIndustryInfo::with('created_user','updated_user')->where('id', $id)->first();
+    public function linkageIndustryInfosReportView($id)
+    {
+        $data = LinkageIndustryInfo::with('created_user', 'updated_user')->where('id', $id)->first();
         return view('linkage_industry_infos_report.single_view', compact('data'));
     }
 
@@ -417,47 +421,47 @@ class ReportController extends Controller
             'to_date' => $request->to_date,
             'type' => $request->type,
         ]);
-//        if (isset($request->user) && $request->user != 'all') {
-//            return redirect()->route('transaction.user.show', [
-//                'uid' => $request->user,
-//                'from_date' => $request->from_date,
-//                'to_date' => $request->to_date
-//            ]);
-//        }
-//
-//        return redirect()->route('transaction.show', [
-//            $request->from_date,
-//            $request->to_date
-//        ]);
+        //        if (isset($request->user) && $request->user != 'all') {
+        //            return redirect()->route('transaction.user.show', [
+        //                'uid' => $request->user,
+        //                'from_date' => $request->from_date,
+        //                'to_date' => $request->to_date
+        //            ]);
+        //        }
+        //
+        //        return redirect()->route('transaction.show', [
+        //            $request->from_date,
+        //            $request->to_date
+        //        ]);
     }
 
     // This Function is useless now
-//    public function transaction_show($from_date, $to_date)
-//    {
-//        if (empty($from_date) || empty($to_date)) {
-//            $this->message('error', 'The from date and to date field is required.');
-//            return redirect()->back()->withInput();
-//        }
-//
-//        $accounts = Account::whereDate('created_at', '>=', date('Y-m-d', strtotime($from_date)))
-//            ->whereDate('created_at', '<=', date('Y-m-d', strtotime($to_date)))->get();
-//
-//        if ($accounts->count() > 0) {
-//            foreach ($accounts as $account) {
-//                $batch = Student::find($account->student_id)->batches->where('course_id', $account->course_id)->first();
-//                if (isset($batch)) {
-//                    $account['batch'] = batch_name($account->course->title_short_form, $batch->year, $batch->month, $batch->batch_number);
-//                } else {
-//                    $cm = CourseMigration::where('old_course_id', $account->course_id)
-//                        ->where('student_id', $account->student_id)->first();
-//                    $_batch = Batch::find($cm->old_batch_id);
-//                    $account['batch'] = batch_name($_batch->course->title_short_form, $_batch->year, $_batch->month, $_batch->batch_number);
-//                }
-//            }
-//        }
-//
-//        return view('transaction.transactions', compact('accounts', 'from_date', 'to_date'));
-//    }
+    //    public function transaction_show($from_date, $to_date)
+    //    {
+    //        if (empty($from_date) || empty($to_date)) {
+    //            $this->message('error', 'The from date and to date field is required.');
+    //            return redirect()->back()->withInput();
+    //        }
+    //
+    //        $accounts = Account::whereDate('created_at', '>=', date('Y-m-d', strtotime($from_date)))
+    //            ->whereDate('created_at', '<=', date('Y-m-d', strtotime($to_date)))->get();
+    //
+    //        if ($accounts->count() > 0) {
+    //            foreach ($accounts as $account) {
+    //                $batch = Student::find($account->student_id)->batches->where('course_id', $account->course_id)->first();
+    //                if (isset($batch)) {
+    //                    $account['batch'] = batch_name($account->course->title_short_form, $batch->year, $batch->month, $batch->batch_number);
+    //                } else {
+    //                    $cm = CourseMigration::where('old_course_id', $account->course_id)
+    //                        ->where('student_id', $account->student_id)->first();
+    //                    $_batch = Batch::find($cm->old_batch_id);
+    //                    $account['batch'] = batch_name($_batch->course->title_short_form, $_batch->year, $_batch->month, $_batch->batch_number);
+    //                }
+    //            }
+    //        }
+    //
+    //        return view('transaction.transactions', compact('accounts', 'from_date', 'to_date'));
+    //    }
 
 
     public function user_transaction_show($uid, $from_date, $to_date, $type)
@@ -497,7 +501,7 @@ class ReportController extends Controller
         if (!empty($payments)) {
             foreach ($payments as $payment) {
                 $account = Account::find($payment->account_id);
-                if(!isset($account->student)){
+                if (!isset($account->student)) {
                     dd($payment);
                 }
                 $batch = $account->student->batches->where('course_id', $account->course_id)->first();
@@ -506,13 +510,12 @@ class ReportController extends Controller
                 } else {
                     $cm = CourseMigration::where('old_course_id', $account->course_id)
                         ->where('student_id', $account->student_id)->first();
-                    if(!empty($cm)){
+                    if (!empty($cm)) {
                         $_batch = Batch::find($cm->old_batch_id);
                         $payment['batch'] = batch_name($_batch->course->title_short_form, $_batch->year, $_batch->month, $_batch->batch_number);
-                    }else{
-                         $payment['batch'] = 'Not found';
+                    } else {
+                        $payment['batch'] = 'Not found';
                     }
-                   
                 }
                 $payment['student_name'] = $account->student->name;
                 $payment['student_phone'] = $account->student->phone;
@@ -520,11 +523,12 @@ class ReportController extends Controller
                 $payment['student_as'] = $account->student->student_as;
             }
         }
-        return view('transaction.transaction_user', compact('user', 'payments' ,'from_date', 'to_date'));
+        return view('transaction.transaction_user', compact('user', 'payments', 'from_date', 'to_date'));
     }
-    
+
     // Transaction Report Session Wise
-    public function transaction_session_wise(){
+    public function transaction_session_wise()
+    {
         $users = User::all();
         $sessions = Sessions::all();
         $accounts = [];
@@ -549,14 +553,12 @@ class ReportController extends Controller
         if ($uid == 'all') {
             $user = 'all';
             $results = Payment::whereHas('account.student')->get();
-        }
-        else {
+        } else {
             $user = User::findOrFail($uid);
-            $results = Payment::whereHas('account.student', function($query) use ($uid, $session_id) {
+            $results = Payment::whereHas('account.student', function ($query) use ($uid, $session_id) {
                 $query->where('payments.user_id', $uid);
                 $query->where('students.session_id', $session_id);
             })->get();
-            
         }
         return view('transaction_session_wise.transaction_session_wise_user', compact('user', 'session', 'results'));
     }
@@ -567,21 +569,19 @@ class ReportController extends Controller
         $referrals = Referral::all();
         $sources = Source::all();
         $accounts = [];
-        return view('reference_wise_report.index', compact('referrals','sources', 'accounts'));
+        return view('reference_wise_report.index', compact('referrals', 'sources', 'accounts'));
     }
     public function reference_wise_report_find(Request $request)
     {
-        if(!empty($request->source) && empty($request->referral)){
+        if (!empty($request->source) && empty($request->referral)) {
             $request->validate([
                 'referral' => 'nullable',
             ]);
-        }
-        elseif(empty($request->source) && !empty($request->referral)){
+        } elseif (empty($request->source) && !empty($request->referral)) {
             $request->validate([
                 'source' => 'nullable',
             ]);
-        }
-        else{
+        } else {
             $request->validate([
                 'referral' => 'required',
                 'source' => 'required',
@@ -598,23 +598,22 @@ class ReportController extends Controller
             'to_date' => $request->to_date
         ]);
     }
-    function reference_wise_report_show($source_id = false, $referral_id = false, $from_date, $to_date){
-        if($source_id != 'null'){
+    function reference_wise_report_show($source_id = false, $referral_id = false, $from_date, $to_date)
+    {
+        if ($source_id != 'null') {
             $source = Source::findOrFail($source_id);
-            $results = Payment::whereHas('account.student', function($query) use ($source_id, $from_date, $to_date) {
+            $results = Payment::whereHas('account.student', function ($query) use ($source_id, $from_date, $to_date) {
                 $query->whereDate('created_at', '>=', date('Y-m-d', strtotime($from_date)))
-                ->whereDate('created_at', '<=', date('Y-m-d', strtotime($to_date)))->where('students.source_id', $source_id);
+                    ->whereDate('created_at', '<=', date('Y-m-d', strtotime($to_date)))->where('students.source_id', $source_id);
             })->get();
-            return view('reference_wise_report.reference_report', compact('source','source_id','results','from_date', 'to_date'));
-
-        }
-        elseif($referral_id != 'null'){
+            return view('reference_wise_report.reference_report', compact('source', 'source_id', 'results', 'from_date', 'to_date'));
+        } elseif ($referral_id != 'null') {
             $referral = Referral::findOrFail($referral_id);
-            $results = Payment::whereHas('account.student', function($query) use ($referral_id, $from_date, $to_date) {
+            $results = Payment::whereHas('account.student', function ($query) use ($referral_id, $from_date, $to_date) {
                 $query->whereDate('created_at', '>=', date('Y-m-d', strtotime($from_date)))
-                ->whereDate('created_at', '<=', date('Y-m-d', strtotime($to_date)))->where('students.referral_id', $referral_id);
+                    ->whereDate('created_at', '<=', date('Y-m-d', strtotime($to_date)))->where('students.referral_id', $referral_id);
             })->get();
-            return view('reference_wise_report.reference_report', compact('referral','referral_id', 'results','from_date', 'to_date'));
+            return view('reference_wise_report.reference_report', compact('referral', 'referral_id', 'results', 'from_date', 'to_date'));
         }
     }
 
@@ -662,59 +661,53 @@ class ReportController extends Controller
         ]);
         $b = Batch::find($bid);
         $ss = $b->students;
-        
+
         $success = 0;
         $fail = 0;
         $total = 0;
-        
+
         foreach ($ss as $s) {
             $total++;
-            
+
             // $a = "Dear $s->name,"."\n";
-            $a = "প্রিয় শিক্ষার্থী,\n" ; 
+            $a = "প্রিয় শিক্ষার্থী,\n";
             $a .= "$request->sms\n";
-            
+
             // $a .= "Sincerely,\n";
             // $a .= "European IT Institute\n";
             // $a .= "Contact Us: 01889977951\n";
-            
-            
-            $a .= "ইউরোপিয়ান আইটি ইনস্টিটিউট \n"; 
-//sms          
+
+
+            $a .= "ইউরোপিয়ান আইটি ইনস্টিটিউট \n";
+            //sms          
             $result = $this->sendSms($s->phone, $a);
 
-//sms history
+            //sms history
             $type = "Payment Notice";
             $save = new Sms_history;
             $save->user_id = Auth::id();
             $save->message = $a;
-            $save->type = $type;         
+            $save->type = $type;
             $save->status = $result;
             $save->receiver_no = $s->phone;
-            $save->save(); 
-            
+            $save->save();
+
             //COUNT     
-            if ($result != "1")
-            {
-                $fail ++;
-            }
-            else
-            {
-                $success ++;
+            if ($result != "1") {
+                $fail++;
+            } else {
+                $success++;
             }
         }
-        
-                 
-        if ($fail != "0")
-        {
-            Session::flash('error', " $fail message sent unseccessful out of $total ." );
+
+
+        if ($fail != "0") {
+            Session::flash('error', " $fail message sent unseccessful out of $total .");
             return redirect()->back();
-        }
-        else
-        {
+        } else {
             Session::flash('success', " $success message sent successful out of $total .");
             return redirect()->back();
-         }
+        }
     }
 
 
@@ -723,64 +716,57 @@ class ReportController extends Controller
         $request->validate([
             'sms' => 'required',
         ]);
-//        $institute = Institute::find($iid);
+        //        $institute = Institute::find($iid);
         $ss = Student::where('institute_id', $iid)->where('year', '=', $year)->get();
-        
-                
+
+
         $success = 0;
         $fail = 0;
         $total = 0;
-        
-        
+
+
         foreach ($ss as $s) {
             $total++;
-            
+
             // $a = "Dear $s->name,"."\n";
-            $a = "প্রিয় শিক্ষার্থী,\n" ; 
+            $a = "প্রিয় শিক্ষার্থী,\n";
             $a .= "$request->sms\n";
-            
+
             // $a .= "Sincerely,\n";
             // $a .= "European IT Institute\n";
             // $a .= "Contact Us: 01889977951\n";
-            
-            $a .= "ইউরোপিয়ান আইটি ইনস্টিটিউট \n"; 
 
-//sms
+            $a .= "ইউরোপিয়ান আইটি ইনস্টিটিউট \n";
+
+            //sms
             $result = $this->sendSms($s->phone, $a);
-//sms history
+            //sms history
             $type = "Payment Notice";
             $save = new Sms_history;
             $save->user_id = Auth::id();
             $save->message = $a;
-            $save->type = $type;         
+            $save->type = $type;
             $save->status = $result;
             $save->receiver_no = $s->phone;
-            $save->save(); 
-            
-                        
+            $save->save();
+
+
             //COUNT     
-            if ($result != "1")
-            {
-                $fail ++;
+            if ($result != "1") {
+                $fail++;
+            } else {
+                $success++;
             }
-            else
-            {
-                $success ++;
-            }
-        
         }
-        
-                 
-        if ($fail != "0")
-        {
-            Session::flash('error', " $fail message sent unseccessful out of $total ." );
+
+
+        if ($fail != "0") {
+            Session::flash('error', " $fail message sent unseccessful out of $total .");
             return redirect()->back();
-        }
-        else
-        {
+        } else {
             Session::flash('success', " $success message sent successful out of $total .");
             return redirect()->back();
-         }
+        }
     }
 
 
@@ -813,69 +799,64 @@ class ReportController extends Controller
                         $student['due_amount'] = $course->total_fee - $course->payments;
                     }
                 }
-                if ($student->due_amount > 0){
+                if ($student->due_amount > 0) {
                     $students[] = $student;
                 }
             }
         }
-        
-                
-                
+
+
+
         $success = 0;
         $fail = 0;
         $total = 0;
-        
-        
+
+
         foreach ($students as $s) {
             $total++;
-            
+
             // $a = "Dear $s->name,"."\n";
-            $a = "প্রিয় শিক্ষার্থী,\n" ; 
+            $a = "প্রিয় শিক্ষার্থী,\n";
             $a .= "$request->sms\n";
-            
+
             // $a .= "Sincerely,\n";
             // $a .= "European IT Institute\n";
             // $a .= "Contact Us: 01889977951\n";
-            
-            $a .= "ইউরোপিয়ান আইটি ইনস্টিটিউট \n"; 
-//sms
+
+            $a .= "ইউরোপিয়ান আইটি ইনস্টিটিউট \n";
+            //sms
             $result = $this->sendSms($s->phone, $a);
-//sms history
+            //sms history
             $type = "Payment Notice";
             $save = new Sms_history;
             $save->user_id = Auth::id();
             $save->message = $a;
-            $save->type = $type;         
+            $save->type = $type;
             $save->status = $result;
             $save->receiver_no = $s->phone;
-            $save->save(); 
-            
-                        
-                        
+            $save->save();
+
+
+
             //COUNT     
-            if ($result != "1")
-            {
-                $fail ++;
+            if ($result != "1") {
+                $fail++;
+            } else {
+                $success++;
             }
-            else
-            {
-                $success ++;
-            }
-        }   
-        
-        if ($fail != "0")
-        {
-            Session::flash('error', " $fail message sent unseccessful out of $total ." );
-            return redirect()->back();
         }
-        else
-        {
+
+        if ($fail != "0") {
+            Session::flash('error', " $fail message sent unseccessful out of $total .");
+            return redirect()->back();
+        } else {
             Session::flash('success', " $success message sent successful out of $total .");
             return redirect()->back();
-         }
+        }
     }
 
-    public function discount_report(){
+    public function discount_report()
+    {
         $data = Account::where('discount_percent', '>', 0)->orWhere('discount_amount', '>', 0)->latest()->get();
         $courses = Course::where('type', 'industrial')->get();
         $result = Student::select(DB::raw('YEAR(created_at) as year'))->distinct()->orderBy('created_at')->get();
@@ -883,7 +864,4 @@ class ReportController extends Controller
         $users = User::all();
         return view('report.discount_report', compact('data', 'courses', 'years', 'users'));
     }
-    
-
-
 }
