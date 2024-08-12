@@ -7,7 +7,7 @@
 @section('content')
 
 @php
-    $row_1 = 0;$discount = 0;$all_course_fee = 0;$all_paid = 0;$all_due = 0;$total_due = 0;$not_interested_due = 0; $actual_due = 0;$all_not_interested_due = 0;$all_actual_due = 0;$count = 0;$discount = 0;$course_fee = 0; $total_payment = 0;
+    $row_1 = 0;$discount = 0;$all_course_fee = 0;$all_paid = 0;$all_due = 0;$total_due = 0;$total_additional_fee = 0; $actual_due = 0;$all_additional_fee = 0;$all_actual_due = 0;$count = 0;$discount = 0;$course_fee = 0; $total_payment = 0;
     $total_paid = 0;$total_course_fee = 0;$total_student = 0;$total_course_fee = 0;$total_discount = 0;$comment = "nothing"; $status = "not defined";
     $tr_count_1 = 0;$row_span_1 = 0; $row_span_2 = 0; $sl = 0;$table_a = [];$tr_1 = "";$align_middle = "align-middle";$table_active = "table-active";
 @endphp
@@ -37,7 +37,7 @@
                                             <th class="align-middle">Course Fee</th>
                                             <th class="align-middle">Paid</th>
                                             <th class="align-middle">Due</th>
-                                            <th class="align-middle">Not Interested Due</th>
+                                            <th class="align-middle">Additional Fee</th>
                                             <th class="align-middle">Actual Due</th>
                                             <th class="align-middle">Comment</th>
                                             <th class="align-middle">Status</th>
@@ -88,6 +88,11 @@
                                                                             
                                                                             $total_paid += $total_payment;
                                                                         }
+                                                                        $total_additional_fee += !empty(
+                                                                                $acc->additional_fee
+                                                                            )
+                                                                                ? $acc->additional_fee
+                                                                                : 0;
                                                                     }
                                                                     $total_course_fee = $course_fee - $discount ;
                                                                     $all_course_fee += $total_course_fee;
@@ -97,9 +102,9 @@
                                                                         $all_due +=$total_due;
                                                                         $discount = 0;
                                                                     $table .= "<td class = '".$align_middle."' >".$total_due."</td>";//******************************Due******************************
-                                                                    $table .= "<td class = '".$align_middle."' >".$not_interested_due."</td>";//******************************Not Interested Due******************************
-                                                                        $actual_due = $total_due - $not_interested_due;
-                                                                        $all_not_interested_due += $not_interested_due;
+                                                                    $table .= "<td class = '".$align_middle."' >".$total_additional_fee."</td>";//******************************Not Interested Due******************************
+                                                                        $actual_due = $total_due + $total_additional_fee;
+                                                                        $all_additional_fee += $total_additional_fee;
                                                                         $all_actual_due += $actual_due;
                                                                     $table .= "<td class = '".$align_middle."' >".$actual_due."</td>";//******************************Actual Due******************************
                                                                     $table .= "<td class = '".$align_middle."' >".$comment."</td>";//******************************Comment Due******************************
@@ -107,6 +112,7 @@
     
     
                                                                     $table .= "</tr>";
+                                                                    $total_additional_fee = 0;
                                                                 }
                                                             }else{
                                                                                                                         
@@ -135,8 +141,8 @@
                                                                 $table .= "<td class = '".$align_middle."' >".$total_paid."</td>";//Paid
                                                                 $table .= "<td class = '".$align_middle."' >".$all_due."</td>";//due
                                                                 $all_due = 0;
-                                                                $table .= " <td class = '".$align_middle."' >".$all_not_interested_due."</td>";//not interested due
-                                                                $all_not_interested_due = 0;
+                                                                $table .= " <td class = '".$align_middle."' >".$all_additional_fee."</td>";//not interested due
+                                                                $all_additional_fee = 0;
                                                                 $table .= "<td class = '".$align_middle."' >".$all_actual_due."</td>";//actual due
                                                                 $all_actual_due = 0;
                                                                 $table .= "<td class = '".$align_middle."' ></td>";//comment

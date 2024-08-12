@@ -24,13 +24,13 @@ use Illuminate\Support\Facades\Session;
 class summary_reportController extends Controller
 {
     //
-        public function index()
+    public function index()
     {
 
         return view('summary_report.index');
     }
 
-        public function summaryReport(Request $request)
+    public function summaryReport(Request $request)
     {
         if (!empty($request->course_type) && 'all' == $request->course_type) {
             session()->flash('error', 'Please enter course type first.');
@@ -43,11 +43,9 @@ class summary_reportController extends Controller
             return redirect()->route('summary_report.report.course_type', $request->course_type);
         }
         return redirect()->back();
-
-
     }
 
-        public function reportsByBatch($bid)
+    public function reportsByBatch($bid)
     {
         $batch = Batch::find($bid);
         $course = $batch->course;
@@ -56,15 +54,12 @@ class summary_reportController extends Controller
 
         $batches = Batch::with('students')->with('user')->with('course')->with('course_type')->get();
         $all_batches = [];
-        foreach ($batches as $key => $batch)
-        {
-            if ($batch->id == $bid)
-            {
+        foreach ($batches as $key => $batch) {
+            if ($batch->id == $bid) {
                 $all_batches[$batch->course->title][] = $batch;
             }
-
         }
-        return view('summary_report.summary_report_by_batch',compact('all_batches','batch_name'));
+        return view('summary_report.summary_report_by_batch', compact('all_batches', 'batch_name'));
     }
 
     public function reportsByCourse($cid)
@@ -76,31 +71,24 @@ class summary_reportController extends Controller
         $batches = Batch::with('students')->with('user')->with('course')->with('course_type')->get();
         $all_batches = [];
 
-        foreach ($batches as $key => $batch)
-        {
-            if ($batch->course->id == $cid)
-            {
+        foreach ($batches as $key => $batch) {
+            if ($batch->course->id == $cid) {
                 $all_batches[$batch->course->title][] = $batch;
             }
-
         }
 
-        return view('summary_report.summary_report_by_course',compact('all_batches','cid','course_name'));
+        return view('summary_report.summary_report_by_course', compact('all_batches', 'cid', 'course_name'));
     }
 
     public function reportsByCourseType($ct)
     {
         $batches = Batch::with('students')->with('user')->with('course')->with('course_type')->get();
         $all_batches = [];
-        foreach ($batches as $key => $batch)
-        {
-            if ($batch->course->type == $ct)
-            {
+        foreach ($batches as $key => $batch) {
+            if ($batch->course->type == $ct) {
                 $all_batches[$batch->course->title][] = $batch;
             }
         }
-        return view('summary_report.summary_report_by_course_type', compact('ct','all_batches'));
+        return view('summary_report.summary_report_by_course_type', compact('ct', 'all_batches'));
     }
-
-
 }

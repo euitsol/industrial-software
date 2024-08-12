@@ -78,6 +78,7 @@
                                                 <th class="payment">Course Fee</th>
                                                 <th class="payment">Discount</th>
                                                 <th class="payment">Paid</th>
+                                                <th class="payment">Additional Fee</th>
                                                 <th class="payment">Due</th>
                                                 <th class="payment certificate">Certificate</th>
                                             </tr>
@@ -106,7 +107,18 @@
                                                         @endif
                                                     </td>
                                                     <td class="payment">{{$student->paid_amount}}</td>
-                                                    <td class="payment">{{$student->due_amount}}</td>
+                                                    <td class="payment">
+                                                        @php
+                                                           $additional_fee = 0;
+                                                        @endphp
+                                                        @if ($student->accounts->count() > 0)
+                                                            @foreach($student->accounts as $sa => $accont)
+                                                                <span class="">({{++$sa}})</span>
+                                                                <span class="mr-2">{{$additional_fee += !empty($accont->additional_fee) ? $accont->additional_fee : 0}}</span>
+                                                            @endforeach
+                                                        @endif
+                                                    </td>
+                                                    <td class="payment">{{$student->due_amount+$additional_fee}}</td>
                                                     <td class="payment certificate"></td>
                                                 </tr>
                                             @endforeach

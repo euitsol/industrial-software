@@ -13,7 +13,7 @@
                 <div class="card">
                     <div class="card-header">
                         <span class="float-left"><h4> Institute Students Report </h4></span>
-                        <span class="float-right"><a href="{{route('report.institute.students', ['iid' => $iid, 'yr'=>$year])}}"
+                        <span class="float-right"><a href="{{route('report.institute.students', ['iid' => $iid, 'yr'=>$year,'shift' => $shift])}}"
                                                      class="btn btn-sm btn-primary">Back</a></span>
                     </div>
                     <div class="card-body">
@@ -69,6 +69,7 @@
                                                 <th>Courses</th>
                                                 <th>Total Fee</th>
                                                 <th>Paid</th>
+                                                <th>Additional Fee</th>
                                                 <th>Due</th>
                                             </tr>
                                             @foreach ($students as $sk => $student)
@@ -87,7 +88,18 @@
                                                     </td>
                                                     <td>{{$student->total_amount}}</td>
                                                     <td>{{$student->paid_amount}}</td>
-                                                    <td>{{$student->due_amount}}</td>
+                                                    <td>
+                                                        @php
+                                                           $additional_fee = 0;
+                                                        @endphp
+                                                        @if ($student->accounts->count() > 0)
+                                                            @foreach($student->accounts as $sa => $accont)
+                                                                <span class="">({{++$sa}})</span>
+                                                                <span class="mr-2">{{$additional_fee += !empty($accont->additional_fee) ? $accont->additional_fee : 0}}</span>
+                                                            @endforeach
+                                                        @endif
+                                                    </td>
+                                                    <td>{{$student->due_amount+$additional_fee}}</td>
                                                 </tr>
                                             @endforeach
                                         </table>
