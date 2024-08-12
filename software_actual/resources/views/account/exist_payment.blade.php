@@ -61,7 +61,7 @@
                                                 {{$account->discount_percent}} %
                                             @elseif($account->discount_amount > 0)
                                                 {{ number_format($account->discount_amount, 2) }} Tk
-                                            @else 0 Tk @endif
+                                            @else 0.00 Tk @endif
                                         </td>
                                     </tr>
                                     <tr>
@@ -309,6 +309,25 @@
                                             <div class="col-md-6">
                                                 <button type="submit" class="btn btn-sm btn-outline-dark mt-1">
                                                     Discount
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                    <form action="{{route('fee.update', ['aid' => encrypt($account->id)])}}" method="post">
+                                        @csrf
+                                        <div class="form-group row">
+                                            <div class="col-md-6">
+                                                <input type="text" placeholder="Enter Fee Amount" min="0"
+                                                       name="additional_fee"
+                                                       class="form-control form-control-sm"
+                                                       min="0" required>
+                                                @if ($errors->has('additional_fee'))
+                                                    <span class="text-danger">{{ $errors->first('additional_fee') }}</span>
+                                                @endif
+                                            </div>
+                                            <div class="col-md-6">
+                                                <button type="submit" class="btn btn-sm btn-outline-dark mt-1">
+                                                    Update Additional Fee
                                                 </button>
                                             </div>
                                         </div>

@@ -569,6 +569,10 @@ class PaymentController extends Controller
 
             $due = $total_fee - $total_payments;
             $payments = Payment::where('id', $pid)->get();
+            $additional_fee = 0;
+            if(!empty($account->fee_date) && ($account->fee_date < $payments->first()->created_at)){
+                $additional_fee = !empty($account->additional_fee) ? $account->additional_fee : 0;
+            }
             $installment_dates = $account->installment_dates;
             $installment_dates_arr = [];
             foreach ($installment_dates as $key1 => $value1) {
@@ -584,6 +588,7 @@ class PaymentController extends Controller
 
             return view('account.money_receipt', [
                 'account' => $account,
+                'additional_fee' => $additional_fee,
                 'student' => $student,
                 'course' => $course,
                 'batch_name' => $batch_name,

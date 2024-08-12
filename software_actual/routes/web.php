@@ -577,7 +577,8 @@ Route::group(['middleware' => 'auth'], function () {
         Route::prefix('additional-fee')->name('fee.')->group(function () {
                 Route::get('/index', 'FeesController@index')->name('index');
                 Route::get('/create', 'FeesController@create')->name('create');
-                Route::post('/update', 'FeesController@update')->name('update');
+                Route::post('/store', 'FeesController@store')->name('store');
+                Route::post('/update/{id}', 'FeesController@update')->name('update');
         });
 
         //Student Job Placement
