@@ -210,6 +210,13 @@
                                     </td>
                                 </tr>
                             @endif
+                            @if($additional_fee > 0)
+                                <tr>
+                                    <th>Additional Fee</th>
+                                    <td>:</td>
+                                    <td>{{number_format($additional_fee, 2)}} BDT</td>
+                                </tr>
+                            @endif
                             @if ($account->installment_quantity > 0)
                                 <tr>
                                     <th>Installment</th>
@@ -220,7 +227,7 @@
                             <tr>
                                 <th>Total Course Fee</th>
                                 <td>:</td>
-                                <td>{{number_format($total_fee, 2)}} BDT</td>
+                                <td>{{number_format($total_fee+$additional_fee, 2)}} BDT</td>
                             </tr>
                         </table>
 
@@ -266,8 +273,7 @@
                             
                         </p>
                         <p class="text-left mt-2" style="padding-left: 12px;">
-                            
-                            <b class="">Total Due : </b> {{number_format($due, 2)}} BDT
+                            <b class="">Total Due : </b> {{number_format($due+$additional_fee, 2)}} BDT
                         </p>
                     </div>
                     <div class="col-md-5 clr">

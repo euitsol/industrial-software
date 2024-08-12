@@ -245,6 +245,7 @@ class PaymentController extends Controller
 
         $installment_dates_arr = [];
         $account = $student->accounts->where('course_id', $cid)->first();
+        $additional_fee = !empty($account->additional_fee) ? $account->additional_fee : 0;
         $installment_dates = $account->installment_dates;
 
         foreach ($installment_dates as $key1 => $value1) {
@@ -256,7 +257,7 @@ class PaymentController extends Controller
         $course_fee = $course->fee;
         $payments = $account->payments;
 
-        $total_fee = $this->courseFeeCalculate($account, $course_fee);
+        $total_fee = $this->courseFeeCalculate($account, $course_fee)+$additional_fee;
 
         $due = $total_fee - optional($payments)->sum('amount');
 
@@ -277,6 +278,7 @@ class PaymentController extends Controller
             'course_fee' => $course_fee,
             'total_fee' => $total_fee,
             'account' => $account,
+            'additional_fee' => $additional_fee,
             'payments' => $payments,
             'due' => $due
         ]);
@@ -487,6 +489,7 @@ class PaymentController extends Controller
         if ($pid == 'null')
         {
             $account = Account::with('student')->with('student.batches')->with('course')->find($aid);
+            $additional_fee = !empty($account->additional_fee) ? $account->additional_fee : 0;
             $student = $account->student;
             $course = $account->course;
 
@@ -521,6 +524,7 @@ class PaymentController extends Controller
 
             return view('account.money_receipt', [
                 'account' => $account,
+                'additional_fee' => $additional_fee,
                 'student' => $student,
                 'course' => $course,
                 'batch_name' => $batch_name,

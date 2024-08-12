@@ -65,6 +65,11 @@
                                         </td>
                                     </tr>
                                     <tr>
+                                        <td>Additional Fee</td>
+                                        <td>:</td>
+                                        <td>{{number_format($additional_fee,2)}} Tk</td>
+                                    </tr>
+                                    <tr>
                                         <td>Total Fee</td>
                                         <td>:</td>
                                         <td>{{ number_format($total_fee, 2) }} Tk</td>
