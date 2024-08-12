@@ -201,9 +201,10 @@ class ReportController extends Controller
                                 $batch_name = batch_name($course->title_short_form, $b->year, $b->month, $b->batch_number);
                                 $student['courses'][$_k]['batch'] = $batch_name;
                                 $student['courses'][$_k]['due_status'] = true;
-                                $student['courses'][$_k]['due_amount'] = $course->total_fee - $course->payments;
+                                $additional_fee = !empty($ac->additional_fee) ? $ac->additional_fee : 0;
+                                $student['courses'][$_k]['due_amount'] = ($course->total_fee - $course->payments)+$additional_fee;
                                 $student['courses'][$_k]['paid_amount'] = $course->payments;
-                                $student['courses'][$_k]['additional_fee'] = !empty($ac->additional_fee) ? $ac->additional_fee : 0;
+                                $student['courses'][$_k]['additional_fee'] = $additional_fee;
                                 $student['due_count'] += 1;
                             }
                         }

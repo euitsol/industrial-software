@@ -33,8 +33,8 @@ class Controller extends BaseController
         } elseif (isset($account->discount_amount) && $account->discount_amount > 0) {
             $course_fee = $course_fee - $account->discount_amount;
         }
-        $additional_fee = !empty($account->additional_fee) ? $account->additional_fee : 0;
-        $total_fee = $course_fee + $additional_fee;
+        // $additional_fee = !empty($account->additional_fee) ? $account->additional_fee : 0;
+        $total_fee = $course_fee;
         return $total_fee;
     }
 
