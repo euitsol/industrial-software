@@ -32,7 +32,7 @@
 
                         <div class="row">
                             <div class="col-md-8 offset-md-2">
-                                <form action="{{ route('fee.update') }}" method="POST" class="form-horizontal"
+                                <form action="{{ route('fee.store') }}" method="POST" class="form-horizontal"
                                     id="feeForm">
                                     @csrf
 

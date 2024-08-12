@@ -132,7 +132,7 @@
                                         <td>
                                             @if($course->payments > 0 && $course->total_fee > $course->payments)
                                                 <span class="badge badge-warning">
-                                                    Due : {{number_format(($course->total_fee - $course->payments), 2)}} Tk
+                                                    Due : {{number_format((($course->total_fee - $course->payments)+$course->additional_fee), 2)}} Tk
                                                 </span>
                                             @elseif($course->total_fee <= $course->payments)
                                                 <span class="badge badge-success">Paid</span>

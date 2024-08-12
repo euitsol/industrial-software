@@ -14,7 +14,8 @@ class Account extends Model
     protected $fillable = [
         'additional_fee',
         'user_id',
-        'updated_at'
+        'updated_at',
+        'fee_date'
     ];
     public function student()
     {

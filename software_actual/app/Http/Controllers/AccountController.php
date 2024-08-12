@@ -46,6 +46,7 @@ class AccountController extends Controller
                     $total_fee = $this->courseFeeCalculate($_account, $course->fee);
                     $course['total_fee'] = $total_fee;
                     $course['payments'] = $_payments;
+                    $course['additional_fee'] = !empty($_account->additional_fee) ? $_account->additional_fee : 0;
                 }
             }
         }

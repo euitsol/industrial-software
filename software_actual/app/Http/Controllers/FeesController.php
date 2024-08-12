@@ -35,7 +35,7 @@ class FeesController extends Controller
         return view('fees.create', compact('sessions'));
     }
 
-    public function update(Request $request)
+    public function store(Request $request)
     {
         $request->validate([
             'session' => 'required|exists:sessions,id',
@@ -53,7 +53,7 @@ class FeesController extends Controller
                 $query->where('session_id', $session_id);
             })->withDuePayments();
 
-        $query->update(['additional_fee' => $request->amount, 'user_id' => auth()->user()->id, 'updated_at' => Carbon::now()]);
+        $query->update(['additional_fee' => $request->amount, 'user_id' => auth()->user()->id, 'updated_at' => Carbon::now(),'fee_date'=>Carbon::now()]);
         $accounts = $query->get();
 
         ini_set('max_execution_time', 3000);
@@ -100,5 +100,16 @@ class FeesController extends Controller
         }
         $this->message('success', 'Additional fee added successfully');
         return redirect()->route('fee.index');
+    }
+
+    public function update(Request $req, $aid){
+        $req->validate([
+            'additional_fee' => 'required|numeric|min:0'
+        ]);
+        $account_id = decrypt($aid);
+        Account::findOrFail($account_id)->update(['additional_fee'=>$req->additional_fee, 'user_id'=>auth()->user()->id, 'updated_at'=>Carbon::now(),'fee_date'=>Carbon::now()]);
+        $this->message('success', 'Additional fee updated successfully');
+        return redirect()->back();
+        
     }
 }
