@@ -56,8 +56,8 @@
 
                                     <div class="form-group">
 
-                                        <label for="year">Year</label><span class="text-danger">*</span>
-                                        <select name="year" id="year" class="form-control">
+                                        <label for="year_s">Year</label><span class="text-danger">*</span>
+                                        <select name="year" id="year_s" class="form-control">
                                             <option value="" disabled hidden selected> Choose...</option>
                                             @foreach ($years as $year)
                                                 <option value="{{ $year }}">{{ $year }}</option>
