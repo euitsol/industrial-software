@@ -202,7 +202,7 @@ class ReportController extends Controller
                                 $student['courses'][$_k]['batch'] = $batch_name;
                                 $student['courses'][$_k]['due_status'] = true;
                                 $additional_fee = !empty($ac->additional_fee) ? $ac->additional_fee : 0;
-                                $student['courses'][$_k]['due_amount'] = ($course->total_fee - $course->payments)+$additional_fee;
+                                $student['courses'][$_k]['due_amount'] = ($course->total_fee - $course->payments) + $additional_fee;
                                 $student['courses'][$_k]['paid_amount'] = $course->payments;
                                 $student['courses'][$_k]['additional_fee'] = $additional_fee;
                                 $student['due_count'] += 1;
@@ -680,7 +680,7 @@ class ReportController extends Controller
 
 
             $a .= "ইউরোপিয়ান আইটি ইনস্টিটিউট \n";
-            //sms          
+            //sms
             $result = $this->sendSms($s->phone, $a);
 
             //sms history
@@ -693,7 +693,7 @@ class ReportController extends Controller
             $save->receiver_no = $s->phone;
             $save->save();
 
-            //COUNT     
+            //COUNT
             if ($result != "1") {
                 $fail++;
             } else {
@@ -752,7 +752,7 @@ class ReportController extends Controller
             $save->save();
 
 
-            //COUNT     
+            //COUNT
             if ($result != "1") {
                 $fail++;
             } else {
@@ -839,7 +839,7 @@ class ReportController extends Controller
 
 
 
-            //COUNT     
+            //COUNT
             if ($result != "1") {
                 $fail++;
             } else {
@@ -864,5 +864,14 @@ class ReportController extends Controller
         $years = $result->pluck('year');
         $users = User::all();
         return view('report.discount_report', compact('data', 'courses', 'years', 'users'));
+    }
+
+    public function getYearInstitute($year)
+    {
+
+        return Institute::whereHas('students', function ($query) use ($year) {
+            $query->where('year', $year);
+        })->latest()->get();
+        return response()->json($institutes);
     }
 }
