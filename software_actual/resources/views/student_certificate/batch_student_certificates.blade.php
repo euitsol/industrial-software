@@ -5,36 +5,36 @@
     <link rel="stylesheet" href="{{ asset('certificate/style.css') }}">
     <style>
         /* .landscape {
-                        transform: rotate(90deg);
-                        width: 100vw;
-                        height: 100vh;
-                        overflow: hidden;
-                        position: relative;
-                        left: -50%;
-                    } */
+                                transform: rotate(90deg);
+                                width: 100vw;
+                                height: 100vh;
+                                overflow: hidden;
+                                position: relative;
+                                left: -50%;
+                            } */
         @media print {
 
             /* .landscape {
-                        transform: rotate(-90deg);
-                        transform-origin: left top;
-                        width: 100vh; / Using the viewport height to set the width /
-                        height: 100vw; / Using the viewport width to set the height /
-                        position: absolute;
-                        top: 100%; / Move the rotated div out of the printable area /
-                        page-break-before: always; / Optional: add a page break before the div /
-                        } */
+                                transform: rotate(-90deg);
+                                transform-origin: left top;
+                                width: 100vh; / Using the viewport height to set the width /
+                                height: 100vw; / Using the viewport width to set the height /
+                                position: absolute;
+                                top: 100%; / Move the rotated div out of the printable area /
+                                page-break-before: always; / Optional: add a page break before the div /
+                                } */
             /* @page {
-                        size: landscape;
-                        }
+                                size: landscape;
+                                }
 
-                        .landscape {
-                            transform: rotate(90deg);
-                            width: 100vw;
-                            height: 100vh;
-                            overflow: hidden;
-                            position: relative;
-                            left: -50%;
-                        } */
+                                .landscape {
+                                    transform: rotate(90deg);
+                                    width: 100vw;
+                                    height: 100vh;
+                                    overflow: hidden;
+                                    position: relative;
+                                    left: -50%;
+                                } */
             @page {
                 size: A4 landscape;
                 margin: 0;
@@ -54,6 +54,23 @@
             background-size: 100%;
             background-repeat: no-repeat;
             top: -150%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .coordinator {
+            position: relative;
+        }
+
+        .coordinator:after {
+            content: '';
+            position: absolute;
+            background: url(asset('certificate/img/faruk_sig.png'));
+            width: 80px;
+            height: 58px;
+            background-size: 100%;
+            background-repeat: no-repeat;
+            top: -130%;
             left: 50%;
             transform: translate(-50%, -50%);
         }

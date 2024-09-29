@@ -57,6 +57,22 @@
             left: 50%;
             transform: translate(-50%, -50%);
         }
+        .coordinator {
+            position: relative;
+        }
+
+        .coordinator:after {
+            content: '';
+            position: absolute;
+            background: url(asset('certificate/img/faruk_sig.png'));
+            width: 80px;
+            height: 58px;
+            background-size: 100%;
+            background-repeat: no-repeat;
+            top: -130%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
     </style>
 @endpush
 
