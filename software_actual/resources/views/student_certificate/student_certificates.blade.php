@@ -64,7 +64,7 @@
         .coordinator:after {
             content: '';
             position: absolute;
-            background: url(asset('certificate/img/faruk_sig.png'));
+            background: url({{ asset('certificate/img/faruk_sig.png') }});
             width: 80px;
             height: 58px;
             background-size: 100%;
