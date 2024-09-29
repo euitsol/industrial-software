@@ -24,10 +24,9 @@
             color: #ffffff !important;
         }
     </style>
-
 @endpush
 @if (!empty($message))
-    <p class="message">{{$message}}</p>
+    <p class="message">{{ $message }}</p>
 @endif
 
 @section('content')
@@ -41,7 +40,7 @@
 
                     <div class="card-body">
 
-                        @if(session('success'))
+                        @if (session('success'))
                             <p class="alert alert-success text-center">
                                 {{ session('success') }}
                             </p>
@@ -55,28 +54,29 @@
                         <div class="row">
                             <div class="col-md-6 offset-md-3">
 
-                                    <form action="{{route('student_certificate.batch.search')}}" method="post">
-                                        @csrf
+                                <form action="{{ route('student_certificate.batch.search') }}" method="post">
+                                    @csrf
 
-                                        <label for="course_type">Course Type</label>
-                                        <select name="course_type" id="course_type" class="form-control  mb-2" required ='required'>
-                                            <option value ='' hidden selected>Select Course Type</option>
-                                            <option value="Industrial">Industrial</option>
-                                        </select>
+                                    <label for="course_type">Course Type</label>
+                                    <select name="course_type" id="course_type" class="form-control  mb-2"
+                                        required ='required'>
+                                        <option value ='' hidden selected>Select Course Type</option>
+                                        <option value="Industrial">Industrial</option>
+                                    </select>
 
-                                        <label for="course">Course</label>
-                                        <select name="course" id="course" class="form-control  mb-2" required='required'>
-                                            <option value ='' selected>Select Course Type</option>
-                                        </select>
+                                    <label for="course">Course</label>
+                                    <select name="course" id="course" class="form-control  mb-2" required='required'>
+                                        <option value ='' selected>Select Course Type</option>
+                                    </select>
 
-                                        <label for="batch">Batch</label>
-                                        <select name="batch" id="batch" class="form-control  mb-2" required='required'>
-                                            <option value ='' selected>Select Batch</option>
-                                        </select>
+                                    <label for="batch">Batch</label>
+                                    <select name="batch" id="batch" class="form-control  mb-2" required='required'>
+                                        <option value ='' selected>Select Batch</option>
+                                    </select>
 
-                                        <input type="submit" onClick="CheckEmpty()" value="Search" class="btn-custom">
-                                        <input type="reset" value="Reset" class="btn-custom">
-                                    </form>
+                                    <input type="submit" onClick="CheckEmpty()" value="Search" class="btn-custom">
+                                    <input type="reset" value="Reset" class="btn-custom">
+                                </form>
 
                             </div>
                         </div>
@@ -91,42 +91,46 @@
 @push('js')
     <script src="{{ asset('assets/vendor/jquery-ui/jquery-ui.js') }}"></script>
     <script>
-        $(function () {
+        $(function() {
             if ('' !== $('#course_type')) {
                 $('#course').prop('disabled', true);
                 $('#batch').prop('disabled', true);
             }
 
-            $(document).on('change', '#course_type', function () {
+            $(document).on('change', '#course_type', function() {
                 let course_type = $(this).val();
                 if ('' !== course_type) {
-                    let _url = "{{route('courses.type', ':course_type')}}";
+                    let _url = "{{ route('courses.type', ':course_type') }}";
                     let __url = _url.replace(':course_type', course_type);
                     $.ajax({
                         url: __url,
                         method: "GET",
-                        success: function (response) {
+                        success: function(response) {
                             if ('' !== response) {
                                 $('#course').prop('disabled', false);
-                                let output = '<option value="" hidden selected">Select Course</option>' + response;
+                                let output =
+                                    '<option value="" hidden selected">Select Course</option>' +
+                                    response;
                                 $('#course').html(output);
                             }
                         }
                     });
                 }
             });
-            $(document).on('change', '#course', function () {
+            $(document).on('change', '#course', function() {
                 let course = $(this).val();
                 if ('' !== course) {
-                    let _url = "{{route('course.batches', ':course')}}";
+                    let _url = "{{ route('course.batches', ':course') }}";
                     let __url = _url.replace(':course', course);
                     $.ajax({
                         url: __url,
                         method: "GET",
-                        success: function (response) {
+                        success: function(response) {
                             if ('' !== response) {
                                 $('#batch').prop('disabled', false);
-                                let output = '<option value="" hidden selected">Select Batch</option>' + response;
+                                let output =
+                                    '<option value="" hidden selected">Select Batch</option>' +
+                                    response;
                                 $('#batch').html(output);
                             } else {
                                 $('#batch').prop('disabled', true);
@@ -139,32 +143,26 @@
     </script>
     <script>
         // Reqired Script
-        function CheckEmpty(){
+        function CheckEmpty() {
             var course_type = document.getElementById('course_type');
             var couse = document.getElementById('course');
             var batch = document.getElementById('batch');
             var e = 0;
-            if(course_type.value == ''){
+            if (course_type.value == '') {
                 e++;
                 course_type.reportValidity();
-            }
-            else if(couse.value == ''){
+            } else if (couse.value == '') {
                 e++;
                 course.reportValidity();
-            }
-            else if(batch.value == ''){
+            } else if (batch.value == '') {
                 e++;
                 batch.reportValidity();
             }
-            if(e == 0){
+            if (e == 0) {
                 return true;
-            }else{
+            } else {
                 return false;
             }
         }
     </script>
-
-
 @endpush
-
-

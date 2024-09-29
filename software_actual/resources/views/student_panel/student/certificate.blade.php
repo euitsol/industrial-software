@@ -4,29 +4,7 @@
 @push('css')
     <link rel="stylesheet" href="{{ asset('certificate/style.css') }}">
     <style>
-    /* .landscape {
-        transform: rotate(90deg);
-        width: 100vw;
-        height: 100vh;
-        overflow: hidden;
-        position: relative;
-        left: -50%;
-    } */
-    @media print {
         /* .landscape {
-        transform: rotate(-90deg);
-        transform-origin: left top;
-        width: 100vh; / Using the viewport height to set the width /
-        height: 100vw; / Using the viewport width to set the height /
-        position: absolute;
-        top: 100%; / Move the rotated div out of the printable area /
-        page-break-before: always; / Optional: add a page break before the div /
-        } */
-        /* @page {
-        size: landscape;
-        }
-
-        .landscape {
             transform: rotate(90deg);
             width: 100vw;
             height: 100vh;
@@ -34,11 +12,51 @@
             position: relative;
             left: -50%;
         } */
-         @page {
-            size: A4 landscape;
-            margin: 0;
+        @media print {
+
+            /* .landscape {
+            transform: rotate(-90deg);
+            transform-origin: left top;
+            width: 100vh; / Using the viewport height to set the width /
+            height: 100vw; / Using the viewport width to set the height /
+            position: absolute;
+            top: 100%; / Move the rotated div out of the printable area /
+            page-break-before: always; / Optional: add a page break before the div /
+            } */
+            /* @page {
+            size: landscape;
+            }
+
+            .landscape {
+                transform: rotate(90deg);
+                width: 100vw;
+                height: 100vh;
+                overflow: hidden;
+                position: relative;
+                left: -50%;
+            } */
+            @page {
+                size: A4 landscape;
+                margin: 0;
+            }
+
+            .country-d {
+                position: relative;
+            }
+
+            .country-d:after {
+                content: '';
+                position: absolute;
+                background: url({{ asset('certificate/img/Mamun_Sir_Signature.png') }});
+                width: 105px;
+                height: 65px;
+                background-size: 100%;
+                background-repeat: no-repeat;
+                top: -150%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+            }
         }
-    }
     </style>
 @endpush
 
@@ -59,17 +77,17 @@
                     <div class="card-body">
                         <div class="certificate landscape p-0 m-0 d-none d-md-block" id="print">
                             @foreach ($student->batches as $batch)
-                                @if (!empty($batch->end_date) && ($batch->end_date < Carbon\Carbon::now()))
+                                @if (!empty($batch->end_date) && $batch->end_date < Carbon\Carbon::now())
                                     <div class="certificater-main-content">
                                         <!--*****Certificate Header Part******-->
                                         <div class="certificate-head-content">
                                             <div class="left-col">
-                                                <p class="sl-no">SL No: {{$student->year.$student->reg_no}}</p>
+                                                <p class="sl-no">SL No: {{ $student->year . $student->reg_no }}</p>
                                             </div>
 
                                             <div class="middle-col">
                                                 <img src="{{ asset('certificate/img/euit_logo.svg') }}">
-                                              <h2>CERTIFICATE</h2>
+                                                <h2>CERTIFICATE</h2>
                                                 <h3>OF COMPLETION</h3>
                                                 <h4>THIS IS TO CERTIFY THAT</h4>
                                             </div>
@@ -108,7 +126,7 @@
                                                 <span class="daynamic_date">
                                                     {{-- {{Carbon\Carbon::now()->format('d-m-Y')}} --}}
                                                     {{-- 06-11-2023 --}}
-                                                    {{$batch->certificate_issue_date ? date('d-m-Y', strtotime($batch->certificate_issue_date)) : 'N/A'}}
+                                                    {{ $batch->certificate_issue_date ? date('d-m-Y', strtotime($batch->certificate_issue_date)) : 'N/A' }}
                                                 </span>
                                                 <span class="date">DATE OF ISSUE</span>
                                             </div>
@@ -152,6 +170,5 @@
 
 
         }
-
     </script>
 @endpush
