@@ -5,29 +5,6 @@
     <link rel="stylesheet" href="{{ asset('certificate/style.css') }}">
     <style>
         /* .landscape {
-                        transform: rotate(90deg);
-                        width: 100vw;
-                        height: 100vh;
-                        overflow: hidden;
-                        position: relative;
-                        left: -50%;
-                    } */
-        @media print {
-
-            /* .landscape {
-                        transform: rotate(-90deg);
-                        transform-origin: left top;
-                        width: 100vh; / Using the viewport height to set the width /
-                        height: 100vw; / Using the viewport width to set the height /
-                        position: absolute;
-                        top: 100%; / Move the rotated div out of the printable area /
-                        page-break-before: always; / Optional: add a page break before the div /
-                        } */
-            /* @page {
-                        size: landscape;
-                        }
-
-                        .landscape {
                             transform: rotate(90deg);
                             width: 100vw;
                             height: 100vh;
@@ -35,6 +12,29 @@
                             position: relative;
                             left: -50%;
                         } */
+        @media print {
+
+            /* .landscape {
+                            transform: rotate(-90deg);
+                            transform-origin: left top;
+                            width: 100vh; / Using the viewport height to set the width /
+                            height: 100vw; / Using the viewport width to set the height /
+                            position: absolute;
+                            top: 100%; / Move the rotated div out of the printable area /
+                            page-break-before: always; / Optional: add a page break before the div /
+                            } */
+            /* @page {
+                            size: landscape;
+                            }
+
+                            .landscape {
+                                transform: rotate(90deg);
+                                width: 100vw;
+                                height: 100vh;
+                                overflow: hidden;
+                                position: relative;
+                                left: -50%;
+                            } */
             @page {
                 size: A4 landscape;
                 margin: 0;
@@ -131,7 +131,7 @@
                                                     participated and successfully
                                                     completed the course of
                                                     <span class="course">Industrial Attachment -
-                                                        {{ str_replace('Duet', '', $batch->course->title) }}</span>
+                                                        {{ str_replace('/duet/i', '', $batch->course->title) }}</span>
                                                 </p>
 
                                                 <p></p>
