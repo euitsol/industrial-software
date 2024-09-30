@@ -130,7 +130,7 @@
                                                     participated and successfully
                                                     completed the course of
                                                     <span class="course">Industrial Attachment -
-                                                        {{ str_replace('/duet/i', '', $batch->course->title) }}</span>
+                                                        {{ preg_replace('/duet/i', '', $batch->course->title) }}</span>
                                                 </p>
 
                                                 <p></p>
