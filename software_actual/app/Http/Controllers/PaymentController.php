@@ -192,7 +192,8 @@ class PaymentController extends Controller
                     $message .= "পেইড:  ".$total_payments."\n";
                     $message .= "ডিউ: ".$due_amount."\n";    
                     
-                    $result_1 = $this->sendSms($admin, $message);
+                    $result_1 = $this->sendSms("01717221398", $message);
+                    $result_1 = $this->sendSms("01778963392", $message);
                     //sms history
                     $type = "Payment to Admin";
                     $save = new Sms_history;
@@ -445,8 +446,9 @@ class PaymentController extends Controller
             $message .= "কোর্স ফী: ".$total_course_fee." \n";
             $message .= "পেইড:  ".$today_paid_amount."\n";
             $message .= "ডিউ: ".$due_amount."\n";    
-            
-    $result = $this->sendSms($admin, $message);
+                               
+    $result = $this->sendSms("01717221398", $message);
+    $result = $this->sendSms("01778963392", $message);
 
 //sms history
     $type = "Payment to Admin";
